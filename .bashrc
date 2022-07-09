@@ -171,6 +171,8 @@ update_ssh_config() {
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+
 
 eval "$(starship init bash)"
 
