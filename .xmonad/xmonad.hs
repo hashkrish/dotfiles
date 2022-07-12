@@ -72,7 +72,7 @@ clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#dddddd"
+myNormalBorderColor  = "#000000"
 myFocusedBorderColor = "#98C379"
 
 ------------------------------------------------------------------------
