@@ -173,7 +173,6 @@ export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 
-
 eval "$(starship init bash)"
 
 figlet $(basename $(echo $0)) | lolcat
@@ -201,6 +200,19 @@ o() {
       ;;
 
   esac
+}
+
+install_missing_package() {
+  if [[ $? == 127 ]]; then
+    PACKAGE_NAME="$(history 2 | head -1 | awk '{print $2}')"
+    read -n 1 \
+      -p "Do you want to install $PACKAGE_NAME [y/n]?" \
+      should_install
+    echo
+    if [[ $should_install == y || $should_install == Y ]]; then
+      sudo apt install "$PACKAGE_NAME" -y
+    fi
+  fi
 }
 
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
