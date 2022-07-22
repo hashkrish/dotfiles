@@ -63,7 +63,7 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["main","dev","code","www","v","vi","vm","dump","comm"]
+myWorkspaces    = ["main","dev","code","www","extra","vi","vm","dump","comm"]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
 
