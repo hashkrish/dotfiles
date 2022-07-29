@@ -25,6 +25,14 @@
     enable_statusline_mode = false
     filetree_direction = "left"
     enable_vimfiler_welcome = false
+    bootstrap_before = 'myspacevim#before'
+    bootstrap_after = 'myspacevim#after'
+    project_rooter_outermost = false
+    # NOTE: the value should be a list, and each item is the name of the plugin.
+    # disabled_plugins = ["clighter", "clighter8"]
+    default_indent = 2
+    expand_tab = true
+
 
 
 # Enable autocomplete layer
@@ -41,6 +49,56 @@
 [[layers]]
     name = "incsearch"
 
+[[layers]]
+    name = "denite"
+
+[[layers]]
+    name = 'git'
+
+[[layers]]
+    name = 'VersionControl'
+
+[[layers]]
+    name = "tmux"
+    tmux_navigator_modifier = "alt"
+
+[[layers]]
+    name = "lang#vim"
+
+[[layers]]
+    name = "lang#toml"
+
+[[layers]]
+    name = "lang#sh"
+
+[[layers]]
+    name = "lang#html"
+
+[[layers]]
+    name = "lang#javascript"
+    auto_fix = true
+    enable_flow_syntax = true
+    format_on_save = true
+
+[[layers]]
+    name = "lang#python"
+    python_interpreter = "/usr/bin/python3"
+    enabled_linters = ['python', 'pylint']
+    format_on_save = true
+    python_file_head = [
+      '#!/usr/bin/env python3',
+      '# -*- coding: utf-8 -*-',
+      '',
+      ''
+    ]
+
+[[layers]]
+    name = 'lsp'
+    enabled_clients = ['pylsp']
+
+[[layers]]
+    name = "lang#haskell"
+
 [[custom_plugins]]
     repo = "joshdick/onedark.vim"
     merged = false
@@ -48,3 +106,4 @@
 [[custom_plugins]]
     repo = "lilydjwg/colorizer"
     merged = false
+
