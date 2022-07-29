@@ -4,7 +4,9 @@
 
 # If not running interactively, don't do anything
 case $- in
-  *i*) ;;
+  *i*) 
+    set -o vi
+    ;;
   *) return ;;
 esac
 
@@ -216,3 +218,7 @@ install_missing_package() {
 }
 
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
+source ~/.local/share/blesh/ble.sh
+
+# ble.sh theme
+ble-face auto_complete=fg=244
