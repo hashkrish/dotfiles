@@ -4,7 +4,7 @@
 
 # If not running interactively, don't do anything
 case $- in
-  *i*) 
+  *i*)
     set -o vi
     ;;
   *) return ;;
@@ -122,6 +122,7 @@ alias upgrade="sudo apt-get upgrade"
 alias py3="python3"
 alias ipy3="ipython3"
 alias sqlite="sqlite3"
+alias svim="vim -u ~/.SpaceVim/vimrc"
 
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
@@ -159,15 +160,17 @@ update_ssh_config() {
   read -n 1 -p 'It will overwrite config file, do you want to proceed [y/n]?' res
   pat='y|Y'
   ! [[ $res =~ $pat ]] && exit
-  while read name ip; do
+
+  gcloud compute instances list | 
+    sed -n '1! p' |
+    awk '{print $1,$5}' |
+    while read name ip; do
     echo "Host $name
   HostName $ip
   User ubuntu
   Port 22
 "
-  done > ~/.ssh/config < <(
-    gcloud compute instances list | sed -n '1! p' | awk '{print $1,$5}'
-  )
+  done > ~/.ssh/config
 }
 
 # Install Ruby Gems to ~/gems
@@ -191,14 +194,17 @@ h() {
 
 }
 
-alias v=vi
+alias v=svim
 alias m=man
 alias b="batcat -n"
 
 o() {
-  case "$(file $1)" in
-    text*)
-      vi $1
+  case "$(file "$1" --mime-type)" in
+    *text*)
+      v "$1" &
+      ;;
+    *pdf)
+      evince "$1" &
       ;;
 
   esac
@@ -222,3 +228,18 @@ source ~/.local/share/blesh/ble.sh
 
 # ble.sh theme
 ble-face auto_complete=fg=244
+
+get_key() {
+  [[ $# == 0 ]] && echo Requires username
+  case $1 in
+    hashkrish)
+      cat ~/.hk_ghk | xsel -ib
+      ;;
+    krishnan314)
+      cat ~/.k3_ghk | xsel -ib
+      ;;
+    *)
+      echo No Key Found
+      ;;
+  esac
+}
