@@ -87,7 +87,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_p     ), spawn "dmenu_run -fn 'iosevka-13'")
 
     -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+    -- , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+    , ((modm .|. shiftMask, xK_p     ), spawn "dmenu_cmd -fn 'iosevka-13'")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -268,7 +269,7 @@ myManageHook = composeAll
 --
 -- By default, do nothing.
 myStartupHook = do
-      spawnOnce "xrandr --output HDMI-1 --above eDP-1"
+      spawnOnce "xrandr --output HDMI-1 --mode 1366x768 --rate 60 --left-of eDP-1"
       spawnOnce "xscreensaver -nosplash &"
       spawnOnce "killall xmobar &"
       spawnOnce "feh --bg-fill /home/krishnan/Pictures/earth1.jpg"

@@ -32,6 +32,7 @@ Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'"
 Plug 'turbio/bracey.vim'
 Plug 'inside/vim-search-pulse'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 "cd /mnt/c/Users/krish/

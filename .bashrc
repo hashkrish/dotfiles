@@ -177,15 +177,23 @@ update_ssh_config() {
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+
 
 eval "$(starship init bash)"
 
 figlet $(basename $(echo $0)) | lolcat
 
+export EDITOR="vi"
 export BAT_THEME="OneHalfDark"
 export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
 alias bathelp='batcat --plain --language=man'
+
+alias e=emacs
+alias v=svim
+alias m=man
+alias b="batcat -n"
 
 # One character alias
 h() {
@@ -193,10 +201,6 @@ h() {
   "$@ --help" 2>&1 | bathelp
 
 }
-
-alias v=svim
-alias m=man
-alias b="batcat -n"
 
 o() {
   case "$(file "$1" --mime-type)" in
@@ -228,6 +232,12 @@ source ~/.local/share/blesh/ble.sh
 
 # ble.sh theme
 ble-face auto_complete=fg=244
+
+# ble.sh sabbrev
+ble-sabbrev B='| bat'
+ble-sabbrev L='| less'
+ble-sabbrev G='| grep'
+ble-sabbrev H='--help'
 
 get_key() {
   [[ $# == 0 ]] && echo Requires username
