@@ -1,4 +1,4 @@
-" plugins
+" plugins {{{
 call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-sensible'
@@ -24,16 +24,15 @@ Plug 'davidhalter/jedi-vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Scuilion/markdown-drawer'
 Plug 'mattn/emmet-vim'
-" Add maktaba and codefmt to the runtimepath.
-" (The latter must be installed before it can be used.)
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
-" Also add Glaive, which is used to configure codefmt's maktaba flags. See
 Plug 'google/vim-glaive'"
 Plug 'turbio/bracey.vim'
 Plug 'inside/vim-search-pulse'
 Plug 'tpope/vim-surround'
+Plug 'lilydjwg/colorizer'
 call plug#end()
+" }}}
 
 "cd /mnt/c/Users/krish/
 set pastetoggle=<F3>
@@ -113,6 +112,17 @@ autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " auto-pairs
 " autocmd FileType python let b:AutoPairs = AutoPairsDefine({"f'" : "'", "r'" : "'", "b'" : "'"})
+
+" {{{
+
+set path+=**
+set wildmenu
+set wildignore+=*.so,*.swp,*.zip,**node_modules**     " MacOSX/Linux
+set hidden
+let g:ctrlp_cmd = 'CtrlPBuffer'
+
+" }}}
+
 
 " indent/unindent with tab/shift-tab
 nmap <Tab> >>
@@ -509,10 +519,6 @@ autocmd Filetype latex nnoremap <Leader>r :SlimeSend1 pdflatex %<CR>
 "Prettier
 let g:prettier#exec_cmd_path = "~/path/to/cli/prettier"
 
-"Ctrl-P
-let g:ctrlp_cmd = 'CtrlPBuffer'
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
@@ -521,7 +527,8 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 
-" Code Auto Formater
+" Code Auto Formater {{{
+
 nnoremap <Leader>F :FormatCode<CR>
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
@@ -536,6 +543,8 @@ augroup autoformat_settings
   autocmd FileType rust AutoFormatBuffer rustfmt
   autocmd FileType vue AutoFormatBuffer prettier
 augroup END
+
+" }}}
 
 
 let g:vim_search_pulse_mode = 'cursor_line'

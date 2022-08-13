@@ -1,3 +1,4 @@
+
 --
 -- xmonad example config file.
 --
@@ -90,6 +91,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
     , ((modm .|. shiftMask, xK_p     ), spawn "dmenu_cmd -fn 'iosevka-13'")
 
+    -- launch : scripts
+    , ((modm .|. shiftMask, xK_semicolon ), spawn "~/.local/bin/:")
+
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
 
@@ -161,7 +165,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask), (W.greedyView, mod1Mask)]]
+        -- , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
     --
@@ -169,7 +174,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
     --
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+        | (key, sc) <- zip [xK_w, xK_e] [1, 0]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 
@@ -269,11 +274,12 @@ myManageHook = composeAll
 --
 -- By default, do nothing.
 myStartupHook = do
-      spawnOnce "xrandr --output HDMI-1 --mode 1366x768 --rate 60 --left-of eDP-1"
+      spawn "xrandr --output HDMI-1 --mode 1366x768 --rate 60 --left-of eDP-1"
+      spawn "sleep 2 && feh --bg-fill /home/krishnan/Pictures/earth1.jpg"
       spawnOnce "xscreensaver -nosplash &"
-      spawnOnce "killall xmobar &"
-      spawnOnce "feh --bg-fill /home/krishnan/Pictures/earth1.jpg"
+      spawnOnce "killall xmobar"
       spawnOnce "compton &"
+      spawnOnce "conky"
 
 ------------------------------------------------------------------------
 -- color02 = "#ffffff"
