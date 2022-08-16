@@ -18,8 +18,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=100000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=10000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -121,7 +121,7 @@ export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
-export EDITOR="vi"
+export EDITOR="$(which nvim)"
 export BAT_THEME="OneHalfDark"
 export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
@@ -135,12 +135,15 @@ alias svim="vim -u ~/.SpaceVim/vimrc"
 alias bathelp='batcat --plain --language=man'
 alias first='head -1'
 alias lfirst='tail -1'
+alias rm="trash-put"
+alias pdb="python3 -m pdb"
 
 alias e="emacsclient"
-alias v=svim
-alias m=man
+alias v="$EDITOR"
+alias m="man"
 alias b="batcat -n"
 
+alias vfzf='v $(fzf)'
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
   . /usr/share/bash-completion/bash_completion
@@ -196,14 +199,13 @@ update_ssh_config() {
   User ubuntu
   Port 22
 "
-    done >~/.ssh/config
+    done > ~/.ssh/config
 }
 
 # One character alias
 h() {
   echo "$@" --help
   "$@ --help" 2>&1 | bathelp
-
 }
 
 o() {
@@ -219,6 +221,7 @@ o() {
       ;;
     *)
       xdg-open "$1"
+      ;;
   esac
 }
 
@@ -275,9 +278,6 @@ ble-bind -m 'vi_imap' -f 'M-f' 'forward-char'
 #ble-bind -m 'vi_imap' -f 'C-R' "insert-string ~/.bashrc"
 #ble-bind -m 'vi_nmap' -f 'C-R' "insert-string ~/.bashrc"
 ble-bind -c 'C-M-r' "source ~/.bashrc"
-
-
-
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc'; fi
