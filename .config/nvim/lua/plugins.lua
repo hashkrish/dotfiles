@@ -7,45 +7,50 @@ end
 vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
-  use 'wbthomason/packer.nvim' -- Package Manager
+  use 'https://github.com/wbthomason/packer.nvim' -- Package Manager
   use {
-    'svrana/neosolarized.nvim', -- Theme
-    requires = { 'tjdevries/colorbuddy.nvim' }
+    'https://github.com/svrana/neosolarized.nvim', -- Theme
+    requires = { 'https://github.com/tjdevries/colorbuddy.nvim' }
   }
-  use 'kyazdani42/nvim-web-devicons' -- File Icons
-  use 'hoob3rt/lualine.nvim' -- Statusline
-  use 'akinsho/nvim-bufferline.lua' -- Vim Line
-  use 'norcalli/nvim-colorizer.lua' -- Preview HEX color
+  use 'https://github.com/kyazdani42/nvim-web-devicons' -- File Icons
+  use 'https://github.com/hoob3rt/lualine.nvim' -- Statusline
+  use 'https://github.com/akinsho/nvim-bufferline.lua' -- Vim Line
+  use 'https://github.com/norcalli/nvim-colorizer.lua' -- Preview HEX color
 
-  use 'L3MON4D3/LuaSnip' -- Snippets
-  use 'windwp/nvim-autopairs' -- Auto brackets
-  use 'tpope/vim-surround' -- Surround
-  use 'windwp/nvim-ts-autotag' -- Auto complete end tag
-  use 'dinhhuy258/git.nvim' -- Git
-  use 'lewis6991/gitsigns.nvim' -- Show git status icons
-  use 'nvim-lua/plenary.nvim' -- Common utilities
-  use 'nvim-telescope/telescope.nvim' -- File Viewer
-  use 'nvim-telescope/telescope-file-browser.nvim' -- File browser
+  use 'https://github.com/L3MON4D3/LuaSnip' -- Snippets
+  use 'https://github.com/windwp/nvim-autopairs' -- Auto brackets
+  use 'https://github.com/tpope/vim-surround' -- Surround
+  use 'https://github.com/windwp/nvim-ts-autotag' -- Auto complete end tag
+  use 'https://github.com/dinhhuy258/git.nvim' -- Git
+  use 'https://github.com/lewis6991/gitsigns.nvim' -- Show git status icons
+  use 'https://github.com/nvim-lua/plenary.nvim' -- Common utilities
+  use 'https://github.com/nvim-telescope/telescope.nvim' -- File Viewer
+  use 'https://github.com/nvim-telescope/telescope-file-browser.nvim' -- File browser
   use 'https://github.com/preservim/tagbar' -- Tagbar for code navigation
   use 'https://github.com/terryma/vim-multiple-cursors' -- CTRL + N for multiple cursors
+  use 'https://github.com/terrortylor/nvim-comment' -- Comment code
 
-  use 'neovim/nvim-lspconfig' -- LSP
-  use 'glepnir/lspsaga.nvim'
-  use 'onsails/lspkind-nvim' -- Pictograms
-  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
-  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for newvim's built-in LSP
-  use 'hrsh7th/nvim-cmp' -- Completion
+  use 'https://github.com/neovim/nvim-lspconfig' -- LSP
+  use 'https://github.com/glepnir/lspsaga.nvim'
+  use 'https://github.com/onsails/lspkind-nvim' -- Pictograms
+  use 'https://github.com/hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
+  use 'https://github.com/hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for newvim's built-in LSP
+  use 'https://github.com/hrsh7th/nvim-cmp' -- Completion
   use {
-    'nvim-treesitter/nvim-treesitter', -- Highlighter
+    'https://github.com/nvim-treesitter/nvim-treesitter', -- Highlighter
     run = ':TSUpdate'
   }
-  use 'jose-elias-alvarez/null-ls.nvim' -- Prettier
+  use 'https://github.com/jose-elias-alvarez/null-ls.nvim' -- Prettier
   use {
-    'neoclide/coc.nvim',
+    'https://github.com/neoclide/coc.nvim',
     branch = 'release',
     run = ':!sudo apt install universal-ctags'
   }
-  use "williamboman/mason.nvim" -- LSP Manager
-  use "williamboman/mason-lspconfig.nvim"
+  use "https://github.com/williamboman/mason.nvim" -- LSP Manager
+  use "https://github.com/williamboman/mason-lspconfig.nvim"
+	use {
+		'https://github.com/amirali/yapf.nvim',
+		requires = {'https://github.com/nvim-lua/plenary.nvim'},
+	}
 
 end)

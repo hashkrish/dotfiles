@@ -11,7 +11,7 @@ keymap.set('n', '-', '<C-x>')
 keymap.set('n', 'db', 'vb"_d')
 
 -- Remove hightlights with double ESC
-keymap.set('n', '<ESC><ESC>', ':noh<CR>')
+-- keymap.set('n', '<ESC><ESC>', ':noh<CR>')
 
 -- Select all
 -- keymap.set('n', '<C-a>' 'gg<S-v>G')
@@ -33,3 +33,6 @@ keymap.set('n', '<C-w><down>', '<C-w>-')
 
 -- Toggle wrap
 keymap.set('', '<Leader>w', ':set wrap!<Return>')
+
+-- Toggle Tagbar
+keymap.set('', '<F8>', '<Cmd>TagbarToggle<CR><C-w>w')
