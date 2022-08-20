@@ -12,6 +12,7 @@ import Data.Maybe (fromJust)
 import Data.Monoid
 import System.Exit
 import XMonad
+import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
@@ -139,14 +140,17 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
           (f, m) <- [(W.view, 0), (W.shift, shiftMask), (W.greedyView, mod1Mask)]
       ]
       -- , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-      ++
+      -- ++
       --
       -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
       -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
       --
-      [ ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e] [1, 0],
-          (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+      -- [ ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+        -- | (key, sc) <- zip [xK_w, xK_e] [1, 0],
+          -- (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+      -- ]
+      ++ [
+      ((modm,               xK_w), nextScreen)
       ]
 
 ------------------------------------------------------------------------

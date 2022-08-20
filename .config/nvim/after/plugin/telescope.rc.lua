@@ -12,6 +12,16 @@ local fb_actions = require 'telescope'.extensions.file_browser.actions
 
 telescope.setup {
   defaults = {
+    --  vimgrep_arguments = {
+    --   'rg',
+    --   '--color=never',
+    --   '--no-heading',
+    --   '--with-filename',
+    --   '--line-number',
+    --   '--column',
+    --   '--smart-case',
+    --   '-uu'
+    -- },
     mappings = {
       n = {
         ['q'] = actions.close
@@ -24,7 +34,7 @@ telescope.setup {
       hijack_netrw = true,
       mappings = {
         ['i'] = {
-          ['<C-w'] = function() vim.cmd('normal vbd') end,
+          ['<C-w>'] = function() vim.cmd('normal vbd') end,
         },
         ['n'] = {
           ['N'] = fb_actions.create,
@@ -40,12 +50,15 @@ telescope.load_extension("file_browser")
 
 vim.keymap.set('n', ';f', function()
   builtin.find_files({
-    no_ignore = false,
+    no_ignore = true,
     hidden = true
   })
 end)
 vim.keymap.set('n', ';r', function()
-  builtin.live_grep()
+  builtin.live_grep({
+    no_ignore = true,
+    hidden = true,
+  })
 end)
 vim.keymap.set('n', '\\\\', function()
   builtin.buffers()

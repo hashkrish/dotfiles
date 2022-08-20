@@ -1,0 +1,50 @@
+{
+  "settingsVersion": "1.67",
+  "exclusionRules": [
+    {
+      "pattern": "https?://www.youtube.com/*",
+      "passKeys": "<>"
+    },
+    {
+      "pattern": "https?://replit.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://replit.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.typing.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.typing.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://localhost:8888/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://colab.research.google.com/*",
+      "passKeys": ""
+    }
+  ],
+  "filterLinkHints": false,
+  "waitForEnterForFilteredHints": true,
+  "hideHud": false,
+  "keyMappings": "# Insert your preferred key mappings here.\nmap D scrollFullPageDown\nmap U scrollFullPageUp",
+  "linkHintCharacters": "sadfjklewcmpgh",
+  "linkHintNumbers": "0123456789",
+  "newTabUrl": "about:newtab",
+  "nextPatterns": "next,more,newer,>,›,→,»,≫,>>",
+  "previousPatterns": "prev,previous,back,older,<,‹,←,«,≪,<<",
+  "regexFindMode": false,
+  "ignoreKeyboardLayout": false,
+  "scrollStepSize": 60,
+  "smoothScroll": true,
+  "grabBackFocus": false,
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\n\n# More examples.\n#\n# (Vimium supports search completion Wikipedia, as\n# above, and for these.)\n#\n# g: https://www.google.com/search?q=%s Google\n# l: https://www.google.com/search?q=%s&btnI I'm feeling lucky...\n# y: https://www.youtube.com/results?search_query=%s Youtube\n# gm: https://www.google.com/maps?q=%s Google maps\n# b: https://www.bing.com/search?q=%s Bing\n# d: https://duckduckgo.com/?q=%s DuckDuckGo\n# az: https://www.amazon.com/s/?field-keywords=%s Amazon\n# qw: https://www.qwant.com/?q=%s Qwant",
+  "searchUrl": "https://www.ecosia.org/search?q=",
+  "userDefinedLinkHintCss": "div > .vimiumHintMarker {\n/* linkhint boxes */\nbackground: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),\n  color-stop(100%,#FFC542));\nborder: 1px solid #E3BE23;\n}\n\ndiv > .vimiumHintMarker span {\n/* linkhint text */\ncolor: black;\nfont-weight: bold;\nfont-size: 12px;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\n}\n\n\n#vomnibar .vomnibarSearchArea {\n    display: block;\n    background-color: #00222b;\n}\n\n#vomnibar {\nbackground: #00222b;\nborder: none;\n}\n\n#vomnibar input {\ncolor:#879797;\nbackground-color: #00222b;\nborder: none;\n}\n\n#vomnibar ul {\ncolor:#879797;\nbackground-color: #00222b;\n}\n\n#vomnibar li .vomnibarUrl {\n    color: #5d77a5;\n}\n\n#vomnibar li {\nborder-bottom: none;\n}\n\n#vomnibar li .vomnibarMatch {\n    font-weight: bold;\n    color: #66a8c9;\n}\n\n#vomnibar li em .vomnibarMatch, #vomnibar li .vomnibarTitle .vomnibarMatch {\n    color: #877878;\n}"
+}
