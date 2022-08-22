@@ -126,6 +126,8 @@ export BAT_THEME="OneHalfDark"
 export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
 # ALIAS
+alias ll="ls -la"
+alias la="ls -a"
 alias update="sudo apt-get update"
 alias upgrade="sudo apt-get upgrade"
 alias py3="python3"
@@ -167,8 +169,8 @@ PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
 source ~/.local/share/blesh/ble.sh
 # Load Angular CLI autocompletion.
-source <(ng completion script)
-source ~/sources/z/z.sh
+ng -v &> /dev/null && source <(ng completion script)
+[ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
 
 ## Custom functions
 mkdircd() {
