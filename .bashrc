@@ -78,9 +78,8 @@ esac
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   alias ls='ls --color=auto'
-  #alias dir='dir --color=auto'
-  #alias vdir='vdir --color=auto'
-
+  alias dir='dir --color=auto'
+  alias vdir='vdir --color=auto'
   alias grep='grep --color=auto'
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
@@ -114,6 +113,9 @@ if ! shopt -oq posix; then
 fi
 
 #  ---------------- USER CONF ----------------
+export BAT_THEME="OneHalfDark"
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+export DENO_INSTALL="/home/krishnan/.deno"
 ## Exports
 export LANG=en_US.UTF-8
 export NVM_DIR="$HOME/.nvm"
@@ -121,9 +123,8 @@ export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
-export EDITOR="$(which nvim)"
-export BAT_THEME="OneHalfDark"
-export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
 
 # ALIAS
 alias update="sudo apt-get update"
@@ -137,9 +138,12 @@ alias first='head -1'
 alias lfirst='tail -1'
 alias rm="trash-put"
 alias pdb="python3 -m pdb"
+alias tmuxw='tmux attach -t workflow-dev'
+alias tmuxs='tmux attach -t seek-dev'
+alias tmuxg='tmux attach -t general'
+alias tmuxc='tmux attach -t config'
 
 alias e="emacsclient"
-alias v="$EDITOR"
 alias m="man"
 alias b="batcat -n"
 
@@ -225,6 +229,14 @@ o() {
   esac
 }
 
+v() {
+  if [ $# -eq 0 ]; then
+    "$EDITOR" -c 'Telescope oldfiles'
+  else
+    "$EDITOR" $@
+  fi
+}
+
 install_missing_package() {
   if [[ $? == 127 ]]; then
     PACKAGE_NAME="$(history 2 | head -1 | awk '{print $2}')"
@@ -238,7 +250,7 @@ install_missing_package() {
   fi
 }
 
-get_key() {
+get-key() {
   [[ $# == 0 ]] && echo Requires username
   case $1 in
     hashkrish)
@@ -273,11 +285,13 @@ ble-sabbrev xo='xsel -ob'
 
 #ble.sh key-bindings
 ble-bind -m 'vi_imap' -f 'M-.' 'insert-last-argument'
+ble-bind -m 'auto_complete' -f 'C-I' 'auto_complete/insert-on-end'
 ble-bind -m 'auto_complete' -f 'M-i' 'auto_complete/insert-on-end'
 ble-bind -m 'vi_imap' -f 'M-f' 'forward-char'
-#ble-bind -m 'vi_imap' -f 'C-R' "insert-string ~/.bashrc"
-#ble-bind -m 'vi_nmap' -f 'C-R' "insert-string ~/.bashrc"
-ble-bind -c 'C-M-r' "source ~/.bashrc"
+ble-bind -m 'vi_imap' -c 'C-M-r' "source ~/.bashrc"
+ble-bind -m 'vi_nmap' -c 'C-M-r' "source ~/.bashrc"
+ble-bind -m 'vi_imap' -f 'C-b' '@nomarked backward-cword'
+ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc'; fi
