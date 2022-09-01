@@ -22,6 +22,7 @@ keymap.set('n', '<C-w><up>', '<C-w>+') -- Resize window up
 keymap.set('n', '<C-w><down>', '<C-w>-') -- Resize window down
 keymap.set('n', '<Leader>w', '<ESC>:set wrap!<Return>') -- Toggle wrap
 keymap.set('n', '<Leader>c', '<ESC>:noh<Return>') -- Remove hightlights
-keymap.set('', '<F8>', '<Cmd>TagbarToggle<CR>') -- Toggle Tagbar
 keymap.set('i', '<C-j>', '<ESC>o') -- Add another line from insert mode
 keymap.set('x', 's', ':s/') -- s to substitue from visual mode
+keymap.set('n', '<Leader>e', '<Cmd>CocDiagnostics<CR>') -- Show errors
+keymap.set('', '<F8>', '<Cmd>TagbarToggle<CR>') -- Toggle Tagbar

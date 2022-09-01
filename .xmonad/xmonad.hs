@@ -8,6 +8,8 @@
 --
 
 import qualified Data.Map as M
+import qualified XMonad.StackSet as W
+
 import Data.Maybe (fromJust)
 import Data.Monoid
 import System.Exit
@@ -16,13 +18,14 @@ import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Gaps
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.Spacing
-import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
+import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
 
 -- The preferred terminal program, which is used in a binding below and by
@@ -255,12 +258,13 @@ myManageHook =
 --
 -- By default, do nothing.
 myStartupHook = do
-  spawn "xrandr --output HDMI-1 --mode 1366x768 --rate 60 --above eDP-1"
+  spawn "[[ $(xrandr | grep ' connected ' | wc -l) -eq 2 ]] && xrandr --output eDP-1 --mode 1920x1080 --rate 60 --output HDMI-1 --mode 1366x768 --rate 60 --above eDP-1 || xrandr --output eDP-1 --mode 1920x1080 --rate 60"
   spawn "sleep 2 && feh --bg-fill /home/krishnan/Pictures/earth1.jpg"
   spawnOnce "xscreensaver -nosplash &"
-  spawnOnce "killall xmobar"
   spawnOnce "compton &"
-  spawnOnce "conky"
+  spawnOnOnce "www" "google-chrome-work"
+  -- spawnOnce "killall conky; conky"
+  -- spawnOnce "killall xmobar"
 
 ------------------------------------------------------------------------
 -- color02 = "#ffffff"
@@ -277,9 +281,9 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
+main :: IO ()
 main = do
   xmproc0 <- spawnPipe "xmobar -x 0 -A 200 $HOME/.config/xmobar/xmproc0.hs"
-  --xmproc1 <- spawnPipe ("[[ $(xrandr | grep '\bconnected\b' | wc -l) -gt 1 ]] && xmobar -x 1 -A 200 $HOME/.config/xmobar/xmproc1.hs")
   xmproc1 <- spawnPipe "xmobar -x 1 -A 200 $HOME/.config/xmobar/xmproc0.hs"
   xmonad $ docks $ defaults xmproc0 xmproc1
 

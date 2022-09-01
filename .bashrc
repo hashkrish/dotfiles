@@ -148,6 +148,9 @@ alias m="man"
 alias b="batcat -n"
 
 alias vfzf='v $(fzf)'
+
+alias luamake=/home/krishnan/sources/lua-language-server/3rd/luamake/luamake
+
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
   . /usr/share/bash-completion/bash_completion
@@ -169,10 +172,10 @@ PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 ## Sourcing
 #[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
-source ~/.local/share/blesh/ble.sh
+[ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
 # Load Angular CLI autocompletion.
-source <(ng completion script)
-source ~/sources/z/z.sh
+ng --help &> /dev/null && source <(ng completion script)
+[ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
 
 ## Custom functions
 mkdircd() {
