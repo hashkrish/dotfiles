@@ -114,7 +114,7 @@ fi
 
 #  ---------------- USER CONF ----------------
 export BAT_THEME="OneHalfDark"
-export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export DENO_INSTALL="/home/krishnan/.deno"
 ## Exports
 export LANG=en_US.UTF-8
@@ -129,11 +129,13 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 # ALIAS
 alias update="sudo apt-get update"
 alias upgrade="sudo apt-get upgrade"
+alias py="python3"
+alias ipy="ipython3"
 alias py3="python3"
 alias ipy3="ipython3"
 alias sqlite="sqlite3"
 alias svim="vim -u ~/.SpaceVim/vimrc"
-alias bathelp='batcat --plain --language=man'
+alias bathelp='bat --plain --language=man'
 alias first='head -1'
 alias lfirst='tail -1'
 alias rm="trash-put"
@@ -145,7 +147,7 @@ alias tmuxc='tmux attach -t config'
 
 alias e="emacsclient"
 alias m="man"
-alias b="batcat -n"
+alias b="bat -n"
 
 alias vfzf='v $(fzf)'
 
@@ -169,12 +171,11 @@ PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 . "$HOME/.cargo/env"
 
-## Sourcing
-#[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Sourcing
+# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
 [ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
-# Load Angular CLI autocompletion.
-ng --help &> /dev/null && source <(ng completion script)
+ng --help &> /dev/null && source <(ng completion script) # Load Angular CLI autocompletion.
 [ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
 
 ## Custom functions
@@ -191,7 +192,7 @@ touchmod() {
   chmod $1 "$2"
 }
 
-update_ssh_config() {
+update-ssh-config() {
   cat ~/.ssh/config
   read -n 1 -p 'It will overwrite config file, do you want to proceed [y/n]?' res
   pat='y|Y'
@@ -270,6 +271,7 @@ get-key() {
 
 ## Startup text and PS
 #eval "$(starship init bash)"
+[ -n $TMUX ] && clear
 figlet ${SHELL##*\/} | lolcat
 
 ## ble.sh
@@ -283,6 +285,16 @@ ble-sabbrev G='| grep'
 ble-sabbrev H='--help'
 ble-sabbrev xc='| xsel -ib'
 ble-sabbrev xo='xsel -ob'
+
+ble-sabbrev gs='git status'
+ble-sabbrev gd='git diff'
+ble-sabbrev gds='git diff --staged'
+ble-sabbrev gc='git checkout'
+ble-sabbrev ga='git add'
+ble-sabbrev gb='git branch'
+ble-sabbrev gp='git push'
+ble-sabbrev gps='git push --set-upstream origin'
+ble-sabbrev gl='git log'
 
 # ble.sh sabbrev
 

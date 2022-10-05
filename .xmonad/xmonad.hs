@@ -153,7 +153,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
           -- (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
       -- ]
       ++ [
-      ((modm,               xK_w), nextScreen)
+      ((modm,               xK_w), nextScreen),
+      ((modm, xK_F12), spawn "flameshot gui")
       ]
 
 ------------------------------------------------------------------------
@@ -258,12 +259,12 @@ myManageHook =
 --
 -- By default, do nothing.
 myStartupHook = do
-  spawn "[[ $(xrandr | grep ' connected ' | wc -l) -eq 2 ]] && xrandr --output eDP-1 --mode 1920x1080 --rate 60 --output HDMI-1 --mode 1366x768 --rate 60 --above eDP-1 || xrandr --output eDP-1 --mode 1920x1080 --rate 60"
+  spawn "xrandr --output eDP-1 --mode 1920x1080 --rate 60 --output HDMI-1 --mode 1366x768 --rate 60 --above eDP-1"
   spawn "sleep 2 && feh --bg-fill /home/krishnan/Pictures/earth1.jpg"
+  spawn "killall conky; conky"
   spawnOnce "xscreensaver -nosplash &"
   spawnOnce "compton &"
   spawnOnOnce "www" "google-chrome-work"
-  -- spawnOnce "killall conky; conky"
   -- spawnOnce "killall xmobar"
 
 ------------------------------------------------------------------------
