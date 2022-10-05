@@ -78,9 +78,8 @@ esac
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   alias ls='ls --color=auto'
-  #alias dir='dir --color=auto'
-  #alias vdir='vdir --color=auto'
-
+  alias dir='dir --color=auto'
+  alias vdir='vdir --color=auto'
   alias grep='grep --color=auto'
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
@@ -114,6 +113,9 @@ if ! shopt -oq posix; then
 fi
 
 #  ---------------- USER CONF ----------------
+export BAT_THEME="OneHalfDark"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export DENO_INSTALL="/home/krishnan/.deno"
 ## Exports
 export LANG=en_US.UTF-8
 export NVM_DIR="$HOME/.nvm"
@@ -121,31 +123,38 @@ export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
-export EDITOR="$(which nvim)"
-export BAT_THEME="OneHalfDark"
-export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
 
 # ALIAS
 alias ll="ls -la"
 alias la="ls -a"
 alias update="sudo apt-get update"
 alias upgrade="sudo apt-get upgrade"
+alias py="python3"
+alias ipy="ipython3"
 alias py3="python3"
 alias ipy3="ipython3"
 alias sqlite="sqlite3"
 alias svim="vim -u ~/.SpaceVim/vimrc"
-alias bathelp='batcat --plain --language=man'
+alias bathelp='bat --plain --language=man'
 alias first='head -1'
 alias lfirst='tail -1'
 alias rm="trash-put"
 alias pdb="python3 -m pdb"
+alias tmuxw='tmux attach -t workflow-dev'
+alias tmuxs='tmux attach -t seek-dev'
+alias tmuxg='tmux attach -t general'
+alias tmuxc='tmux attach -t config'
 
 alias e="emacsclient"
-alias v="$EDITOR"
 alias m="man"
-alias b="batcat -n"
+alias b="bat -n"
 
 alias vfzf='v $(fzf)'
+
+alias luamake=/home/krishnan/sources/lua-language-server/3rd/luamake/luamake
+
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
   . /usr/share/bash-completion/bash_completion
@@ -164,12 +173,12 @@ PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 . "$HOME/.cargo/env"
 
-## Sourcing
-#[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Sourcing
+# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
-source ~/.local/share/blesh/ble.sh
+[ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
 # Load Angular CLI autocompletion.
-ng -v &> /dev/null && source <(ng completion script)
+ng --help &> /dev/null && source <(ng completion script) # Load Angular CLI autocompletion.
 [ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
 
 ## Custom functions
@@ -186,7 +195,7 @@ touchmod() {
   chmod $1 "$2"
 }
 
-update_ssh_config() {
+update-ssh-config() {
   cat ~/.ssh/config
   read -n 1 -p 'It will overwrite config file, do you want to proceed [y/n]?' res
   pat='y|Y'
@@ -227,6 +236,14 @@ o() {
   esac
 }
 
+v() {
+  if [ $# -eq 0 ]; then
+    "$EDITOR" -c 'Telescope oldfiles'
+  else
+    "$EDITOR" $@
+  fi
+}
+
 install_missing_package() {
   if [[ $? == 127 ]]; then
     PACKAGE_NAME="$(history 2 | head -1 | awk '{print $2}')"
@@ -240,7 +257,7 @@ install_missing_package() {
   fi
 }
 
-get_key() {
+get-key() {
   [[ $# == 0 ]] && echo Requires username
   case $1 in
     hashkrish)
@@ -257,6 +274,7 @@ get_key() {
 
 ## Startup text and PS
 #eval "$(starship init bash)"
+[ -n $TMUX ] && clear
 figlet ${SHELL##*\/} | lolcat
 
 ## ble.sh
@@ -271,15 +289,27 @@ ble-sabbrev H='--help'
 ble-sabbrev xc='| xsel -ib'
 ble-sabbrev xo='xsel -ob'
 
+ble-sabbrev gs='git status'
+ble-sabbrev gd='git diff'
+ble-sabbrev gds='git diff --staged'
+ble-sabbrev gc='git checkout'
+ble-sabbrev ga='git add'
+ble-sabbrev gb='git branch'
+ble-sabbrev gp='git push'
+ble-sabbrev gps='git push --set-upstream origin'
+ble-sabbrev gl='git log'
+
 # ble.sh sabbrev
 
 #ble.sh key-bindings
 ble-bind -m 'vi_imap' -f 'M-.' 'insert-last-argument'
+ble-bind -m 'auto_complete' -f 'C-I' 'auto_complete/insert-on-end'
 ble-bind -m 'auto_complete' -f 'M-i' 'auto_complete/insert-on-end'
 ble-bind -m 'vi_imap' -f 'M-f' 'forward-char'
-#ble-bind -m 'vi_imap' -f 'C-R' "insert-string ~/.bashrc"
-#ble-bind -m 'vi_nmap' -f 'C-R' "insert-string ~/.bashrc"
-ble-bind -c 'C-M-r' "source ~/.bashrc"
+ble-bind -m 'vi_imap' -c 'C-M-r' "source ~/.bashrc"
+ble-bind -m 'vi_nmap' -c 'C-M-r' "source ~/.bashrc"
+ble-bind -m 'vi_imap' -f 'C-b' '@nomarked backward-cword'
+ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc'; fi

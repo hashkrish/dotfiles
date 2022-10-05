@@ -21,14 +21,15 @@ vim.opt.inccommand = 'split'
 vim.opt.ignorecase = true
 vim.opt.smarttab = true
 vim.opt.breakindent = true
-vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
 vim.opt.ai = true -- Auto indent
 vim.opt.si = true -- Smart indent
 vim.opt.wrap = false -- No wrap lines
 vim.opt.backspace = 'start,eol,indent'
 vim.opt.path:append { '**' } -- Finding files
 vim.opt.wildignore:append { '*/node_modules/*' }
+vim.opt.foldmethod = 'manual'
 
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
@@ -37,10 +38,15 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 -- Turn off paste mode when leaving insert
 vim.api.nvim_create_autocmd("InsertLeave", {
-	pattern = '*',
-	command = 'set nopaste'
+  pattern = '*',
+  command = 'set nopaste'
+})
+
+-- No line numbers on terminal
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = '*',
+  command = 'setlocal nonumber norelativenumber'
 })
 
 -- Add asterisks in block commands
 vim.opt.formatoptions:append { 'r' }
-
