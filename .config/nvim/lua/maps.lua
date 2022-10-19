@@ -2,6 +2,7 @@ local keymap = vim.keymap
 keymap.set('n', '<Leader>R', '<ESC>w<CR><ESC>:source %<CR>') -- Reload with <Leader> + r
 keymap.set('n', '+', '<C-a>') -- Increment
 keymap.set('n', '-', '<C-x>') -- Decrement
+keymap.set('n', 'Y', '"+y') -- Delete a word backwards
 keymap.set('n', 'db', 'vb"_d') -- Delete a word backwards
 keymap.set('n', '<C-a>', 'gg<S-v>G') -- Select all
 keymap.set('n', '<C-x>', '') -- Unsetting C-x
@@ -28,6 +29,7 @@ keymap.set('n', '<C-w><up>', '<C-w>+') -- Resize window up
 keymap.set('n', '<C-w><down>', '<C-w>-') -- Resize window down
 keymap.set('n', '<Leader>w', '<ESC>:set wrap!<Return>') -- Toggle wrap
 keymap.set('n', '<Leader>c', '<ESC>:noh<Return>') -- Remove hightlights
+keymap.set('v', '<Leader>c', '<ESC>') -- Remove hightlights
 keymap.set('i', '<C-j>', '<ESC>o') -- Add another line from insert mode
 keymap.set('x', 's', ':s/') -- s to substitue from visual mode
 keymap.set('n', '<Leader>e', '<Cmd>CocDiagnostics<CR>') -- Show errors

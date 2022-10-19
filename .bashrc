@@ -150,8 +150,9 @@ alias tmuxc='tmux attach -t config'
 alias e="emacsclient"
 alias m="man"
 alias b="bat -n"
+alias v="nvim"
 
-alias vfzf='v $(fzf)'
+alias vfzf='$EDITOR $(fzf)'
 
 alias luamake=/home/krishnan/sources/lua-language-server/3rd/luamake/luamake
 
@@ -236,13 +237,13 @@ o() {
   esac
 }
 
-v() {
-  if [ $# -eq 0 ]; then
-    "$EDITOR" -c 'Telescope oldfiles'
-  else
-    "$EDITOR" $@
-  fi
-}
+# v() {
+#   if [ $# -eq 0 ]; then
+#     "$EDITOR" -c 'Telescope oldfiles'
+#   else
+#     "$EDITOR" $@
+#   fi
+# }
 
 install_missing_package() {
   if [[ $? == 127 ]]; then
@@ -275,7 +276,7 @@ get-key() {
 ## Startup text and PS
 #eval "$(starship init bash)"
 [ -n $TMUX ] && clear
-figlet ${SHELL##*\/} | lolcat
+# figlet ${SHELL##*\/} | lolcat
 
 ## ble.sh
 # ble.sh theme
@@ -298,6 +299,8 @@ ble-sabbrev gb='git branch'
 ble-sabbrev gp='git push'
 ble-sabbrev gps='git push --set-upstream origin'
 ble-sabbrev gl='git log'
+ble-sabbrev ..='cd ..'
+
 
 # ble.sh sabbrev
 

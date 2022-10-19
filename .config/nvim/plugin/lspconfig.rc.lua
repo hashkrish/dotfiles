@@ -29,6 +29,17 @@ nvim_lsp.sumneko_lua.setup {
   }
 }
 
-nvim_lsp.pyright.setup {}
+nvim_lsp.pyright.setup {
+    settings = {
+        python = {
+          analysis = {
+            extraPaths = {
+                    "/home/krishnan/.local/lib/python3.10/site-packages",
+                    "/home/krishnan/.local/lib/python3.8/site-packages",
+                },
+          }
+        }
+   }
+}
 
 nvim_lsp.tsserver.setup {}

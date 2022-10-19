@@ -1,17 +1,19 @@
 import os
 import subprocess
 
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 
 def init_layout_theme():
-    return { "margin": 0, 
+    return { 
+        "margin": 0, 
         "border_width": 1,
         "border_focus": "#61aeef",
-        "border_normal": "#1D2330", }
+        "border_normal": "#1D2330", 
+    }
 
 
 def titleParser(text):
@@ -66,7 +68,7 @@ keys = [
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
     Key([mod], "e", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
-    Key([mod, "shift"], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod, "shift"], "Return", lazy.spawn("env WINIT_X11_SCALE_FACTOR=1.4 alacritty"), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle next layout"),
@@ -97,8 +99,10 @@ keys = [
 
 ]
 
+# [ "", "", "", "爵", "ﰩ", "", "", "", "ﱟ" ]
 groups = [Group(i, layout="columns") 
     for i in ["main", "dev", "code", "www", "extra", "vi", "vm", "dump", "comm"]]
+
 
 for i, j in enumerate(groups):
     keys.extend(
@@ -180,13 +184,23 @@ screens = [
                 ),
                 widget.Systray(),
                 widget.Notify(foreground="62aeef"),
-                widget.CapsNumLockIndicator(),
+                # widget.Cni(),
                 widget.Net(format="Ͳ {up}↑ {down}↓"),
                 widget.CPU(format="◍ {load_percent}%"),
-                widget.Memory(format="ⵂⵂⵂⵂ {MemUsed:.0f}{mm}"),
-                widget.Volume(fmt="蓼 {}"),
-                widget.Bluetooth(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Memory(format="ⵂⵂⵂⵂ {MemUsed:.0f}{mm} "),
+                widget.PulseVolume(
+                    fmt="醙 {}", 
+                    mouse_callbacks={
+                    'Button3': lambda: qtile.cmd_spawn('pavucontrol'),
+                    }
+                ),
+                widget.Bluetooth(fmt=" {}"),
+                widget.Clock(
+                    format="%Y-%m-%d %a %I:%M %p", 
+                    mouse_callbacks={
+                    'Button1': lambda: qtile.cmd_spawn('gnome-calendar'),
+                    }
+                ),
                 widget.Battery(charge_char='⚡',
                                discharge_char='',
                                empty_char='_',
@@ -217,7 +231,6 @@ screens = [
                     hide_unused=True,
                     disable_drag=True,
                 ),
-                widget.Prompt(),
                 widget.WindowName(parse_text=titleParser),
                 widget.Chord(
                     chords_colors={
@@ -225,18 +238,13 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.Net(format="Ͳ {up}↑ {down}↓"),
-                widget.CPU(format="◍ {load_percent}%"),
-                widget.Memory(format="ⵂⵂⵂⵂ {MemUsed:.0f}{mm}"),
-                widget.Volume(fmt="蓼 {}"),
-                widget.Bluetooth(),
+                widget.PulseVolume(fmt="醙 {}"),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 widget.Battery(charge_char='⚡',
                                discharge_char='',
                                empty_char='_',
                                full_char='▒',
                                format="{percent:2.0%} {char}"),
-                widget.StatusNotifier(),
             ],
             24,
         ),
