@@ -1,19 +1,31 @@
 local status, db = pcall(require, "dashboard")
 if (not status) then return end
 
+-- db.default_banner = {
+--     '',
+--     '',
+--     ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
+--     ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
+--     ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
+--     ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
+--     ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
+--     ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
+--     '',
+--     ' [ TIP: To exit Neovim, just power off your computer. ] ',
+--     '',
+-- }
+
 db.default_banner = {
     '',
-    '',
-    ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-    ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-    ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-    ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-    ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-    ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-    '',
-    ' [ TIP: To exit Neovim, just power off your computer. ] ',
+    '  __       __          __       __',
+    '  \\ \\      \\ \\        / /      / /',
+    '  \\ \\ _____\\ \\      / /_____ / /',
+    '  \\ \\______\\ \\    / /______/ /',
+    '  \\ \\      \\ \\  / /      / /',
+    '  \\_\\      \\_\\/_/      /_/',
     '',
 }
+
 
 db.custom_center = {
     { icon = '  ',
@@ -38,7 +50,7 @@ db.custom_center = {
         shortcut = ';r' },
 }
 db.session_directory = "/home/dt/.config/nvim/session"
---
+
 -- -- Command
 --
 -- DashboardNewFile  -- if you like use `enew` to create file,Please use this command,it's wrap enew and restore the statsuline and tabline

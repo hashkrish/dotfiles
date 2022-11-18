@@ -47,4 +47,5 @@ packer.startup(function(use)
         run = ':TSUpdate' }
     use 'https://github.com/nvim-treesitter/nvim-treesitter-context' -- Context highlighter
     use 'https://github.com/jose-elias-alvarez/null-ls.nvim' -- Prettier
+    use 'https://github.com/preservim/vim-markdown' -- Markdown highlight
 end)

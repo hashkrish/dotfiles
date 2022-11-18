@@ -34,3 +34,5 @@ keymap.set('i', '<C-j>', '<ESC>o') -- Add another line from insert mode
 keymap.set('x', 's', ':s/') -- s to substitue from visual mode
 keymap.set('n', '<Leader>e', '<Cmd>CocDiagnostics<CR>') -- Show errors
 keymap.set('', '<F8>', '<Cmd>TagbarToggle<CR>') -- Toggle Tagbar
+keymap.set('n', '\\b', '<ESC>_iimport pdb; pdb.set_trace();<ESC>')
+keymap.set('n', '\\B', '<ESC>:s/import pdb; pdb.set_trace();//g<Return>')

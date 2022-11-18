@@ -17,6 +17,7 @@ telescope.setup {
             "__pycache__",
             "site-packages",
         },
+        dynamic_preview_title = true,
         --  vimgrep_arguments = {
         --   'rg',
         --   '--color=never',
@@ -78,6 +79,9 @@ vim.keymap.set('n', ';r', function()
         no_ignore = true,
         hidden = true,
     })
+end)
+vim.keymap.set('n', '<C-p>', function()
+    builtin.buffers()
 end)
 vim.keymap.set('n', ';b', function()
     builtin.buffers()
