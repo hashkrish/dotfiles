@@ -63,9 +63,9 @@ vim.keymap.set("n", "sf", function()
         respect_gitignore = false,
         hidden = true,
         grouped = true,
-        previewer = false,
-        initial_mode = "normal",
-        layout_config = { height = 40 }
+        -- previewer = false,
+        -- initial_mode = "normal",
+        layout_config = { height = 20 }
     })
 end)
 vim.keymap.set('n', ';f', function()

@@ -4,6 +4,23 @@ if (not status) then
     return
 end
 
+local fn = vim.fn
+
+-- Automatically install packer
+local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+if fn.empty(fn.glob(install_path)) > 0 then
+  PACKER_BOOTSTRAP = fn.system {
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  }
+  print "Installing packer close and reopen Neovim..."
+  vim.cmd [[packadd packer.nvim]]
+end
+
 vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
@@ -36,6 +53,7 @@ packer.startup(function(use)
     use 'https://github.com/terrortylor/nvim-comment' -- Comment code
     use { "folke/zen-mode.nvim", config = function() require("zen-mode").setup {} end }
     use 'junegunn/vim-easy-align' -- Align
+    use 'https://github.com/jmcantrell/vim-virtualenv'
 
     use 'https://github.com/neovim/nvim-lspconfig' -- LSP
     use 'https://github.com/glepnir/lspsaga.nvim'
@@ -43,9 +61,21 @@ packer.startup(function(use)
     use 'https://github.com/hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
     use 'https://github.com/hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
     use 'https://github.com/hrsh7th/nvim-cmp' -- Completion
+    use 'https://github.com/rafamadriz/friendly-snippets'
+    use 'https://github.com/saadparwaiz1/cmp_luasnip' -- snippet completions
+
+
     use { 'https://github.com/nvim-treesitter/nvim-treesitter', -- Highlighter
         run = ':TSUpdate' }
     use 'https://github.com/nvim-treesitter/nvim-treesitter-context' -- Context highlighter
     use 'https://github.com/jose-elias-alvarez/null-ls.nvim' -- Prettier
     use 'https://github.com/preservim/vim-markdown' -- Markdown highlight
+
+    use '/home/krishnan/db/changedir'
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if PACKER_BOOTSTRAP then
+        require("packer").sync()
+    end
 end)
