@@ -16,7 +16,10 @@ from libqtile.config import (
 )
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+
 # from graphical_notifications import Notifier
+
+PATH = "/home/krishnan/Downloads/google-cloud-sdk/bin:/home/krishnan/.cabal/bin:/home/krishnan/.ghcup/bin:/home/krishnan/.nvm/versions/node/v14.15.0/bin:/home/krishnan/.cargo/bin:/home/krishnan/.deno/bin:/home/krishnan/.emacs.d/bin:/home/krishnan/go/bin:/home/krishnan/gems/bin:/home/krishnan/.cargo/bin:/home/krishnan/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
 
 
 def init_layout_theme():
@@ -53,8 +56,12 @@ MAIL_LINK = "https://mail.google.com/mail/u/0/#inbox"
 # [ "", "", "", "爵", "ﰩ", "", "", "", "ﱟ" ]
 groups = [
     Group("main", layout="columns"),
-    Group("dev", layout="columns", spawn=["env WINIT_X11_SCALE_FACTOR=1.4 alacritty"]),
-    Group("code", layout="columns", matches=[Match(wm_class="Code")]),
+    Group("dev", layout="columns", spawn=["env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e tmux"]),
+    Group(
+        "code",
+        layout="columns",
+        matches=[Match(wm_class="Insomnia"), Match(wm_class="Code")],
+    ),
     Group(
         "www",
         layout="columns",
@@ -65,12 +72,12 @@ groups = [
     Group("vi", layout="columns"),
     Group("vm", layout="columns"),
     Group(
-        "meet", 
+        "meet",
         layout="columns",
         matches=[
-            Match(wm_instance_class=r'meet.google.com.*'),
+            Match(wm_instance_class=r"meet.google.com.*"),
         ],
-          ),
+    ),
     Group(
         "comm",
         layout="columns",
@@ -92,7 +99,7 @@ keys = [
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "n", lazy.layout.next(), desc="Move window focus to next window"),
-    Key([mod], "m", qtile.current_group.cmd_next_window(), desc="Toggle minimize window"),
+    # Key([mod], "m", qtile.current_group.cmd_next_window(), desc="Toggle minimize window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key(
@@ -147,7 +154,10 @@ keys = [
     ),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "p", lazy.spawn("dmenu_run -fn 'iosevka-13'"), desc="Spawn dmenu_run"),
-    Key([mod], "o", lazy.spawn("rofi -show"), desc="Spawn rofi -show"),
+    Key([mod], "o", lazy.spawn("rofi -show window"), desc="Spawn rofi -show"),
+    Key(
+        [mod], "f", lazy.spawn("rofi -show filebrowser"), desc="Spawn rofi filebrowser"
+    ),
     Key(
         [mod, "shift"],
         "p",
@@ -202,12 +212,18 @@ keys = [
         "space",
         [
             Key(
+                [mod],
+                "space",
+                lazy.group["scratchpad"].hide_all(),
+                desc="hide all dropdown windows",
+            ),
+            Key(
                 [],
                 "space",
                 lazy.group["scratchpad"].hide_all(),
                 desc="hide all dropdown windows",
             ),
-            Key([mod], "space", lazy.spawn(""), desc="clear keychord"),
+            # Key([mod], "space", lazy.spawn(""), desc="clear keychord"),
             Key(
                 [],
                 "t",
@@ -219,6 +235,12 @@ keys = [
                 "r",
                 lazy.group["scratchpad"].dropdown_toggle("ranger"),
                 desc="Dropdown filemanager",
+            ),
+            Key(
+                [],
+                "s",
+                lazy.group["scratchpad"].dropdown_toggle("spotify-tui"),
+                desc="Dropdown spotify-tui client",
             ),
             Key(
                 [],
@@ -240,6 +262,12 @@ keys = [
             ),
             Key(
                 [],
+                "v",
+                lazy.group["scratchpad"].dropdown_toggle("pavucontrol"),
+                desc="Dropdown pavucontrol",
+            ),
+            Key(
+                [],
                 "b",
                 lazy.group["scratchpad"].dropdown_toggle("firefox"),
                 desc="Dropdown quicklinks",
@@ -249,6 +277,20 @@ keys = [
                 "w",
                 lazy.spawn(":ghw"),
                 desc="Open a new web app",
+            ),
+            Key(
+                [],
+                "e",
+                lazy.spawn(
+                    f"env WINIT_X11_SCALE_FACTOR=1.4 PATH={PATH} neovide --multigrid --noidle"
+                ),
+                desc="Open a new editor",
+            ),
+            Key(
+                [],
+                "c",
+                lazy.spawn("dmenu_clipboard"),
+                desc="dmenu action from clipboard",
             ),
             Key(
                 [],
@@ -284,8 +326,19 @@ groups.append(
                 **geometry_conf,
             ),
             DropDown(
+                "spotify-tui",
+                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e spt",
+                **geometry_conf,
+            ),
+            DropDown(
+                "pavucontrol",
+                "pavucontrol",
+                **geometry_conf,
+            ),
+            DropDown(
                 "notes",
-                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e nvim -c "norm G" /home/krishnan/notes',
+                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e nvim /home/krishnan/notes',
+                # 'neovide /home/krishnan/notes',
                 **geometry_conf,
             ),
             DropDown("nautilus", "nautilus", **geometry_conf),
