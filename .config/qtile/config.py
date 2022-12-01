@@ -53,12 +53,22 @@ terminal = guess_terminal()
 CHROME_PROFILE = "Profile 1"
 MAIL_LINK = "https://mail.google.com/mail/u/0/#inbox"
 
+geometry_conf = {
+    "width": 0.8,
+    "height": 0.7,
+    "x": 0.1,
+    "y": 0.125,
+    "opacity": 1,
+    "on_focus_lost_hide": False,
+}
+
+
 # [ "", "", "", "爵", "ﰩ", "", "", "", "ﱟ" ]
 groups = [
     Group("main", layout="columns"),
-    Group("dev", layout="columns", spawn=["env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e tmux"]),
+    Group("dev", layout="columns", spawn=["env WINIT_X11_SCALE_FACTOR=1.4 alacritty"]),
     Group(
-        "code",
+        "api",
         layout="columns",
         matches=[Match(wm_class="Insomnia"), Match(wm_class="Code")],
     ),
@@ -68,9 +78,16 @@ groups = [
         spawn=["google-chrome-work 'http://localhost:7311'"],
         matches=[Match(title="Quicklinks"), Match(wm_instance_class="google-chrome")],
     ),
-    Group("extra", layout="columns"),
-    Group("vi", layout="columns"),
-    Group("vm", layout="columns"),
+    Group(
+        "extra", 
+        layout="columns",
+    ),
+    Group(
+        "edit", 
+        layout="columns",
+        spawn=f"env WINIT_X11_SCALE_FACTOR=1.4 PATH={PATH} neovide --multigrid --noidle"
+    ),
+    Group("log", layout="columns"),
     Group(
         "meet",
         layout="columns",
@@ -88,7 +105,58 @@ groups = [
             Match(wm_instance_class="mail.google.com__mail_u_0"),
         ],
     ),
+    ScratchPad(
+        "scratchpad",
+        [
+            DropDown(
+                "term", "env WINIT_X11_SCALE_FACTOR=1.4 alacritty", **geometry_conf
+            ),
+            DropDown(
+                "ranger",
+                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e ranger",
+                **geometry_conf,
+            ),
+            DropDown(
+                "spotify-tui",
+                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e spt",
+                **geometry_conf,
+            ),
+            DropDown(
+                "pavucontrol",
+                "pavucontrol",
+                **geometry_conf,
+            ),
+            DropDown(
+                "task_manager",
+                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty',
+                **geometry_conf,
+            ),
+            DropDown(
+                "notes",
+                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e nvim /home/krishnan/notes',
+                # 'neovide /home/krishnan/notes',
+                **geometry_conf,
+            ),
+            DropDown("nautilus", "nautilus", **geometry_conf),
+            DropDown(
+                "chrome",
+                'google-chrome-stable --new-window --profile-directory="Profile 1" --app=file:///home/krishnan/quicklinks.html',
+                **geometry_conf,
+            ),
+            DropDown(
+                "firefox", "firefox", width=0.9, height=0.85, x=0.05, y=0.05, opacity=1
+            ),
+        ],
+        label="",
+    ),
+    Group("-", layout="columns"),
+    Group("conf", layout="columns"),
+
 ]
+
+@lazy.function
+def next_window(qtile):
+    return lazy.group.next_window()
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -98,7 +166,9 @@ keys = [
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "n", lazy.layout.next(), desc="Move window focus to next window"),
+    Key([mod], "n", lazy.group.next_window(), desc="Move window focus to next window"),
+    # Key([mod], "n", next_window(qtile), desc="Move window focus to next window"),
+    # Key([mod], "N", lazy.group.previous_window(), desc="Move window focus to next window"),
     # Key([mod], "m", qtile.current_group.cmd_next_window(), desc="Toggle minimize window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
@@ -294,6 +364,12 @@ keys = [
             ),
             Key(
                 [],
+                "h",
+                lazy.spawn("task_manager"),
+                desc="task manager",
+            ),
+            Key(
+                [],
                 "l",
                 lazy.spawn("redis-clear"),
                 desc="clear redis",
@@ -303,102 +379,29 @@ keys = [
     ),
 ]
 
-# ScratchPad
-geometry_conf = {
-    "width": 0.8,
-    "height": 0.7,
-    "x": 0.1,
-    "y": 0.125,
-    "opacity": 1,
-    "on_focus_lost_hide": False,
-}
-
-groups.append(
-    ScratchPad(
-        "scratchpad",
-        [
-            DropDown(
-                "term", "env WINIT_X11_SCALE_FACTOR=1.4 alacritty", **geometry_conf
-            ),
-            DropDown(
-                "ranger",
-                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e ranger",
-                **geometry_conf,
-            ),
-            DropDown(
-                "spotify-tui",
-                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e spt",
-                **geometry_conf,
-            ),
-            DropDown(
-                "pavucontrol",
-                "pavucontrol",
-                **geometry_conf,
-            ),
-            DropDown(
-                "notes",
-                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e nvim /home/krishnan/notes',
-                # 'neovide /home/krishnan/notes',
-                **geometry_conf,
-            ),
-            DropDown("nautilus", "nautilus", **geometry_conf),
-            DropDown(
-                "chrome",
-                'google-chrome-stable --new-window --profile-directory="Profile 1" --app=file:///home/krishnan/quicklinks.html',
-                **geometry_conf,
-            ),
-            DropDown(
-                "firefox", "firefox", width=0.9, height=0.85, x=0.05, y=0.05, opacity=1
-            ),
-        ],
-        label="",
-    )
-)
-
-for i, j in enumerate(groups[:-1]):
+switch_key = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "minus", "equal" ]
+for k, g in zip(switch_key, groups):
     keys.extend(
         [
             # mod1 + letter of group = switch to group
             Key(
                 [mod],
-                str(i + 1),
-                lazy.group[j.name].toscreen(),
-                desc="Switch to group {}".format(j.name),
+                k,
+                lazy.group[g.name].toscreen(),
+                desc="Switch to group {}".format(g.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
-                str(i + 1),
+                k,
                 lazy.window.togroup(
-                    j.name,
+                    g.name,
                     # switch_group=True
                 ),
-                desc="Move focused window to group {}".format(j.name),
+                desc="Move focused window to group {}".format(g.name),
             ),
         ]
     )
-
-keys.extend(
-    [
-        # mod1 + letter of group = switch to group
-        Key(
-            [mod],
-            "0",
-            lazy.group["scratchpad"].toscreen(),
-            desc="Switch to group {}".format("scratchpad"),
-        ),
-        # mod1 + shift + letter of group = switch to & move focused window to group
-        Key(
-            [mod, "shift"],
-            "0",
-            lazy.window.togroup(
-                "scratchpad",
-                # switch_group=True
-            ),
-            desc="Move focused window to group {}".format("scratchpad"),
-        ),
-    ]
-)
 
 # keys.extend([
 #     Key([mod], 'grave', lazy.function(notifier.prev)),
@@ -533,13 +536,15 @@ screens = [
             24,
             opacity=0.85,
         ),
+
         # bottom=bar.Bar(
         #     [
+        #         widget.WindowTabs(),
         #         # widget.Notify(
         #         #     foreground="62aeef",
         #         #     scroll=True,
         #         # ),
-        #         widget.Spacer(),
+        #         # widget.Spacer(),
         #         widget.GroupBox(
         #             center_aligned=True,
         #         ),
@@ -548,6 +553,7 @@ screens = [
         #     24,
         #     opacity=0.85,
         # ),
+
     ),
     Screen(
         top=bar.Bar(
