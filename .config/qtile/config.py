@@ -150,7 +150,7 @@ groups = [
         label="",
     ),
     Group("-", layout="columns"),
-    Group("conf", layout="columns"),
+    Group("conf", layout="columns", label=""),
 
 ]
 
@@ -166,7 +166,12 @@ keys = [
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
+    Key([mod, "mod1"], "j", lazy.layout.flip_down()),
+    Key([mod, "mod1"], "k", lazy.layout.flip_up()),
+    Key([mod, "mod1"], "h", lazy.layout.flip_left()),
+    Key([mod, "mod1"], "l", lazy.layout.flip_right()),
     Key([mod], "n", lazy.group.next_window(), desc="Move window focus to next window"),
+    Key([mod, "shift"], "n", lazy.layout.next(), desc="Move window focus to next stack"),
     # Key([mod], "n", next_window(qtile), desc="Move window focus to next window"),
     # Key([mod], "N", lazy.group.previous_window(), desc="Move window focus to next window"),
     # Key([mod], "m", qtile.current_group.cmd_next_window(), desc="Toggle minimize window"),
@@ -417,8 +422,8 @@ layouts = [
     layout.Stack(num_stacks=2, **layout_theme),
     # layout.Bsp(**layout_theme),
     # layout.Matrix(**layout_theme),
-    layout.MonadTall(single_border_width=0, single_margin=0, **layout_theme),
-    layout.MonadWide(single_border_width=0, single_margin=0, **layout_theme),
+    # layout.MonadTall(single_border_width=0, single_margin=0, **layout_theme),
+    # layout.MonadWide(single_border_width=0, single_margin=0, **layout_theme),
     # layout.RatioTile(**layout_theme),
     # layout.Tile(**layout_theme),
     # layout.VerticalTile(**layout_theme),
@@ -499,19 +504,31 @@ screens = [
                     parse_text=mynotifyparser,
                 ),
                 mysep,
-                widget.Net(format=" {up}↑ {down}↓"),  # Ͳ
+                widget.WidgetBox(
+                    widgets=[
+                        widget.Net(format=" {up}↑ {down}↓"),  # Ͳ
+                        widget.Wlan(
+                            interface="wlp0s20f3",
+                            # format=" ",
+                            format="  {percent:2.0%}",
+                            disconnected_message="睊",
+                        ),
+                        mysep,
+                        widget.CPU(format=" {freq_current}GHz {load_percent}%"),
+                        widget.ThermalSensor(),
+                        mysep,
+                        widget.Memory(format="ⵂⵂⵂⵂ {MemUsed:.0f}{mm} "),
+                        mysep,
+                        widget.Bluetooth(fmt=" {}"),
+                    ],
+                    text_open=" [] ",
+                    text_closed=" · ",
+                ),
                 widget.Wlan(
                     interface="wlp0s20f3",
-                    # format=" ",
-                    format="  {percent:2.0%}",
-                    disconnected_message="睊",
+                    format="",
+                    disconnected_message="睊 ",
                 ),
-                mysep,
-                widget.CPU(format=" {load_percent}%"),
-                mysep,
-                widget.Memory(format="ⵂⵂⵂⵂ {MemUsed:.0f}{mm} "),
-                mysep,
-                widget.Bluetooth(fmt=" {}"),
                 mypulsevolume,
                 mysep,
                 widget.Clock(
@@ -624,6 +641,7 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+        Match(wm_class="guake"),  # Guake! terminal
     ],
     margin=0,
     border_width=2,
