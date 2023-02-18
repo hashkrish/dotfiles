@@ -16,18 +16,19 @@ telescope.setup {
             "node_modules",
             "__pycache__",
             "site-packages",
+            ".git"
         },
         dynamic_preview_title = true,
-        --  vimgrep_arguments = {
-        --   'rg',
-        --   '--color=never',
-        --   '--no-heading',
-        --   '--with-filename',
-        --   '--line-number',
-        --   '--column',
-        --   '--smart-case',
-        --   '-uu'
-        -- },
+         vimgrep_arguments = {
+          'rg',
+          -- '--color=never',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+          '-uu'
+        },
         mappings = {
             n = {
                 ['q'] = actions.close
@@ -70,13 +71,13 @@ vim.keymap.set("n", "sf", function()
 end)
 vim.keymap.set('n', ';f', function()
     builtin.find_files({
-        no_ignore = true,
+        -- no_ignore = true,
         hidden = true
     })
 end)
 vim.keymap.set('n', ';r', function()
     builtin.live_grep({
-        no_ignore = true,
+        -- no_ignore = true,
         hidden = true,
     })
 end)
@@ -107,10 +108,10 @@ end)
 vim.keymap.set('n', ';t', function()
     builtin.highlights()
 end)
-vim.keymap.set('n', ';gs', function()
+vim.keymap.set('n', ';gbc', function()
     builtin.git_bcommits()
 end)
-vim.keymap.set('n', ';ggs', function()
+vim.keymap.set('n', ';gc', function()
     builtin.git_commits()
 end)
 vim.keymap.set('n', ';gs', function()

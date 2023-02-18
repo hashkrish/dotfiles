@@ -30,6 +30,7 @@ vim.opt.backspace = 'start,eol,indent'
 vim.opt.path:append { '**' } -- Finding files
 vim.opt.wildignore:append { '**/.cargo/**', '**/node_modules/**', '**/site-packages/**' }
 vim.opt.foldmethod = 'manual'
+vim.opt.foldenable = false
 
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])

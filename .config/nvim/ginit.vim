@@ -12,4 +12,17 @@ let g:transparency = 0.95
 set guifont=Fira\ Code\ Nerd\ Font:h12
 let g:neovide_scale_factor = 0.6
 
-let g:neovide_no_idle = true
+" let g:neovide_no_idle = true
+luafile /home/krishnan/.config/nvim/after/plugin/lualine.rc.lua
+" luafile /home/krishnan/.config/nvim/ginit.lua
+
+function! g:IncreaseFontSize()
+    let g:neovide_scale_factor = g:neovide_scale_factor + 0.05
+endfunction
+
+function! g:DecreaseFontSize()
+    let g:neovide_scale_factor = g:neovide_scale_factor - 0.05
+endfunction
+
+nmap <C-=> : call g:IncreaseFontSize()<CR>
+nmap <C--> : call g:DecreaseFontSize()<CR>

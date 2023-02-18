@@ -5,7 +5,11 @@ keymap.set('n', '+', '<C-a>') -- Increment
 keymap.set('n', '-', '<C-x>') -- Decrement
 
 keymap.set('v', '<SPACE>y', '"+y') -- Yank to system clipboard
-keymap.set('n', '<SPACE>Y', ':Yanks<CR>') -- Yank to system clipboard
+keymap.set('n', '<SPACE>Y', ':Yanks<CR>') -- Show yanked values
+keymap.set('v', '<SPACE>p', '"+p') -- Paste from system clipboard
+keymap.set('n', '<SPACE>p', '"+p') -- Paste from system clipboard
+keymap.set('n', '<SPACE>P', '"+P') -- Paste from system clipboard
+keymap.set('i', '<C-V>', '<C-o>:set paste<CR><C-R>+<C-o>:set nopaste<CR>')
 keymap.set('n', 'db', 'vb"_d') -- Delete a word backwards
 
 keymap.set('n', '<C-a>', 'gg<S-v>G') -- Select all
@@ -55,3 +59,15 @@ keymap.set('n', '<leader>cd', function()
 end)
 keymap.set('n', '<leader>ccd', ':cd ~<CR>')
 keymap.set('n', '<leader>cdf', ':cd %:p:h<CR>')
+keymap.set('n', '<SPACE>t', ':!')
+-- keymap.set('n', '<SPACE>ff', ':%!prettier --tab-width 4 %<CR>')
+-- keymap.set('n', '<SPACE>fj', ':%!js-beautify --type html<CR>')
+keymap.set('n', '<SPACE>ff', ':call CocAction("format")<CR>')
+keymap.set('n', '<SPACE>gd', ':GitDiff<CR>')
+keymap.set('n', '<SPACE>gD', ':GitDiffClose<CR>')
+
+-- keymap.set('n', '<SPACE>fj', function()
+--     local r, c = unpack(vim.api.nvim_win_get_cursor(0))
+--     vim.api.nvim_command(':%!js-beautify --type html<CR>')
+--     vim.api.nvim_win_set_cursor(0, r, c )
+-- end)

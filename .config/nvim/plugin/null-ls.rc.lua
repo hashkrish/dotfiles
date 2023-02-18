@@ -9,7 +9,7 @@ null_ls.setup({
     null_ls.builtins.diagnostics.fish,
     null_ls.builtins.diagnostics.alex,
     null_ls.builtins.diagnostics.cfn_lint,
-    null_ls.builtins.diagnostics.pylint,
-    null_ls.builtins.formatting.isort,
+    -- null_ls.builtins.diagnostics.pylint,
+    -- null_ls.builtins.formatting.isort,
   }
 })
