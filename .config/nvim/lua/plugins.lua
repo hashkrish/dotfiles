@@ -30,11 +30,11 @@ packer.startup(function(use)
     -- Appearance
     use 'https://github.com/tjdevries/colorbuddy.nvim' -- Theme
     use 'https://github.com/svrana/neosolarized.nvim' -- Theme
-    use 'https://github.com/kyazdani42/nvim-web-devicons' -- File Icons
+    use 'https://github.com/nvim-tree/nvim-web-devicons' -- File Icons
     -- use 'https://github.com/hoob3rt/lualine.nvim' -- Statusline
     use {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     } -- Statusline
     use 'https://github.com/akinsho/nvim-bufferline.lua' -- Vim Line
     use 'https://github.com/norcalli/nvim-colorizer.lua' -- Preview HEX color
@@ -60,6 +60,7 @@ packer.startup(function(use)
     use 'junegunn/vim-easy-align' -- Align
     use 'https://github.com/jmcantrell/vim-virtualenv'
     use 'https://github.com/lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
+    use { "NvChad/nvterm", config = function () require("nvterm").setup() end, }
 
     -- use 's1n7ax/nvim-terminal' -- Toggle Terminal
 
@@ -81,7 +82,7 @@ packer.startup(function(use)
     use 'https://github.com/nvim-treesitter/nvim-treesitter-context' -- Context highlighter
     use 'https://github.com/jose-elias-alvarez/null-ls.nvim' -- Prettier
     use 'https://github.com/preservim/vim-markdown' -- Markdown highlight
-    use { 
+    use {
         'https://github.com/phaazon/hop.nvim', -- hop
         branch='v2',
     }

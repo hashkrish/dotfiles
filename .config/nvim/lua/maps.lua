@@ -43,7 +43,7 @@ keymap.set('n', '<C-w><down>', '<C-w>-') -- Resize window down
 keymap.set('n', '<Leader>w', '<ESC>:set wrap!<Return>') -- Toggle wrap
 keymap.set('n', '<SPACE>c', '<ESC>:noh<Return>') -- Remove hightlights
 keymap.set('v', '<SPACE>c', '<ESC>') -- Remove hightlights
-keymap.set('i', '<C-j>', '<ESC>o') -- Add another line from insert mode
+-- keymap.set('i', '<C-j>', '<ESC>o') -- Add another line from insert mode
 keymap.set('x', 's', ':s/') -- s to substitue from visual mode
 -- keymap.set('n', '<Leader>e', '<Cmd>CocDiagnostics<CR>') -- Show errors
 keymap.set('', '<F8>', '<Cmd>TagbarToggle<CR>') -- Toggle Tagbar
@@ -59,7 +59,7 @@ keymap.set('n', '<leader>cd', function()
 end)
 keymap.set('n', '<leader>ccd', ':cd ~<CR>')
 keymap.set('n', '<leader>cdf', ':cd %:p:h<CR>')
-keymap.set('n', '<SPACE>t', ':!')
+-- keymap.set('n', '<SPACE>t', ':!')
 -- keymap.set('n', '<SPACE>ff', ':%!prettier --tab-width 4 %<CR>')
 -- keymap.set('n', '<SPACE>fj', ':%!js-beautify --type html<CR>')
 keymap.set('n', '<SPACE>ff', ':call CocAction("format")<CR>')

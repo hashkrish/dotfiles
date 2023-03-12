@@ -125,6 +125,7 @@ export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$DENO_INSTALL/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 
 # ALIAS
@@ -152,6 +153,7 @@ alias e="emacsclient"
 alias m="man"
 alias b="bat -n"
 alias v="nvim"
+alias t="todo.sh"
 
 alias vfzf='$EDITOR $(fzf)'
 
@@ -180,7 +182,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
 [ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
 # Load Angular CLI autocompletion.
-ng --help &> /dev/null && source <(ng completion script) # Load Angular CLI autocompletion.
+# ng --help &> /dev/null && source <(ng completion script) # Load Angular CLI autocompletion.
 [ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
 
 ## Custom functions
@@ -286,7 +288,7 @@ ble-face auto_complete=fg=244
 ble-sabbrev B='| bat'
 ble-sabbrev L='| less'
 ble-sabbrev G='| grep'
-ble-sabbrev H='--help'
+ble-sabbrev H='--help | bat -l help'
 ble-sabbrev xc='| xsel -ib'
 ble-sabbrev xo='xsel -ob'
 
@@ -300,6 +302,7 @@ ble-sabbrev gb='git branch'
 ble-sabbrev gp='git push'
 ble-sabbrev gps='git push --set-upstream origin'
 ble-sabbrev gpl='git pull origin'
+ble-sabbrev gf='git fetch'
 ble-sabbrev gl='git log'
 ble-sabbrev ..='cd ..'
 
@@ -326,8 +329,8 @@ ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
 
 if [ -n "$TMUX" ]; then
     if ! [ -f /tmp/tmux.restore ]; then
-        xdotool key ctrl+space ctrl+r  && 
-            echo $(date) > /tmp/tmux.restore
+        xdotool key ctrl+space ctrl+r  && echo $(date) > /tmp/tmux.restore 
     fi
     clear
 fi
+

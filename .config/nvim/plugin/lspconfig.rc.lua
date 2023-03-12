@@ -62,7 +62,7 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
-nvim_lsp.sumneko_lua.setup {
+nvim_lsp.lua_ls.setup {
     on_attach = on_attach,
     settings = {
         Lua = {
