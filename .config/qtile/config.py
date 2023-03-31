@@ -79,13 +79,13 @@ groups = [
         matches=[Match(title="Quicklinks"), Match(wm_instance_class="google-chrome")],
     ),
     Group(
-        "extra", 
+        "extra",
         layout="columns",
     ),
     Group(
-        "edit", 
+        "edit",
         layout="columns",
-        spawn=f"env WINIT_X11_SCALE_FACTOR=1.4 PATH={PATH} neovide --multigrid --noidle"
+        spawn=f"env WINIT_X11_SCALE_FACTOR=1.4 PATH={PATH} neovide --multigrid --noidle",
     ),
     Group("log", layout="columns"),
     Group(
@@ -128,12 +128,12 @@ groups = [
             ),
             DropDown(
                 "task_manager",
-                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty',
+                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty",
                 **geometry_conf,
             ),
             DropDown(
                 "notes",
-                'env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e nvim /home/krishnan/notes',
+                "env WINIT_X11_SCALE_FACTOR=1.4 alacritty -e nvim /home/krishnan/notes",
                 # 'neovide /home/krishnan/notes',
                 **geometry_conf,
             ),
@@ -151,12 +151,13 @@ groups = [
     ),
     Group("-", layout="columns"),
     Group("conf", layout="columns", label=""),
-
 ]
+
 
 @lazy.function
 def next_window(qtile):
     return lazy.group.next_window()
+
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -171,7 +172,9 @@ keys = [
     Key([mod, "mod1"], "h", lazy.layout.flip_left()),
     Key([mod, "mod1"], "l", lazy.layout.flip_right()),
     Key([mod], "n", lazy.group.next_window(), desc="Move window focus to next window"),
-    Key([mod, "shift"], "n", lazy.layout.next(), desc="Move window focus to next stack"),
+    Key(
+        [mod, "shift"], "n", lazy.layout.next(), desc="Move window focus to next stack"
+    ),
     # Key([mod], "n", next_window(qtile), desc="Move window focus to next window"),
     # Key([mod], "N", lazy.group.previous_window(), desc="Move window focus to next window"),
     # Key([mod], "m", qtile.current_group.cmd_next_window(), desc="Toggle minimize window"),
@@ -379,12 +382,18 @@ keys = [
                 lazy.spawn("redis-clear"),
                 desc="clear redis",
             ),
+            Key(
+                [],
+                "k",
+                lazy.spawn(":gh"),
+                desc="Open a chrome tab",
+            ),
         ],
         name="KEY-CHORD: CTRL-SPACE UP",
     ),
 ]
 
-switch_key = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "minus", "equal" ]
+switch_key = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "minus", "equal"]
 for k, g in zip(switch_key, groups):
     keys.extend(
         [
@@ -553,7 +562,6 @@ screens = [
             24,
             opacity=0.85,
         ),
-
         # bottom=bar.Bar(
         #     [
         #         widget.WindowTabs(),
@@ -570,7 +578,6 @@ screens = [
         #     24,
         #     opacity=0.85,
         # ),
-
     ),
     Screen(
         top=bar.Bar(

@@ -4,10 +4,10 @@
 
 # If not running interactively, don't do anything
 case $- in
-  *i*)
-    set -o vi
-    ;;
-  *) return ;;
+*i*)
+	set -o vi
+	;;
+*) return ;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -34,12 +34,12 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
+	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-  xterm-color | *-256color) color_prompt=yes ;;
+xterm-color | *-256color) color_prompt=yes ;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -48,42 +48,46 @@ esac
 #force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
-  else
-    color_prompt=
-  fi
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+		# We have color support; assume it's compliant with Ecma-48
+		# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+		# a case would tend to support setf rather than setaf.)
+		color_prompt=yes
+	else
+		color_prompt=
+	fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-  xterm* | rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-  *) ;;
+xterm* | rxvt*)
+	# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	;;
+*) ;;
 
 esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'
-  alias dir='dir --color=auto'
-  alias vdir='vdir --color=auto'
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-  alias diff='diff --color'
+	if test -r ~/.dircolors; then
+		eval "$(dircolors -b ~/.dircolors)"
+	else
+		eval "$(dircolors -b)"
+	fi
+	alias ls='ls --color=auto'
+	alias dir='dir --color=auto'
+	alias vdir='vdir --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+	alias diff='diff --color'
 fi
 
 # colored GCC warnings and errors
@@ -99,18 +103,18 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
+	. ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 fi
 
 #  ---------------- USER CONF ----------------
@@ -127,41 +131,10 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$DENO_INSTALL/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
-
 # ALIAS
-alias ll="ls -la"
-alias la="ls -a"
-alias update="sudo apt-get update"
-alias upgrade="sudo apt-get upgrade"
-alias py="python3"
-alias ipy="ipython3"
-alias py3="python3"
-alias ipy3="ipython3"
-alias sqlite="sqlite3"
-alias svim="vim -u ~/.SpaceVim/vimrc"
-alias bathelp='bat --plain --language=man'
-alias first='head -1'
-alias lfirst='tail -1'
-alias rm="trash-put"
-alias pdb="python3 -m pdb"
-alias tmuxw='tmux attach -t workflow'
-alias tmuxs='tmux attach -t seek'
-alias tmuxg='tmux attach -t general'
-alias tmuxc='tmux attach -t config'
-
-alias e="emacsclient"
-alias m="man"
-alias b="bat -n"
-alias v="nvim"
-alias t="todo.sh"
-
-alias vfzf='$EDITOR $(fzf)'
-
-alias luamake=/home/krishnan/sources/lua-language-server/3rd/luamake/luamake
-
 # Use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
-  . /usr/share/bash-completion/bash_completion
+	. /usr/share/bash-completion/bash_completion
 
 # PS
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
@@ -183,62 +156,30 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 [ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
 # Load Angular CLI autocompletion.
 # ng --help &> /dev/null && source <(ng completion script) # Load Angular CLI autocompletion.
-[ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
+# [ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
 
 ## Custom functions
-mkdircd() {
-  mkdir -p "$@" && cd "$1"
-}
-
-tmp() {
-  mkdircd ~/tmp/$RANDOM
-}
-
-touchmod() {
-  touch "$2"
-  chmod $1 "$2"
-}
+source ~/.usr_fn
 
 update-ssh-config() {
-  cat ~/.ssh/config
-  read -n 1 -p 'It will overwrite config file, do you want to proceed [y/n]?' res
-  pat='y|Y'
-  ! [[ $res =~ $pat ]] && exit
+	cat ~/.ssh/config
+	read -n 1 -p 'It will overwrite config file, do you want to proceed [y/n]?' res
+	pat='y|Y'
+	! [[ $res =~ $pat ]] && exit
 
-  gcloud compute instances list |
-    sed -n '1! p' |
-    awk '{print $1,$5}' |
-    while read name ip; do
-      echo "Host $name
+	gcloud compute instances list |
+		sed -n '1! p' |
+		awk '{print $1,$5}' |
+		while read name ip; do
+			echo "Host $name
   HostName $ip
   User ubuntu
   Port 22
 "
-    done > ~/.ssh/config
+		done >~/.ssh/config
 }
 
 # One character alias
-h() {
-  echo "$@" --help
-  "$@ --help" 2>&1 | bathelp
-}
-
-o() {
-  case "$(file "$1" --mime-type)" in
-    *text*)
-      v "$1"
-      ;;
-    *pdf)
-      evince "$1"
-      ;;
-    video*)
-      mpv "$1"
-      ;;
-    *)
-      xdg-open "$1"
-      ;;
-  esac
-}
 
 # v() {
 #   if [ $# -eq 0 ]; then
@@ -249,31 +190,31 @@ o() {
 # }
 
 install_missing_package() {
-  if [[ $? == 127 ]]; then
-    PACKAGE_NAME="$(history 2 | head -1 | awk '{print $2}')"
-    read -n 1 \
-      -p "Do you want to install $PACKAGE_NAME [y/n]?" \
-      should_install
-    echo
-    if [[ $should_install == y || $should_install == Y ]]; then
-      sudo apt install "$PACKAGE_NAME" -y
-    fi
-  fi
+	if [[ $? == 127 ]]; then
+		read -n 1 \
+			PACKAGE_NAME="$(history 2 | head -1 | awk '{print $2}')"
+		-p "Do you want to install $PACKAGE_NAME [y/n]?" \
+			should_install
+		echo
+		if [[ $should_install == y || $should_install == Y ]]; then
+			sudo apt install "$PACKAGE_NAME" -y
+		fi
+	fi
 }
 
 get-key() {
-  [[ $# == 0 ]] && echo Requires username
-  case $1 in
-    hashkrish)
-      cat ~/.hk_ghk | xsel -ib
-      ;;
-    krishnan314)
-      cat ~/.k3_ghk | xsel -ib
-      ;;
-    *)
-      echo No Key Found
-      ;;
-  esac
+	[[ $# == 0 ]] && echo Requires username
+	case $1 in
+	hashkrish)
+		xsel -ib <~/.hk_ghk
+		;;
+	krishnan314)
+		xsel -ib <~/.k3_ghk
+		;;
+	*)
+		echo No Key Found
+		;;
+	esac
 }
 
 ## Startup text and PS
@@ -289,6 +230,7 @@ ble-sabbrev B='| bat'
 ble-sabbrev L='| less'
 ble-sabbrev G='| grep'
 ble-sabbrev H='--help | bat -l help'
+ble-sabbrev xa='| xargs'
 ble-sabbrev xc='| xsel -ib'
 ble-sabbrev xo='xsel -ob'
 
@@ -306,7 +248,6 @@ ble-sabbrev gf='git fetch'
 ble-sabbrev gl='git log'
 ble-sabbrev ..='cd ..'
 
-
 # ble.sh sabbrev
 
 #ble.sh key-bindings
@@ -320,17 +261,18 @@ ble-bind -m 'vi_imap' -f 'C-b' '@nomarked backward-cword'
 ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
 
 # The next line updates PATH for the Google Cloud SDK.
-[ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ] && 
-    . '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc'
+[ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ] &&
+	. '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc'
 
 # The next line enables shell command completion for gcloud.
-[ -f '/home/krishnan/Downloads/google-cloud-sdk/completion.bash.inc' ] && 
-    . '/home/krishnan/Downloads/google-cloud-sdk/completion.bash.inc'
+[ -f '/home/krishnan/Downloads/google-cloud-sdk/completion.bash.inc' ] &&
+	. '/home/krishnan/Downloads/google-cloud-sdk/completion.bash.inc'
 
 if [ -n "$TMUX" ]; then
-    if ! [ -f /tmp/tmux.restore ]; then
-        xdotool key ctrl+space ctrl+r  && echo $(date) > /tmp/tmux.restore 
-    fi
-    clear
+	if ! [ -f /tmp/tmux.restore ]; then
+		xdotool key ctrl+space ctrl+r && echo $(date) >/tmp/tmux.restore
+	fi
+	clear
 fi
 
+eval "$(zoxide init bash)"
