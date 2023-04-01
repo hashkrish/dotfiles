@@ -53,7 +53,8 @@ exec swayidle -w \
 # Basics:
 #
     # Start a terminal
-    bindsym $mod+Shift+Return exec $term
+    bindsym $mod+Return exec $term
+    bindsym $mod+Shift+Return exec --no-startup-id $term --class floating
 
     # Kill focused window
     bindsym $mod+Shift+c kill
@@ -75,6 +76,10 @@ exec swayidle -w \
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    # bindsym $mod+b exec google-chrome && i3-msg "[id=$(xdotool getactivewindow)] floating enable"
+    bindsym $mod+b exec --no-startup-id google-chrome-se2001 --class floating
+
+    for_window [instance="floating"] floating enabled
 #
 # Moving around:
 #
@@ -103,6 +108,10 @@ exec swayidle -w \
 #
 # Move Floating window
 #
+    bindsym $mod+Shift+Control+h     move left  100 px
+    bindsym $mod+Shift+Control+j     move down  100 px
+    bindsym $mod+Shift+Control+k     move up    100 px
+    bindsym $mod+Shift+Control+l     move right 100 px
     bindsym $mod+m mode "move" focus floating
     mode "move" {
         bindsym $mod+Tab focus right
@@ -144,6 +153,7 @@ exec swayidle -w \
     bindsym $mod+8 workspace 8: meet
     bindsym $mod+9 workspace 9: comm
     bindsym $mod+0 workspace 10: ten
+
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace 1: main
     bindsym $mod+Shift+2 move container to workspace 2: dev
@@ -155,8 +165,7 @@ exec swayidle -w \
     bindsym $mod+Shift+8 move container to workspace 8: meet
     bindsym $mod+Shift+9 move container to workspace 9: comm
     bindsym $mod+Shift+0 move container to workspace 10: ten
-    # Note: workspaces can have any name you want, not just numbers.
-    # We just use 1-10 as the default.
+
 #
 # Layout stuff:
 #
@@ -197,22 +206,31 @@ exec swayidle -w \
 #
 # Resizing containers:
 #
+bindsym $mod+Ctrl+h resize shrink width 50 px
+bindsym $mod+Ctrl+l resize grow width 50 px
+bindsym $mod+Ctrl+j resize grow height 50 px
+bindsym $mod+Ctrl+k resize shrink height 50 px
+
 bindsym $mod+r mode "resize"
 mode "resize" {
     # left will shrink the containers width
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 50px
-    bindsym $down resize grow height 50px
-    bindsym $up resize shrink height 50px
-    bindsym $right resize grow width 50px
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+    bindsym $mod+Ctrl+h resize shrink width 50 px
+    bindsym $mod+Ctrl+l resize grow width 50 px
+    bindsym $mod+Ctrl+k resize grow height 50 px
+    bindsym $mod+Ctrl+j resize shrink height 50 px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 50px
-    bindsym Down resize grow height 50px
-    bindsym Up resize shrink height 50px
-    bindsym Right resize grow width 50px
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
 
     # Return to default mode
     bindsym Return mode "default"
@@ -220,8 +238,10 @@ mode "resize" {
 }
 # Audio Control
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 3%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 3%-
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
@@ -266,6 +286,7 @@ default_orientation vertical
 title_align left
 
 # for_window [all] title_window_icon yes
+for_window [class="mpv"] floating enable
 
 focus_follows_mouse yes
 
