@@ -14,7 +14,7 @@ set $term env WAYLAND_DISPLAY= alacritty
 # on the original workspace that the command was run on.
 set $menu dmenu_run -fn 'iosevka-13' | xargs
 
-include /etc/sway/config-vars.d/*
+# include /etc/sway/config-vars.d/*
 
 ### Output configuration
 #
@@ -61,6 +61,11 @@ exec swayidle -w \
 
     # Start your launcher
     bindsym $mod+p exec $menu
+    bindsym $mod+o exec rofi -show drun
+    bindsym $mod+Shift+a exec ":ghw"
+
+    # Toggle i3bar
+    bindsym $mod+Shift+N bar mode toggle
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -76,10 +81,12 @@ exec swayidle -w \
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-    # bindsym $mod+b exec google-chrome && i3-msg "[id=$(xdotool getactivewindow)] floating enable"
-    bindsym $mod+b exec --no-startup-id google-chrome-se2001 --class floating
+    bindsym Mod3+b exec google-chrome
+    bindsym $mod+Shift+z exec "i3lock -c 000000"
+
 
     for_window [instance="floating"] floating enabled
+    for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enabled
 #
 # Moving around:
 #
@@ -95,10 +102,10 @@ exec swayidle -w \
     bindsym $mod+Right focus right
 
     # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
+    bindsym $mod+Shift+$left  move left  50 px
+    bindsym $mod+Shift+$down  move down  50 px
+    bindsym $mod+Shift+$up    move up    50 px
+    bindsym $mod+Shift+$right move right 50 px
     # Ditto, with arrow keys
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
@@ -108,10 +115,6 @@ exec swayidle -w \
 #
 # Move Floating window
 #
-    bindsym $mod+Shift+Control+h     move left  100 px
-    bindsym $mod+Shift+Control+j     move down  100 px
-    bindsym $mod+Shift+Control+k     move up    100 px
-    bindsym $mod+Shift+Control+l     move right 100 px
     bindsym $mod+m mode "move" focus floating
     mode "move" {
         bindsym $mod+Tab focus right
@@ -132,7 +135,7 @@ exec swayidle -w \
         bindsym $mod+Shift+l     move right 10 px
 
         bindsym $mod+c move absolute position center
-        bindsym $mod+m move position mouse
+        bindsym $mod+n move position mouse
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -247,11 +250,14 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
 bindsym Print exec --no-startup-id flameshot gui
+
+bindsym Mod3+l exec redis-clear
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
+    i3bar_command i3bar --transparency
     # position bottom
     position top
 
@@ -263,15 +269,20 @@ bar {
     colors {
         statusline #ffffff95
         background #00000085
-        inactive_workspace #3f497f00 #3f497f00 #5c5c5c
+        separator #33333385
+        focused_separator #33333385
+
+        focused_workspace   #66666685   #66666685   #dddddd
+        active_workspace    #333333     #333333     #888888
+        inactive_workspace  #33333385   #33333385     #888888
     }
 }
 
 set $coloratt #ffffff50
 # class                         border          background      text            indicator       child_border
-client.focused                  #33333399       #33333399       #ffffff         $coloratt       #000000
-client.focused_inactive         #333333         #1f1f1f         #ffffff         $coloratt       #000000
-client.unfocused                #1f1f1f         #1f1f1f         #888888         $coloratt       #000000
+client.focused                  #66666685       #66666685       #dddddd         $coloratt       #33333350
+client.focused_inactive         #333333         #33333399       #dddddd         $coloratt       #333333
+client.unfocused                #1f1f1f         #33333399       #888888         $coloratt       #000000
 client.urgent                   #2f343a         #900000         #ffffff         $coloratt       #900000
 client.placeholder              #000000         #000000         #ffffff         $coloratt       #0c0c0c
 
@@ -283,7 +294,7 @@ font pango:DroidSansMono Nerd Font, 10
 
 # Default orientation
 default_orientation vertical
-title_align left
+title_align center
 
 # for_window [all] title_window_icon yes
 for_window [class="mpv"] floating enable
@@ -294,8 +305,11 @@ focus_follows_mouse yes
 # for_window [all] gaps outer all set 5
 
 exec picom &
+exec dunst &
 exec --no-startup-id nm-applet
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id dex --autostart --environment i3
+# auto lock the screen
+exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
 
 include /etc/sway/config.d/*
