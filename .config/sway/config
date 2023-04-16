@@ -25,7 +25,8 @@ include /etc/sway/config-vars.d/*
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/krishnan/Pictures/earth1.jpg fill
+# output * bg /home/krishnan/Pictures/earth1.jpg fill
+output * bg /home/krishnan/sources/wallpapers/0057.jpg fill
 #
 # Example configuration:
 #

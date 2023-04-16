@@ -12,7 +12,7 @@ set $term env WAYLAND_DISPLAY= alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_run -fn 'iosevka-13' | xargs
+set $menu dmenu_run -p Run: -fn 'iosevka-13' | xargs
 
 # include /etc/sway/config-vars.d/*
 
@@ -61,8 +61,15 @@ exec swayidle -w \
 
     # Start your launcher
     bindsym $mod+p exec $menu
+    bindsym $mod+Shift+p exec dmenu-websearch
     bindsym $mod+o exec rofi -show drun
     bindsym $mod+Shift+a exec ":ghw"
+    bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
+
+    bindsym $mod+underscore gaps inner current minus 5
+    bindsym $mod+equal gaps inner current plus 5
+    bindsym $mod+Shift+underscore gaps outer current minus 5
+    bindsym $mod+Shift+equal gaps outer current plus 5
 
     # Toggle i3bar
     bindsym $mod+Shift+N bar mode toggle
@@ -83,6 +90,9 @@ exec swayidle -w \
     bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
     bindsym Mod3+b exec google-chrome
     bindsym $mod+Shift+z exec "i3lock -c 000000"
+
+    # Hyper+hjkl as arrow keys
+    # bindsym Mod3+h exec echo xdotool key i | yad
 
 
     for_window [instance="floating"] floating enabled
@@ -112,10 +122,13 @@ exec swayidle -w \
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
 
+    bindsym $mod+comma workspace prev
+    bindsym $mod+period workspace next
+
+    bindsym 135 exec yad
 #
 # Move Floating window
 #
-    bindsym $mod+m mode "move" focus floating
     mode "move" {
         bindsym $mod+Tab focus right
 
@@ -134,13 +147,13 @@ exec swayidle -w \
         bindsym $mod+Shift+k     move up    10 px
         bindsym $mod+Shift+l     move right 10 px
 
-        bindsym $mod+c move absolute position center
-        bindsym $mod+n move position mouse
+        bindsym $mod+c move absolute position center; mode "default"
+        bindsym $mod+n move position mouse; mode "default"
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
-    }    
+    }
 
 #
 # Workspaces:
@@ -194,6 +207,7 @@ exec swayidle -w \
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
+    bindsym $mod+x focus child
 #
 # Scratchpad:
 #
@@ -214,7 +228,31 @@ bindsym $mod+Ctrl+l resize grow width 50 px
 bindsym $mod+Ctrl+j resize grow height 50 px
 bindsym $mod+Ctrl+k resize shrink height 50 px
 
-bindsym $mod+r mode "resize"
+bindsym $mod+Shift+space mode "space"
+mode "space" {
+
+    bindsym $mod+r mode "resize"
+    bindsym $mod+m mode "move" focus floating
+
+    bindsym $mod+h workspace prev
+    bindsym $mod+l workspace next
+
+    set $center_height 1000px
+    set $center_width 1700px
+
+    # Center and resize window
+    bindsym c resize set width $center_width; \
+        resize set height $center_height; \
+        mode "move"; \
+        move absolute position center; \
+        mode "default"
+
+    bindsym n exec $term -e nvim /home/krishnan/notes
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 mode "resize" {
     # left will shrink the containers width
     # right will grow the containers width
@@ -235,6 +273,8 @@ mode "resize" {
     bindsym Up resize shrink height 10px
     bindsym Right resize grow width 10px
 
+    bindsym c resize shrink width 10000px; resize grow width 1600px; resize shrink height 10000px; resize grow height 800px; mode "default"
+
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -243,12 +283,12 @@ mode "resize" {
 set $refresh_i3status killall -SIGUSR1 i3status
 # bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 # bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 3%+
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 3%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 3%+ &
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 3%- &
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 &
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 &
 bindsym Print exec --no-startup-id flameshot gui
 
 bindsym Mod3+l exec redis-clear
@@ -298,7 +338,7 @@ title_align center
 
 # for_window [all] title_window_icon yes
 for_window [class="mpv"] floating enable
-
+for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
 focus_follows_mouse yes
 
 # for_window [all] gaps inner all set 10
@@ -311,5 +351,8 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id dex --autostart --environment i3
 # auto lock the screen
 exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
+
+exec google-chrome-stable --new-window --profile-directory="Profile 1" --app='https://mail.google.com/mail/u/0/#inbox'
+
 
 include /etc/sway/config.d/*
