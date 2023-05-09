@@ -87,16 +87,19 @@ exec swayidle -w \
     bindsym $mod+Control+q restart
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+q exec [ "$(echo 'n\ny' | dmenu -p 'Do you really want to exit i3?' -fn 'iosevka-13')" = y ] && swaymsg exit || notify-send $?
+    bindsym $mod+Control+Shift+q exec swaymsg exit
     bindsym Mod3+b exec google-chrome
     bindsym $mod+Shift+z exec "i3lock -c 000000"
 
+    bindsym $mod+Shift+semicolon exec /home/krishnan/.local/bin/:commands
     # Hyper+hjkl as arrow keys
     # bindsym Mod3+h exec echo xdotool key i | yad
 
 
     for_window [instance="floating"] floating enabled
     for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enabled
+    for_window [class="Yad"] floating enabled
 #
 # Moving around:
 #
@@ -124,8 +127,6 @@ exec swayidle -w \
 
     bindsym $mod+comma workspace prev
     bindsym $mod+period workspace next
-
-    bindsym 135 exec yad
 #
 # Move Floating window
 #
@@ -182,6 +183,11 @@ exec swayidle -w \
     bindsym $mod+Shift+9 move container to workspace 9: comm
     bindsym $mod+Shift+0 move container to workspace 10: ten
 
+    # Move workspaces to outputs
+    bindsym $mod+Mod1+h move workspace to output left
+    bindsym $mod+Mod1+j move workspace to output down
+    bindsym $mod+Mod1+k move workspace to output up
+    bindsym $mod+Mod1+l move workspace to output right
 #
 # Layout stuff:
 #
@@ -225,8 +231,8 @@ exec swayidle -w \
 #
 bindsym $mod+Ctrl+h resize shrink width 50 px
 bindsym $mod+Ctrl+l resize grow width 50 px
-bindsym $mod+Ctrl+j resize grow height 50 px
-bindsym $mod+Ctrl+k resize shrink height 50 px
+bindsym $mod+Ctrl+k resize grow height 50 px
+bindsym $mod+Ctrl+j resize shrink height 50 px
 
 bindsym $mod+Shift+space mode "space"
 mode "space" {
@@ -321,8 +327,8 @@ bar {
 set $coloratt #ffffff50
 # class                         border          background      text            indicator       child_border
 client.focused                  #66666685       #66666685       #dddddd         $coloratt       #33333350
-client.focused_inactive         #333333         #33333399       #dddddd         $coloratt       #333333
-client.unfocused                #1f1f1f         #33333399       #888888         $coloratt       #000000
+client.focused_inactive         #33333385       #33333399       #dddddd         $coloratt       #33333385
+client.unfocused                #33333385       #33333399       #888888         $coloratt       #33333385
 client.urgent                   #2f343a         #900000         #ffffff         $coloratt       #900000
 client.placeholder              #000000         #000000         #ffffff         $coloratt       #0c0c0c
 
@@ -353,6 +359,10 @@ exec --no-startup-id dex --autostart --environment i3
 exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
 
 exec google-chrome-stable --new-window --profile-directory="Profile 1" --app='https://mail.google.com/mail/u/0/#inbox'
+# Restore GNOME's settings
+# exec --no-startup-id /usr/libexec/gnome-settings-daemon-localeexec &
 
+# Fix a bug in gnome-settings-daemon: http://feeding.cloud.geek.nz/posts/creating-a-modern-tiling-desktop-environment-using-i3/
+# exec --no-startup-id dconf write /org/gnome/settings-daemon/plugins/cursor/active false &
 
 include /etc/sway/config.d/*
