@@ -65,6 +65,7 @@ exec swayidle -w \
     bindsym $mod+o exec rofi -show drun
     bindsym $mod+Shift+a exec ":ghw"
     bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
+    bindsym $mod+i exec alacritty --class floating -e 'ipython3'
 
     bindsym $mod+underscore gaps inner current minus 5
     bindsym $mod+equal gaps inner current plus 5
@@ -96,10 +97,16 @@ exec swayidle -w \
     # Hyper+hjkl as arrow keys
     # bindsym Mod3+h exec echo xdotool key i | yad
 
+    # Toggle terminal transparency
+    bindsym $mod+Shift+t exec --no-startup-id toggle-alacritty-transparency
+
 
     for_window [instance="floating"] floating enabled
     for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enabled
     for_window [class="Yad"] floating enabled
+    for_window [class="Pavucontrol"] floating enabled
+    for_window [class="Org.gnome.Nautilus"] floating enabled
+    for_window [class="org.gnome.Nautilus"] floating enabled
 #
 # Moving around:
 #
@@ -295,6 +302,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 &
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 &
+bindsym $mod+F7 exec --no-startup-id config-monitors &
 bindsym Print exec --no-startup-id flameshot gui
 
 bindsym Mod3+l exec redis-clear
@@ -356,7 +364,8 @@ exec --no-startup-id nm-applet
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id dex --autostart --environment i3
 # auto lock the screen
-exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
+# exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
+exec "xautolock -detectsleep -time 3 -locker \"cmatrix -s\""
 
 exec google-chrome-stable --new-window --profile-directory="Profile 1" --app='https://mail.google.com/mail/u/0/#inbox'
 # Restore GNOME's settings
@@ -365,4 +374,4 @@ exec google-chrome-stable --new-window --profile-directory="Profile 1" --app='ht
 # Fix a bug in gnome-settings-daemon: http://feeding.cloud.geek.nz/posts/creating-a-modern-tiling-desktop-environment-using-i3/
 # exec --no-startup-id dconf write /org/gnome/settings-daemon/plugins/cursor/active false &
 
-include /etc/sway/config.d/*
+# include /etc/sway/config.d/*
