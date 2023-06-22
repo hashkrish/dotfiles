@@ -12,5 +12,6 @@ return {
         update_n_lines = "ysn",
       },
     },
+    enabled = false,
   },
 }

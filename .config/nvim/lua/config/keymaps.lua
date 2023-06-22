@@ -7,5 +7,7 @@ local builtin = require("telescope.builtin")
 
 vim.keymap.set("n", "<LEADER>gb", builtin.git_branches, { noremap = true, silent = true, desc = "branches" })
 vim.keymap.set("n", "<LEADER>gt", builtin.git_stash, { noremap = true, silent = true, desc = "stash" })
-vim.keymap.set("n", "<LEADER>sx", builtin.resume, { noremap = true, silent = true, desc = "resume telescope" })
 vim.keymap.set("n", "<LEADER>uR", "<Cmd>set norelativenumber<CR>", { desc = "toggle relative number" })
+vim.keymap.set("n", "<LEADER>l", "<Cmd>b#<CR>", { desc = "goto last buffer" })
+vim.keymap.set("n", "<LEADER>L", "<Cmd>Lazy<CR>", { desc = "Lazy" })
+vim.keymap.set("x", "<M-s>", "<Plug>(nvim-surround-visual)", { desc = "surround visual" })

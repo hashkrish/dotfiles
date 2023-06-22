@@ -37,5 +37,6 @@ return {
       Group.new("DiagnosticUnderlineWarn", colors.none, colors.none, styles.undercurl, cWarn)
       Group.new("DiagnosticUnderlineHint", colors.none, colors.none, styles.undercurl, cHint)
     end,
+    -- enabled = false,
   },
 }

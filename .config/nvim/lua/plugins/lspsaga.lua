@@ -6,7 +6,7 @@ return {
       "glepnir/lspsaga.nvim",
       server_filetype_map = {
         javascript = "javascript",
-        -- typescript = 'typescript',
+        typescript = "typescript",
         html = "html",
         vue = "vue",
         python = "python",

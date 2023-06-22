@@ -86,30 +86,29 @@ return {
   },
 
   -- {
-  --   "https://github.com/nvim-telescope/telescope.nvim",
-  --   opts = {
-  --     defaults = {
-  --       dynamic_preview_title = true,
-  --     },
-  --   },
+  --   "https://github.com/nvim-telescope/telescope-file-browser.nvim",
+  --   opts = function()
+  --     local telescope = require("telescope")
+  --     telescope.load_extension("file_browser")
+  --     telescope.extensions.file_browser.file_browser({
+  --       path = "%:p:h",
+  --       cwd = vim.fn.expand("%:p:h"),
+  --       respect_gitignore = false,
+  --       hidden = true,
+  --       grouped = true,
+  --       -- previewer = false,
+  --       -- initial_mode = "normal",
+  --       layout_config = { height = 20 },
+  --     })
+  --   end,
+  --   lazy = true,
   -- },
 
   {
-    "https://github.com/nvim-telescope/telescope-file-browser.nvim",
-    opts = function()
-      local telescope = require("telescope")
-      telescope.load_extension("file_browser")
-      telescope.extensions.file_browser.file_browser({
-        path = "%:p:h",
-        cwd = vim.fn.expand("%:p:h"),
-        respect_gitignore = false,
-        hidden = true,
-        grouped = true,
-        -- previewer = false,
-        -- initial_mode = "normal",
-        layout_config = { height = 20 },
-      })
-    end,
-    lazy = true,
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-treesitter/nvim-treesitter" },
+    },
   },
 }
