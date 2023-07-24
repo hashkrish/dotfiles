@@ -13,8 +13,11 @@ return {
 
       -- linter
       table.insert(opts.sources, nls.builtins.code_actions.eslint_d)
+      -- ts server
+      table.insert(opts.sources, nls.builtins.diagnostics.tsserver)
       table.insert(opts.sources, nls.builtins.code_actions.refactoring)
       table.insert(opts.sources, nls.builtins.code_actions.shellcheck)
+      -- table.insert(opts.sources, nls.builtins.diagnostics.mypy)
       -- table.insert(opts.sources, nls.builtins.diagnostics.eslint_d)
       -- table.insert(opts.sources, nls.builtins.completion.spell)
       table.insert(opts.sources, nls.builtins.hover.dictionary)

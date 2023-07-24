@@ -27,3 +27,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.o.tabstop = 2
   end,
 })
+
+-- Auto enter into insert mode in terminal
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  pattern = { "*" },
+  callback = function()
+    vim.cmd("startinsert")
+  end,
+})
+vim.api.nvim_create_autocmd({ "TermEnter" }, {
+  pattern = { "*" },
+  callback = function()
+    vim.cmd("startinsert")
+  end,
+})

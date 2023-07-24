@@ -19,5 +19,6 @@ return {
       { "<C-k>", "<Cmd>Lspsaga signature_help<CR>" },
       { "gp", "<Cmd>Lspsaga peek_definition<CR>" },
     },
+    enabled = false,
   },
 }
