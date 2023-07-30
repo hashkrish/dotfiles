@@ -367,7 +367,7 @@ exec --no-startup-id dex --autostart --environment i3
 # exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
 exec "xautolock -detectsleep -time 3 -locker \"cmatrix -s\""
 
-exec google-chrome-stable --new-window --profile-directory="Profile 1" --app='https://mail.google.com/mail/u/0/#inbox'
+exec google-chrome-work --new-window --app='https://mail.google.com/mail/u/0/#inbox'
 # Restore GNOME's settings
 # exec --no-startup-id /usr/libexec/gnome-settings-daemon-localeexec &
 
