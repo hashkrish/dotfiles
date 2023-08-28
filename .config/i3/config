@@ -62,6 +62,7 @@ exec swayidle -w \
     # Start your launcher
     bindsym $mod+p exec $menu
     bindsym $mod+Shift+p exec dmenu-websearch
+    bindsym $mod+Control+p exec alacritty --class floating -e $(dmenu_alacritty -p Alacritty: -fn 'iosevka-13' )
     bindsym $mod+o exec rofi -show drun
     bindsym $mod+Shift+a exec ":ghw"
     bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
@@ -120,6 +121,12 @@ exec swayidle -w \
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
+
+    bindsym $mod+Shift+Control+h fullscreen disable; focus left; fullscreen enable
+    bindsym $mod+Shift+Control+j fullscreen disable; focus down; fullscreen enable
+    bindsym $mod+Shift+Control+k fullscreen disable; focus up; fullscreen enable
+    bindsym $mod+Shift+Control+l fullscreen disable; focus right; fullscreen enable
+    bindsym $mod+Shift+Control+space fullscreen disable; focus mode_toggle; fullscreen enable
 
     # Move the focused window with the same, but add Shift
     bindsym $mod+Shift+$left  move left  50 px
@@ -201,8 +208,8 @@ exec swayidle -w \
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    # bindsym $mod+b splith
-    # bindsym $mod+v splitv
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
     bindsym $mod+s layout stacking
@@ -349,6 +356,13 @@ font pango:DroidSansMono Nerd Font, 10
 # Default orientation
 default_orientation vertical
 title_align center
+default_border none
+default_floating_border none
+hide_edge_borders both
+hide_edge_borders smart
+
+
+
 
 # for_window [all] title_window_icon yes
 for_window [class="mpv"] floating enable
