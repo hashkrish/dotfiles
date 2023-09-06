@@ -356,10 +356,10 @@ font pango:DroidSansMono Nerd Font, 10
 # Default orientation
 default_orientation vertical
 title_align center
-default_border none
-default_floating_border none
-hide_edge_borders both
-hide_edge_borders smart
+# default_border none
+# default_floating_border none
+# hide_edge_borders both
+# hide_edge_borders smart
 
 
 
@@ -369,8 +369,8 @@ for_window [class="mpv"] floating enable
 for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
 focus_follows_mouse yes
 
-# for_window [all] gaps inner all set 10
-# for_window [all] gaps outer all set 5
+for_window [all] gaps inner all set 10
+for_window [all] gaps outer all set 5
 
 exec picom &
 exec dunst &
