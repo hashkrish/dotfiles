@@ -62,6 +62,7 @@ exec swayidle -w \
     # Start your launcher
     bindsym $mod+p exec $menu
     bindsym $mod+Shift+p exec dmenu-websearch
+    bindsym $mod+Mod1+c exec dmenu_clipboard
     bindsym $mod+Control+p exec alacritty --class floating -e $(dmenu_alacritty -p Alacritty: -fn 'iosevka-13' )
     bindsym $mod+o exec rofi -show drun
     bindsym $mod+Shift+a exec ":ghw"
