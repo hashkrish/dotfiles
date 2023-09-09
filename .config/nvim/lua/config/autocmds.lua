@@ -28,6 +28,14 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "markdown" },
+  callback = function()
+    vim.o.shiftwidth = 2
+    vim.o.tabstop = 2
+    vim.keymap.set("i", "```", "```<CR><CR>```<ESC>kcc", { desc = "surround visual" })
+  end,
+})
 -- Auto enter into insert mode in terminal
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
   pattern = { "*" },
@@ -39,5 +47,23 @@ vim.api.nvim_create_autocmd({ "TermEnter" }, {
   pattern = { "*" },
   callback = function()
     vim.cmd("startinsert")
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "sql", "mysql", "plsql" },
+  callback = function()
+    require("cmp").setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
+  end,
+})
+
+
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "dap-repl" },
+  callback = function()
+    require('dap.ext.autocompl').attach()
+    vim.keymap.set('i', '<C-Space>', '<Plug>(dap-repl-completion)', { noremap = false })
+    vim.keymap.set('n', 'q', '<Plug>(dap-close)', { noremap = false })
   end,
 })

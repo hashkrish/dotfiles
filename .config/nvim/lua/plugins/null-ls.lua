@@ -15,6 +15,8 @@ return {
       table.insert(opts.sources, nls.builtins.code_actions.eslint_d)
       -- ts server
       table.insert(opts.sources, nls.builtins.diagnostics.tsserver)
+      -- for golang
+      -- table.insert(opts.sources, nls.builtins.diagnostics.golangcilint)
       table.insert(opts.sources, nls.builtins.code_actions.refactoring)
       table.insert(opts.sources, nls.builtins.code_actions.shellcheck)
       -- table.insert(opts.sources, nls.builtins.diagnostics.mypy)
@@ -23,5 +25,6 @@ return {
       table.insert(opts.sources, nls.builtins.hover.dictionary)
       table.insert(opts.sources, nls.builtins.hover.printenv)
     end,
+    enabled = false,
   },
 }

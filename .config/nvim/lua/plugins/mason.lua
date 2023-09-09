@@ -3,7 +3,12 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        "prettierd",
+        "pyright",
+        "black",
+        "prettier",
+        "eslint-lsp",
+        "js-debug-adapter",
+        "typescript-language-server",
       },
     },
   },

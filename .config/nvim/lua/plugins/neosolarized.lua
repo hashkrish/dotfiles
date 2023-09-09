@@ -17,10 +17,10 @@ return {
       local groups = colorbuddy.groups
       local styles = colorbuddy.styles
 
-      Color.new("black", "000000")
+      Color.new("black", "#000000")
       Group.new("Visual", colors.none, colors.base03, styles.reverse)
       Group.new("CursorLine", colors.none, colors.base03, styles.NONE, colors.base1)
-      -- Group.new('CursorLineNr', colors.yellow, colors.black, styles.NONE, colors.base1)
+      Group.new("CursorLineNr", colors.yellow, colors.NONE, styles.NONE, colors.base1)
       Group.new("Search", colors.none, colors.base03, styles.reverse)
 
       local cError = groups.Error.fg
