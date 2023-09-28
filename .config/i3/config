@@ -62,7 +62,6 @@ exec swayidle -w \
     # Start your launcher
     bindsym $mod+p exec $menu
     bindsym $mod+Shift+p exec dmenu-websearch
-    bindsym $mod+Mod1+c exec dmenu_clipboard
     bindsym $mod+Control+p exec alacritty --class floating -e $(dmenu_alacritty -p Alacritty: -fn 'iosevka-13' )
     bindsym $mod+o exec rofi -show drun
     bindsym $mod+Shift+a exec ":ghw"
@@ -73,6 +72,10 @@ exec swayidle -w \
     bindsym $mod+equal gaps inner current plus 5
     bindsym $mod+Shift+underscore gaps outer current minus 5
     bindsym $mod+Shift+equal gaps outer current plus 5
+
+    bindsym $mod+Mod1+c exec dmenu_clipboard
+    bindsym $mod+Mod1+e exec alacritty -e dmenu_nvim
+    bindsym $mod+Mod1+n exec alacritty -e nvim ~/notes
 
     # Toggle i3bar
     bindsym $mod+Shift+N bar mode toggle
@@ -373,8 +376,12 @@ focus_follows_mouse yes
 for_window [all] gaps inner all set 10
 for_window [all] gaps outer all set 5
 
-exec picom &
+# exec picom &
+exec compton & # using compton instead of picom due to a bug in picom
+
 exec dunst &
+exec xmodmap ~/.Xmodmap &
+# exec config-monitors &
 exec --no-startup-id nm-applet
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id dex --autostart --environment i3
