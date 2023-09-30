@@ -1,5 +1,8 @@
-*/*/.xmonad/xmonad.o
-*/*/.xmonad/xmonad.hi
-*/*/.xmonad/xmonad.errors
-*/*/.xmonad/xmonad-*
-**__pycache__**
+tt.*
+.tests
+doc/tags
+debug
+.repro
+foo.*
+*.log
+data
