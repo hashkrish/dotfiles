@@ -12,7 +12,6 @@ vim.keymap.set("n", "<LEADER>l", "<Cmd>b#<CR>", { desc = "goto last buffer" })
 vim.keymap.set("n", "<LEADER>L", "<Cmd>Lazy<CR>", { desc = "Lazy" })
 vim.keymap.set("x", "'", "<Plug>(nvim-surround-visual)", { desc = "surround visual" })
 
-
 vim.keymap.del("n", "H")
 vim.keymap.del("n", "L")
 

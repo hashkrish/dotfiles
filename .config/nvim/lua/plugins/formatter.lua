@@ -3,6 +3,7 @@ return {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+      local vim = vim -- luacheck: ignore
       local conform = require("conform")
 
       conform.setup({
@@ -11,6 +12,7 @@ return {
           typescript = { "prettier" },
           javascriptreact = { "prettier" },
           typescriptreact = { "prettier" },
+          go = { "gofumpt" },
           svelte = { "prettier" },
           css = { "prettier" },
           html = { "prettier" },
