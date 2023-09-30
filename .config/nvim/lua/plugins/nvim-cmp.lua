@@ -32,7 +32,7 @@ return {
         ["<C-n>"] = cmp.mapping.select_next_item(), -- next suggestion
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
+        ["<A-Space>"] = cmp.mapping.complete(), -- show completion suggestions
         ["<C-e>"] = cmp.mapping.abort(),        -- close completion window
         ["<CR>"] = cmp.mapping.confirm({ select = false }),
         ["<C-y>"] = cmp.mapping.confirm({ select = false }),
