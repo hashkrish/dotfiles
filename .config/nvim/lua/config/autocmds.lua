@@ -17,6 +17,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   callback = function()
     vim.o.shiftwidth = 4
     vim.o.tabstop = 4
+
+    vim.keymap.set("n", "<Space><C-i>", "<Cmd>!isort %<CR>", { desc = "isort" })
   end,
 })
 
@@ -57,13 +59,11 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-
-
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "dap-repl" },
   callback = function()
-    require('dap.ext.autocompl').attach()
-    vim.keymap.set('i', '<C-Space>', '<Plug>(dap-repl-completion)', { noremap = false })
-    vim.keymap.set('n', 'q', '<Plug>(dap-close)', { noremap = false })
+    require("dap.ext.autocompl").attach()
+    vim.keymap.set("i", "<C-Space>", "<Plug>(dap-repl-completion)", { noremap = false })
+    vim.keymap.set("n", "q", "<Plug>(dap-close)", { noremap = false })
   end,
 })

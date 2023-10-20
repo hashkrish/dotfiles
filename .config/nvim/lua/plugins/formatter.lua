@@ -21,12 +21,22 @@ return {
           markdown = { "prettier" },
           graphql = { "prettier" },
           lua = { "stylua" },
-          python = { "isort", "black" },
+          python = {
+            -- "isort_me",
+            "black",
+          },
         },
         format_on_save = {
           lsp_fallback = true,
           async = true,
           timeout_ms = 1000,
+        },
+        formatters = {
+          isort_me = {
+            command = "isort",
+            args = { "$FILENAME" },
+            stdin = false,
+          },
         },
       })
 

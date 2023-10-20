@@ -5,10 +5,10 @@ return {
       local vim = vim -- luacheck: ignore
 
       require("lint").linters_by_ft = {
-        typescript = { "eslint" },
-        typescriptreact = { "eslint" },
-        javascript = { "eslint" },
-        javascriptreact = { "eslint" },
+        typescript = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        javascript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
         lua = { "luacheck" },
         sh = { "shellcheck" },
         markdown = { "markdownlint" },
@@ -19,8 +19,8 @@ return {
         scss = { "stylelint" },
         sass = { "stylelint" },
         less = { "stylelint" },
-        vue = { "eslint" },
-        svelte = { "eslint" },
+        vue = { "eslint_d" },
+        svelte = { "eslint_d" },
         python = { "flake8" },
       }
 
