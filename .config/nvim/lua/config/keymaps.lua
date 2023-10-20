@@ -4,6 +4,7 @@
 
 -- local actions = require('telescope.actions')
 local builtin = require("telescope.builtin")
+local vim = vim
 
 vim.keymap.set("n", "<LEADER>gb", builtin.git_branches, { noremap = true, silent = true, desc = "branches" })
 vim.keymap.set("n", "<LEADER>gt", builtin.git_stash, { noremap = true, silent = true, desc = "stash" })
@@ -14,6 +15,14 @@ vim.keymap.set("x", "'", "<Plug>(nvim-surround-visual)", { desc = "surround visu
 
 vim.keymap.del("n", "H")
 vim.keymap.del("n", "L")
+vim.keymap.del("n", "<C-h>")
+vim.keymap.del("n", "<C-j>")
+vim.keymap.del("n", "<C-k>")
+vim.keymap.del("n", "<C-l>")
+vim.keymap.del("t", "<C-h>")
+vim.keymap.del("t", "<C-j>")
+vim.keymap.del("t", "<C-k>")
+vim.keymap.del("t", "<C-l>")
 
 vim.keymap.set("n", "<A-h>", "<Cmd>bp<CR>", { desc = "previous buffer" })
 vim.keymap.set("n", "<A-l>", "<Cmd>bn<CR>", { desc = "next buffer" })
