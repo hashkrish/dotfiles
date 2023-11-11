@@ -19,7 +19,7 @@ include /etc/sway/config-vars.d/*
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/krishnan/Pictures/earth1.jpg fill
+#output * bg /home/krishnan/Pictures/earth1.jpg fill
 #
 # Example configuration:
 #
@@ -333,7 +333,8 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     # status_command while true; do sh /home/krishnan/.config/sway/status_command.sh; sleep 1; done
-    status_command i3status --config ~/.config/i3status/config
+    # status_command i3status --config ~/.config/i3status/config
+    status_command waybar --config ~/.config/waybar/config
     # status_command i3bar --transparency
 
     colors {
