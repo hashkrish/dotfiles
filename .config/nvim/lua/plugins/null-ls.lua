@@ -1,8 +1,9 @@
 return {
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
+
       -- formatter
       table.insert(opts.sources, nls.builtins.formatting.prettier)
       -- table.insert(opts.sources, nls.builtins.formatting.prettierd)
@@ -13,6 +14,7 @@ return {
 
       -- linter
       table.insert(opts.sources, nls.builtins.code_actions.eslint_d)
+
       -- ts server
       table.insert(opts.sources, nls.builtins.diagnostics.tsserver)
       -- for golang
