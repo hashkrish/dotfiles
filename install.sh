@@ -1,13 +1,30 @@
 #!/usr/bin/env bash
 
-mv "$HOME/.bashrc" "$HOME/.bashrc_bkp"
-mv "$HOME/.vimrc" "$HOME/.vimrc_bkp"
-mv "$HOME/.config" "$HOME/.config_bkp"
-mv "$HOME/.xmonad" "$HOME/.xmonad_bkp"
-mv "$HOME/.tmux.conf" "$HOME/.tmux.conf_bkp"
+# Create .config directory if it doesn't exist
+mkdir -p "$HOME/.config"
 
-ln -s "$PWD/.bashrc" "$HOME/.bashrc"
-ln -s "$PWD/.vimrc" "$HOME/.vimrc"
-ln -s "$PWD/.config" "$HOME/.config"
-ln -s "$PWD/.xmonad" "$HOME/.xmonad"
-ln -s "$PWD/.tmux.conf" "$HOME/.tmux.conf"
+# Create symlinks for all directories in .config
+for dir in "$PWD"/.config/*; do
+    # If directory exists, move it to a backup
+    if [[ -d "$HOME/.config/$(basename $dir)" ]]; then
+        mv "$HOME/$dir" "$HOME/${dir}_bkp"
+    fi
+
+    # Create symlink
+    ln -s "$dir" "$HOME/.config/$(basename $dir)"
+done
+
+for file in .*; do
+    # Skip files
+    if [[ "$file" == ".config" || "$file" == ".git" || "$file" == ".gitignore" ]]; then
+        continue
+    fi
+
+    # If file exists, move it to a backup
+    if [[ -a "$HOME/$file" ]]; then
+        mv "$HOME/$file" "$HOME/${file}_bkp"
+    fi
+
+    # Create symlink
+    ln -s "$PWD/$file" "$HOME"
+done
