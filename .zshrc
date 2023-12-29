@@ -125,6 +125,11 @@ source ~/.usr_fn
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+if [ $TERM = "linux" ]; then
+    setfont ter-h24n
+fi
+TERM=xterm-256color
+
 export PATH=~/.local/bin:$PATH
 
 source ~/.bash_aliases
@@ -160,7 +165,10 @@ if [ -d "$HOME/go/bin" ]; then
 fi
 
 nvim-fzf() {
-    nvim $(zoxide query -i)
+    selection="$(zoxide query -i)"
+    if [ -n "$selection" ]; then
+        nvim "$selection"
+    fi
 }
 
 zle -N nvim-fzf

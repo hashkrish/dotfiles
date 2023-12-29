@@ -1,7 +1,7 @@
 * {
   /* `otf-font-awesome` is required to be installed for icons */
   font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 window#waybar {
@@ -53,8 +53,11 @@ button:hover {
 #workspaces button {
   margin-left: 0.15em;
   margin-right: 0.15em;
+  /* margin-top: 0.15em; */
+  /* margin-bottom: 0.15em; */
   background-color: transparent;
   color: #ffffff;
+  /* border-radius: 20; */
 }
 
 #workspaces button:hover {
@@ -308,5 +311,14 @@ label:focus {
 }
 
 #taskbar {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  padding-left: 10px;
+}
+
+#taskbar button {
+  border-radius: 5px;
+}
+
+#taskbar button.active {
+  background-color: rgba(100, 114, 125, 0.5);
 }

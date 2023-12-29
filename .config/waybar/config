@@ -1,8 +1,8 @@
 {
   "layer": "top", // Waybar at top layer
   "position": "top", // Waybar position (top|bottom|left|right)
-  "height": 20, // Waybar height (to be removed for auto height)
-  "spacing": 4, // Gaps between modules (4px)
+  "height": 10, // Waybar height (to be removed for auto height)
+  "spacing": 0, // Gaps between modules (4px)
   // "width": 1280, // Waybar width
 
   // Choose the order of the modules
@@ -17,7 +17,7 @@
   "modules-center": [],
   "modules-right": [
     "idle_inhibitor",
-    "mpd",
+    // "mpd",
     "pulseaudio",
     "network",
     "cpu",
@@ -40,7 +40,7 @@
       "1": "",
       "2": "",
       "3": "",
-      "4": "",
+      "4": "󰖟",
       "5": "󰯊",
       "6": "",
       "7": "",
@@ -79,11 +79,11 @@
   // Taskbar
   "wlr/taskbar": {
     "format": "{icon}",
-    "icon-size": 18,
+    "icon-size": 20,
     "tooltip-format": "{title}",
     "on-click": "activate",
     "on-click-middle": "close",
-    "ignore-list": ["Alacritty"],
+    "ignore-list": ["Alacritty", "float"],
     "app_ids-mapping": {
       "firefoxdeveloperedition": "firefox-developer-edition"
     },
@@ -133,13 +133,14 @@
     }
   },
   "tray": {
-    // "icon-size": 21,
+    "icon-size": 16,
     "spacing": 10
   },
   "clock": {
+    "format": "{:%d %A %H:%M}",
     // "timezone": "America/New_York",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}"
+    "format-alt": "{:%a, %d %b %Y %H:%M:%S %z}"
   },
   "cpu": {
     "format": "{usage}% ",
@@ -191,12 +192,12 @@
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
-    "format": "{volume}% {icon}  {format_source}",
+    "format": "{icon}   {volume}%    {format_source}",
     "format-bluetooth": "{volume}% {icon}  {format_source}",
     "format-bluetooth-muted": "{icon}  {format_source}",
     "format-muted": "{volume}% {icon}  {format_source}",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
+    "format-source": "  {volume}%",
+    "format-source-muted": " ",
     "format-icons": {
       "headphone": "",
       "hands-free": "",
