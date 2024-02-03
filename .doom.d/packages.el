@@ -51,3 +51,7 @@
 
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+
+;; mmm-mode
+;; (package! mmm-mode
+;;   :recipe (:host github :repo "purcell/mmm-mode"))

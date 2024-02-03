@@ -161,24 +161,6 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 ## Custom functions
 source ~/.usr_fn
 
-update-ssh-config() {
-	cat ~/.ssh/config
-	read -n 1 -p 'It will overwrite config file, do you want to proceed [y/n]?' res
-	pat='y|Y'
-	! [[ $res =~ $pat ]] && exit
-
-	gcloud compute instances list |
-		sed -n '1! p' |
-		awk '{print $1,$5}' |
-		while read name ip; do
-			echo "Host $name
-  HostName $ip
-  User ubuntu
-  Port 22
-"
-		done >~/.ssh/config
-}
-
 # One character alias
 
 # v() {
@@ -287,3 +269,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+source ~/.local/share/blesh/ble.sh

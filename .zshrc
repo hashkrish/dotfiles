@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="sorin_" # set by `omz`
+ZSH_THEME="sorin" # set by `omz`
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -125,9 +125,6 @@ source ~/.usr_fn
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [ $TERM = "linux" ]; then
-    setfont ter-h24n
-fi
 TERM=xterm-256color
 
 export PATH=~/.local/bin:$PATH
@@ -174,3 +171,7 @@ nvim-fzf() {
 zle -N nvim-fzf
 
 bindkey '^[e' nvim-fzf
+
+if [ $TERM = "linux" ]; then
+    setfont ter-h24n
+fi

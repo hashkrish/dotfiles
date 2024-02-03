@@ -22,7 +22,7 @@
     "network",
     "cpu",
     "memory",
-    // "temperature",
+    "temperature",
     "backlight",
     "keyboard-state",
     "battery",

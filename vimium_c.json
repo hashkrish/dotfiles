@@ -1,0 +1,75 @@
+{
+	"name": "Vimium C",
+	"@time": "1/8/2024, 2:08:37 PM",
+	"time": 1704703117084,
+	"environment": {
+		"extension": "1.99.994",
+		"platform": "linux",
+		"chromium": 120
+	},
+	"allBrowserUrls": true,
+	"exclusionRules": [
+		{
+			"passKeys": "",
+			"pattern": ":https://mail.google.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://docs.google.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://docs.google.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://replit.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://replit.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://leetcode.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://leetcode.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://script.google.com/"
+		},
+		{
+			"passKeys": "",
+			"pattern": ":https://script.google.com/"
+		},
+		{
+			"passKeys": "<c-d> ",
+			"pattern": ":https://meet.google.com/"
+		}
+	],
+	"keyLayout": 514,
+	"keyMappings": [
+		"#!no-check",
+		"unmap <c-e>",
+		"unmap <a-p>",
+		"unmap <a-t>",
+		""
+	],
+	"userDefinedCss": [
+		"/* #ui */",
+		".HUD.D:after { background: black; }",
+		"/* #omni */",
+		"#bar { background: #333; }",
+		"",
+		".LH, .D>.LH { background: green; }",
+		".LH { border: /*!DPI*/ 1px solid lightgreen; }",
+		"/* #omni */",
+		".s { background-color: #d8e3f3; }",
+		""
+	],
+	"vimSync": true,
+	"ignoreCapsLock": 1
+}

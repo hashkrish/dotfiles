@@ -86,3 +86,23 @@
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+;; mmm-mode(require 'mmm-mode)
+;; (setq mmm-global-mode 'maybe)
+
+;; (mmm-add-classes
+;;  '((markdown-lisp
+;;     :submode lisp-mode
+;;     :front "^```lisp[\n\r]+"
+;;     :back "^```$")
+;;    (markdown-bash
+;;     :submode sh-mode
+;;     :front "^```bash[\n\r]+"
+;;     :back "^```$")
+;;    (markdown-python
+;;     :submode python-mode
+;;     :front "^```python[\n\r]+"
+;;     :back "^```$")
+;;    ))
+
+;; (mmm-add-mode-ext-class 'markdown-mode nil 'markdown-lisp)
