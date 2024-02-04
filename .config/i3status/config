@@ -2,20 +2,13 @@ general {
         output_format = "i3bar"
         colors = true
         interval = 5
-        separator = " | "
+        separator = "  |  "
 }
 
-/* order += "ipv6" */
-/* order += "disk /" */
-/* order += "run_watch DHCP" */
-/* order += "run_watch VPNC" */
-/* order += "path_exists VPN" */
-/* order += "ethernet eth0" */
-/* order += "cpu_temperature 0" */
-/* order += "memory" */
-/* order += "load" */
-/* order += "tztime berlin" */
-/* order += "wireless wlp0s20f3" */
+order += "ethernet eth0"
+order += "load"
+order += "memory"
+order += "wireless wlan0"
 
 order += "volume master"
 order += "tztime local"
@@ -28,21 +21,21 @@ volume master {
         color_degraded="#ffffff95"
 }
 
-wireless wlp0s20f3 {
-        format_up = "  %essid"
-        format_down = "睊 "
+wireless wlan0 {
+        format_up = "   %ip"
+        format_down = "⚠ "
         color_good="#ffffff95"
 }
 
 ethernet eth0 {
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+        format_up = "󰈀 %ip (%speed)"
+        format_down = ""
 }
 
 battery 0 {
         format = "%status %percentage"
         format_down = "No battery"
-        status_chr = "󰠠"
+        status_chr = " "
         status_bat = "🔋"
         status_unk = "? UNK"
         status_full = "  "
@@ -65,7 +58,7 @@ path_exists VPN {
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M"
+        format = "%-d %A %H:%M %Z"
         hide_if_equals_localtime = false
 }
 
@@ -75,7 +68,7 @@ tztime berlin {
 }
 
 load {
-        format = "%5min"
+        format = "%1min"
 }
 
 cpu_temperature 0 {

@@ -13,6 +13,7 @@ set $term env WAYLAND_DISPLAY= alacritty
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 set $menu dmenu_run -p Run: -fn 'iosevka-13' | xargs
+# set $menu tofi-run | xargs
 
 # include /etc/sway/config-vars.d/*
 
@@ -68,10 +69,10 @@ exec swayidle -w \
     bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
     bindsym $mod+i exec alacritty --class floating -e 'ipython3'
 
-    bindsym $mod+underscore gaps inner current minus 5
-    bindsym $mod+equal gaps inner current plus 5
-    bindsym $mod+Shift+underscore gaps outer current minus 5
-    bindsym $mod+Shift+equal gaps outer current plus 5
+    bindsym $mod+Mod1+underscore gaps inner current minus 5
+    bindsym $mod+Mod1+equal gaps inner current plus 5
+    bindsym $mod+Mod1+Shift+underscore gaps outer current minus 5
+    bindsym $mod+Mod1+Shift+equal gaps outer current plus 5
 
     bindsym $mod+Mod1+c exec dmenu_clipboard
     bindsym $mod+Mod1+e exec alacritty -e dmenu_nvim
@@ -93,7 +94,7 @@ exec swayidle -w \
     bindsym $mod+Control+q restart
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+q exec [ "$(echo 'n\ny' | dmenu -p 'Do you really want to exit i3?' -fn 'iosevka-13')" = y ] && swaymsg exit || notify-send $?
+    bindsym $mod+Shift+q exec [ "$(echo -e 'n\ny' | dmenu -p 'Do you really want to exit i3?' -fn 'iosevka-13')" = y ] && swaymsg exit || notify-send $?
     bindsym $mod+Control+Shift+q exec swaymsg exit
     bindsym Mod3+b exec google-chrome
     bindsym $mod+Shift+z exec "i3lock -c 000000"
@@ -133,10 +134,10 @@ exec swayidle -w \
     bindsym $mod+Shift+Control+space fullscreen disable; focus mode_toggle; fullscreen enable
 
     # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left  move left  50 px
-    bindsym $mod+Shift+$down  move down  50 px
-    bindsym $mod+Shift+$up    move up    50 px
-    bindsym $mod+Shift+$right move right 50 px
+    bindsym $mod+Shift+$left  move left  100 px
+    bindsym $mod+Shift+$down  move down  100 px
+    bindsym $mod+Shift+$up    move up    100 px
+    bindsym $mod+Shift+$right move right 100 px
     # Ditto, with arrow keys
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
@@ -305,15 +306,16 @@ mode "resize" {
 }
 # Audio Control
 set $refresh_i3status killall -SIGUSR1 i3status
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 3%+ &
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 3%- &
+bindsym $mod+underscore exec --no-startup-id amixer Master 10%-
+bindsym $mod+equal exec --no-startup-id amixer Master 10%+
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset Master 3%+ &
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset Master 3%- &
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 &
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 &
-bindsym $mod+F7 exec --no-startup-id config-monitors &
+bindsym $mod+F7 exec --no-startup-id toggle-monitor &
 bindsym Print exec --no-startup-id flameshot gui
 
 bindsym Mod3+l exec redis-clear
@@ -329,7 +331,7 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     # status_command while true; do sh /home/krishnan/.config/sway/status_command.sh; sleep 1; done
-    status_command i3status --config ~/.config/i3status/config
+    status_command LC_ALL=C i3status --config ~/.config/i3status/config
 
     colors {
         statusline #ffffff95
@@ -376,8 +378,10 @@ focus_follows_mouse yes
 for_window [all] gaps inner all set 10
 for_window [all] gaps outer all set 5
 
-# exec picom &
-exec compton & # using compton instead of picom due to a bug in picom
+exec toggle-monitor || exit 0
+exec feh --bg-fill ~/Pictures/Wallpapers/current
+exec picom &
+# exec compton & # using compton instead of picom due to a bug in picom
 
 exec dunst &
 exec xmodmap ~/.Xmodmap &

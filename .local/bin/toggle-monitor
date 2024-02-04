@@ -1,0 +1,9 @@
+#!/bin/env sh
+intern=$(xrandr | grep -w connected | grep -P 'eDP\S+' -o)
+extern=$(xrandr | grep -w connected | grep -P 'HDMI\S+' -o)
+
+if xrandr | grep "$extern disconnected"; then
+    xrandr --output "$extern" --off --output "$intern" --mode 1920x1080
+else
+    xrandr --output "$intern" --off --output "$extern" --mode 3840x2160
+fi
