@@ -1,0 +1,30 @@
+[colors.normal]
+black = "#1d1f21"
+blue = "#61AFEF"
+cyan = "#56B6C2"
+green = "#98C379"
+magenta = "#C679DD"
+red = "#F07178"
+white = "#c5c8c6"
+yellow = "#E5C17C"
+
+[colors.primary]
+background = "#000000"
+foreground = "#c5c8c6"
+
+[font]
+size = 8.0
+
+[[keyboard.bindings]]
+key = "F11"
+
+[keyboard.bindings.command]
+args = ["-c", "wmctrl -ir $(xdotool getwindowfocus) -b toggle,fullscreen"]
+program = "/bin/sh"
+
+[window]
+opacity = 0.85
+
+[window.padding]
+x = 5
+y = 5
