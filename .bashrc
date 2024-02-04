@@ -205,7 +205,7 @@ get-key() {
 
 ## ble.sh
 # ble.sh theme
-ble-face auto_complete=fg=244
+# ble-face auto_complete=fg=244
 
 # ble.sh sabbrev
 ble-sabbrev B='| bat'
@@ -270,3 +270,9 @@ case ":$PATH:" in
 esac
 # pnpm end
 source ~/.local/share/blesh/ble.sh
+
+function cleanup() {
+    stty sane
+}
+
+trap cleanup EXIT
