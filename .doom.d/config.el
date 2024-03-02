@@ -105,4 +105,46 @@
 ;;     :back "^```$")
 ;;    ))
 
-;; (mmm-add-mode-ext-class 'markdown-mode nil 'markdown-lisp)
+(after! gh
+  (setq gh-username "hashkrish"))
+
+(use-package! request)
+(use-package! alert)
+(use-package! persist)
+(use-package! aio)
+(after! org-gcal
+  (setq org-gcal-client-id (string-trim (shell-command-to-string "sed -n 1p ~/.secret/org-gcal.secret"))
+        org-gcal-client-secret (string-trim (shell-command-to-string "sed -n 2p ~/.secret/org-gcal.secret"))
+        org-gcal-file-alist '(("krishnan@study.iitm.ac.in" .  "~/org/gcal.org"))
+        plstore-cache-passphrase-for-symmetric-encryption t))
+(use-package window-stool
+  :config
+  (add-hook 'prog-mode-hook #'window-stool-mode))
+
+(setq lsp-enable-file-watchers t)
+(setq lsp-file-watch-threshold 10000)
+
+(use-package! dashboard
+  :ensure t
+  :init
+  (setq initial-buffer-choice 'dashboard-open)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+  (setq dashboard-startup-banner "~/.config/emacs/images/dtmacs-logo.png")  ;; use custom image as banner
+  (setq dashboard-center-content nil) ;; set to 't' for centered content
+  (setq dashboard-items '((recents . 5)
+                          (agenda . 5 )
+                          (bookmarks . 3)
+                          (projects . 3)
+                          (registers . 3)))
+  :custom
+  (dashboard-modify-heading-icons '((recents . "file-text")
+				    (bookmarks . "book")))
+  :config
+  (dashboard-setup-startup-hook))
+
+(setq org-babel-default-header-args (cons '(:mkdir . "yes") org-babel-default-header-args))
+(setq org-babel-default-header-args:bash (cons '(:mkdir . "yes") org-babel-default-header-args))
+(setq org-babel-default-header-args:sh (cons '(:mkdir . "yes") org-babel-default-header-args))
