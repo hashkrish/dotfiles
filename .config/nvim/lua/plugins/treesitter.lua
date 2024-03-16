@@ -95,4 +95,13 @@ return {
             })
         end,
     },
+    {
+      "luckasRanarison/tree-sitter-hyprlang",
+      dependencies = { "nvim-treesitter/nvim-treesitter" },
+      config = function() 
+        vim.filetype.add({
+          pattern = { [".*/hyprland%.conf"] = "hyprlang" },
+        })
+      end
+    }
 }

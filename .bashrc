@@ -203,44 +203,47 @@ get-key() {
 #eval "$(starship init bash)"
 # figlet ${SHELL##*\/} | lolcat
 
-## ble.sh
-# ble.sh theme
-# ble-face auto_complete=fg=244
-
-# ble.sh sabbrev
-ble-sabbrev B='| bat'
-ble-sabbrev L='| less'
-ble-sabbrev G='| grep'
-ble-sabbrev H='--help | bat -l help'
-ble-sabbrev xa='| xargs'
-ble-sabbrev xc='| xsel -ib'
-ble-sabbrev xo='xsel -ob'
-
-ble-sabbrev gs='git status'
-ble-sabbrev gd='git diff'
-ble-sabbrev gds='git diff --staged'
-ble-sabbrev gc='git checkout'
-ble-sabbrev gcl='git clone'
-ble-sabbrev ga='git add'
-ble-sabbrev gb='git branch'
-ble-sabbrev gp='git push'
-ble-sabbrev gps='git push --set-upstream origin'
-ble-sabbrev gpl='git pull origin'
-ble-sabbrev gf='git fetch'
-ble-sabbrev gl='git log'
-ble-sabbrev ..='cd ..'
-
-# ble.sh sabbrev
-
-#ble.sh key-bindings
-ble-bind -m 'vi_imap' -f 'M-.' 'insert-last-argument'
-ble-bind -m 'auto_complete' -f 'C-I' 'auto_complete/insert-on-end'
-ble-bind -m 'auto_complete' -f 'M-i' 'auto_complete/insert-on-end'
-ble-bind -m 'vi_imap' -f 'M-f' 'forward-char'
-ble-bind -m 'vi_imap' -c 'C-M-r' "source ~/.bashrc"
-ble-bind -m 'vi_nmap' -c 'C-M-r' "source ~/.bashrc"
-ble-bind -m 'vi_imap' -f 'C-b' '@nomarked backward-cword'
-ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
+# ## ble.sh
+# if [ -f ~/.local/share/blesh/ble.sh ]; then
+#     source ~/.local/share/blesh/ble.sh
+#     # ble.sh theme
+#     ble-face auto_complete=fg=244
+#
+#     # ble.sh sabbrev
+#     ble-sabbrev B='| bat'
+#     ble-sabbrev L='| less'
+#     ble-sabbrev G='| grep'
+#     ble-sabbrev H='--help | bat -l help'
+#     ble-sabbrev xa='| xargs'
+#     ble-sabbrev xc='| xsel -ib'
+#     ble-sabbrev xo='xsel -ob'
+#
+#     ble-sabbrev gs='git status'
+#     ble-sabbrev gd='git diff'
+#     ble-sabbrev gds='git diff --staged'
+#     ble-sabbrev gc='git checkout'
+#     ble-sabbrev gcl='git clone'
+#     ble-sabbrev ga='git add'
+#     ble-sabbrev gb='git branch'
+#     ble-sabbrev gp='git push'
+#     ble-sabbrev gps='git push --set-upstream origin'
+#     ble-sabbrev gpl='git pull origin'
+#     ble-sabbrev gf='git fetch'
+#     ble-sabbrev gl='git log'
+#     ble-sabbrev ..='cd ..'
+#
+#     # ble.sh sabbrev
+#
+#     #ble.sh key-bindings
+#     ble-bind -m 'vi_imap' -f 'M-.' 'insert-last-argument'
+#     ble-bind -m 'auto_complete' -f 'C-I' 'auto_complete/insert-on-end'
+#     ble-bind -m 'auto_complete' -f 'M-i' 'auto_complete/insert-on-end'
+#     ble-bind -m 'vi_imap' -f 'M-f' 'forward-char'
+#     ble-bind -m 'vi_imap' -c 'C-M-r' "source ~/.bashrc"
+#     ble-bind -m 'vi_nmap' -c 'C-M-r' "source ~/.bashrc"
+#     ble-bind -m 'vi_imap' -f 'C-b' '@nomarked backward-cword'
+#     ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
+# fi
 
 # The next line updates PATH for the Google Cloud SDK.
 [ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ] &&

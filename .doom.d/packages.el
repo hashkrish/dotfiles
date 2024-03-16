@@ -55,3 +55,11 @@
 ;; mmm-mode
 ;; (package! mmm-mode
 ;;   :recipe (:host github :repo "purcell/mmm-mode"))
+
+(package! gh)
+(package! request :recipe (:host github :repo "tkf/emacs-request"))
+(package! alert)
+(package! persist)
+(package! aio)
+(package! org-gcal)
+(package! window-stool :recipe (:host github :repo "jaszhe/window-stool" :files ("*.el")))

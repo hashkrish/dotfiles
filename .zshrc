@@ -155,6 +155,8 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+source ~/.config/envman/PATH.env
+
 fpath=(/home/krishnan/.zsh-completions $fpath)
 
 if [ -d "$HOME/go/bin" ]; then
@@ -172,6 +174,14 @@ zle -N nvim-fzf
 
 bindkey '^[e' nvim-fzf
 
-if [ $TERM = "linux" ]; then
+if [ $TERM = "xterm-256color" ]; then
     setfont ter-h24n
+    echo "Do you want to start Hyprland?"
+    read -n 1 choice
+    if [[ $choice == y ]]; then
+        Hyprland
+    fi
 fi
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
