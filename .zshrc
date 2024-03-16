@@ -174,7 +174,7 @@ zle -N nvim-fzf
 
 bindkey '^[e' nvim-fzf
 
-if [ $TERM = "xterm-256color" ]; then
+if [ $TERM = "linux" ]; then
     setfont ter-h24n
     echo "Do you want to start Hyprland?"
     read -n 1 choice
