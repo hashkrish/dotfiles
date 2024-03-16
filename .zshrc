@@ -1,3 +1,13 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Enable to profile zsh startup
+# zmodload zsh/zprof
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -125,6 +135,8 @@ source ~/.usr_fn
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+_TERM=$TERM
+
 TERM=xterm-256color
 
 export PATH=~/.local/bin:$PATH
@@ -174,14 +186,22 @@ zle -N nvim-fzf
 
 bindkey '^[e' nvim-fzf
 
-if [ $TERM = "linux" ]; then
-    setfont ter-h24n
-    echo "Do you want to start Hyprland?"
-    read -n 1 choice
-    if [[ $choice == y ]]; then
-        Hyprland
-    fi
-fi
-
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# Enable to profile zsh startup
+# source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# zprof
+
+if [ $_TERM = "linux" ]; then
+    setfont ter-h24n
+    echo "Do you want to start Hyprland?"
+    read choice
+    if [ "$choice" = y ]; then
+        Hyprland
+    fi
+    unset _TERM
+fi

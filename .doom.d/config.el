@@ -34,15 +34,14 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-tomorrow-night)
 
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
+(add-to-list 'default-frame-alist '(alpha-background . 85)) ; set transparency
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -76,8 +75,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(add-to-list 'default-frame-alist '(alpha-background . 85))
-
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
@@ -87,23 +84,14 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
-;; mmm-mode(require 'mmm-mode)
-;; (setq mmm-global-mode 'maybe)
+;; mmm-mode
+(after! mmm-mode
+  (setq mmm-global-mode 'maybe)
+  (mmm-add-mode-ext-class 'markdown-mode nil 'markdown-lisp)
+  (mmm-add-classes '((markdown-lisp :submode lisp-mode :front "^```lisp[\n\r]+" :back "^```$")
+                     (markdown-bash :submode sh-mode :front "^```bash[\n\r]+" :back "^```$")
+                     (markdown-python :submode python-mode :front "^```python[\n\r]+" :back "^```$"))))
 
-;; (mmm-add-classes
-;;  '((markdown-lisp
-;;     :submode lisp-mode
-;;     :front "^```lisp[\n\r]+"
-;;     :back "^```$")
-;;    (markdown-bash
-;;     :submode sh-mode
-;;     :front "^```bash[\n\r]+"
-;;     :back "^```$")
-;;    (markdown-python
-;;     :submode python-mode
-;;     :front "^```python[\n\r]+"
-;;     :back "^```$")
-;;    ))
 
 (after! gh
   (setq gh-username "hashkrish"))

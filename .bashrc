@@ -153,7 +153,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 # Sourcing
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f "/home/krishnan/.ghcup/env" ] && source "/home/krishnan/.ghcup/env" # ghcup-env
-[ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
+# [ -f ~/.local/share/blesh/ble.sh ] && source ~/.local/share/blesh/ble.sh
 # Load Angular CLI autocompletion.
 # ng --help &> /dev/null && source <(ng completion script) # Load Angular CLI autocompletion.
 # [ -f ~/sources/z/z.sh ] && source ~/sources/z/z.sh
@@ -161,89 +161,10 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 ## Custom functions
 source ~/.usr_fn
 
-# One character alias
-
-# v() {
-#   if [ $# -eq 0 ]; then
-#     "$EDITOR" -c 'Telescope oldfiles'
-#   else
-#     "$EDITOR" $@
-#   fi
-# }
-
-install_missing_package() {
-	if [[ $? == 127 ]]; then
-		read -n 1 \
-			PACKAGE_NAME="$(history 2 | head -1 | awk '{print $2}')"
-		-p "Do you want to install $PACKAGE_NAME [y/n]?" \
-			should_install
-		echo
-		if [[ $should_install == y || $should_install == Y ]]; then
-			sudo apt install "$PACKAGE_NAME" -y
-		fi
-	fi
-}
-
-get-key() {
-	[[ $# == 0 ]] && echo Requires username
-	case $1 in
-	hashkrish)
-		xsel -ib <~/.hk_ghk
-		;;
-	krishnan314)
-		xsel -ib <~/.k3_ghk
-		;;
-	*)
-		echo No Key Found
-		;;
-	esac
-}
-
 ## Startup text and PS
 #eval "$(starship init bash)"
 # figlet ${SHELL##*\/} | lolcat
 
-# ## ble.sh
-# if [ -f ~/.local/share/blesh/ble.sh ]; then
-#     source ~/.local/share/blesh/ble.sh
-#     # ble.sh theme
-#     ble-face auto_complete=fg=244
-#
-#     # ble.sh sabbrev
-#     ble-sabbrev B='| bat'
-#     ble-sabbrev L='| less'
-#     ble-sabbrev G='| grep'
-#     ble-sabbrev H='--help | bat -l help'
-#     ble-sabbrev xa='| xargs'
-#     ble-sabbrev xc='| xsel -ib'
-#     ble-sabbrev xo='xsel -ob'
-#
-#     ble-sabbrev gs='git status'
-#     ble-sabbrev gd='git diff'
-#     ble-sabbrev gds='git diff --staged'
-#     ble-sabbrev gc='git checkout'
-#     ble-sabbrev gcl='git clone'
-#     ble-sabbrev ga='git add'
-#     ble-sabbrev gb='git branch'
-#     ble-sabbrev gp='git push'
-#     ble-sabbrev gps='git push --set-upstream origin'
-#     ble-sabbrev gpl='git pull origin'
-#     ble-sabbrev gf='git fetch'
-#     ble-sabbrev gl='git log'
-#     ble-sabbrev ..='cd ..'
-#
-#     # ble.sh sabbrev
-#
-#     #ble.sh key-bindings
-#     ble-bind -m 'vi_imap' -f 'M-.' 'insert-last-argument'
-#     ble-bind -m 'auto_complete' -f 'C-I' 'auto_complete/insert-on-end'
-#     ble-bind -m 'auto_complete' -f 'M-i' 'auto_complete/insert-on-end'
-#     ble-bind -m 'vi_imap' -f 'M-f' 'forward-char'
-#     ble-bind -m 'vi_imap' -c 'C-M-r' "source ~/.bashrc"
-#     ble-bind -m 'vi_nmap' -c 'C-M-r' "source ~/.bashrc"
-#     ble-bind -m 'vi_imap' -f 'C-b' '@nomarked backward-cword'
-#     ble-bind -m 'vi_imap' -f 'C-S-b' '@marked backward-cword'
-# fi
 
 # The next line updates PATH for the Google Cloud SDK.
 [ -f '/home/krishnan/Downloads/google-cloud-sdk/path.bash.inc' ] &&

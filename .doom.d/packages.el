@@ -53,8 +53,8 @@
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 ;; mmm-mode
-;; (package! mmm-mode
-;;   :recipe (:host github :repo "purcell/mmm-mode"))
+(package! mmm-mode
+  :recipe (:host github :repo "purcell/mmm-mode"))
 
 (package! gh)
 (package! request :recipe (:host github :repo "tkf/emacs-request"))
@@ -63,3 +63,4 @@
 (package! aio)
 (package! org-gcal)
 (package! window-stool :recipe (:host github :repo "jaszhe/window-stool" :files ("*.el")))
+(package! dashboard :recipe (:host github :repo "emacs-dashboard/emacs-dashboard"))

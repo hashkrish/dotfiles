@@ -13,7 +13,7 @@ background = "#000000"
 foreground = "#c5c8c6"
 
 [font]
-size = 8.0
+size = 14.0
 
 [[keyboard.bindings]]
 key = "F11"
