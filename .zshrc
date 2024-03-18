@@ -198,10 +198,11 @@ bindkey '^[e' nvim-fzf
 
 if [ $_TERM = "linux" ]; then
     setfont ter-h24n
-    echo "Do you want to start Hyprland?"
-    read choice
-    if [ "$choice" = y ]; then
-        Hyprland
-    fi
+    # echo "Do you want to start Hyprland?"
+    # read choice
+    # if [ "$choice" = y ]; then
+    #     Hyprland
+    # fi
+    Hyprland
     unset _TERM
 fi
