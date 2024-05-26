@@ -64,3 +64,5 @@
 (package! org-gcal)
 (package! window-stool :recipe (:host github :repo "jaszhe/window-stool" :files ("*.el")))
 (package! dashboard :recipe (:host github :repo "emacs-dashboard/emacs-dashboard"))
+(package! elixir-ts-mode :recipe (:host github :repo "wkirschbaum/elixir-ts-mode"))
+(package! org-jira :recipe (:host github :repo "ahungry/org-jira"))

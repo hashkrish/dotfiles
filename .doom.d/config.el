@@ -37,7 +37,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
-(add-to-list 'default-frame-alist '(alpha-background . 85)) ; set transparency
+(add-to-list 'default-frame-alist '(alpha-background . 90)) ; set transparency
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -100,11 +100,7 @@
 (use-package! alert)
 (use-package! persist)
 (use-package! aio)
-(after! org-gcal
-  (setq org-gcal-client-id (string-trim (shell-command-to-string "sed -n 1p ~/.secret/org-gcal.secret"))
-        org-gcal-client-secret (string-trim (shell-command-to-string "sed -n 2p ~/.secret/org-gcal.secret"))
-        org-gcal-file-alist '(("krishnan@study.iitm.ac.in" .  "~/org/gcal.org"))
-        plstore-cache-passphrase-for-symmetric-encryption t))
+(use-package! elixir-ts-mode)
 (use-package window-stool
   :config
   (add-hook 'prog-mode-hook #'window-stool-mode))
@@ -136,3 +132,16 @@
 (setq org-babel-default-header-args (cons '(:mkdir . "yes") org-babel-default-header-args))
 (setq org-babel-default-header-args:bash (cons '(:mkdir . "yes") org-babel-default-header-args))
 (setq org-babel-default-header-args:sh (cons '(:mkdir . "yes") org-babel-default-header-args))
+
+;; Disable format on save in web-mode
+;; Append to the list if you want to disable in more modes
+(setq +format-on-save-disabled-modes '(web-mode))
+
+;; Ignore deps in projectile
+(after! projectile
+  (add-to-list 'projectile-globally-ignored-directories "^deps$"))
+
+
+
+;; Mode hook
+(add-to-list 'auto-mode-alist '("\.rest$" . restclient-mode))

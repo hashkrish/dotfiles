@@ -37,7 +37,6 @@ exec-once = copyq --start-server &
 exec-once = dunst &
 exec-once = fcitx5 &
 exec-once = hyprpm reload -n
-exec-once = ianny &
 # exec-once = firefox &
 #+END_SRC
 
@@ -200,20 +199,20 @@ plugin {
     # }
   hy3 {
     # disable gaps when only one window is onscreen
-    no_gaps_when_only = <bool> # default: false
+    no_gaps_when_only = false # default: false
 
     # policy controlling what happens when a node is removed from a group,
     # leaving only a group
     # 0 = remove the nested group
     # 1 = keep the nested group
     # 2 = keep the nested group only if its parent is a tab group
-    node_collapse_policy = <int> # default: 2
+    node_collapse_policy = 2 # default: 2
 
     # offset from group split direction when only one window is in a group
-    group_inset = <int> # default: 10
+    group_inset = 10 # default: 10
 
     # if a tab group will automatically be created for the first window spawned in a workspace
-    tab_first_window = <bool>
+    tab_first_window = false
 
     # tab group settings
     tabs {
@@ -377,6 +376,8 @@ windowrulev2 = opacity 1, class:^(firefox)$, title:(Metabase)
 windowrulev2 = opacity 0.90 override 0.90 override, class:^(MuPDF)$
 windowrulev2 = opacity 0.90, class:libreoffice-calc
 windowrulev2 = float, title:^(.*gpg2.*password-store.*)$
+windowrulev2 = float, class:^(Pinentry-gtk-2)$
+
 windowrulev2 = float, title:^(Sign in.*Google Accounts)
 #+END_SRC
 

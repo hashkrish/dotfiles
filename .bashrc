@@ -129,7 +129,7 @@ export PATH="$HOME/gems/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$DENO_INSTALL/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
 
 # ALIAS
 # Use bash-completion, if available
@@ -148,7 +148,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\n❯ '
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
 
 # Sourcing
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -193,10 +193,18 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-source ~/.local/share/blesh/ble.sh
+# source ~/.local/share/blesh/ble.sh
 
 function cleanup() {
     stty sane
 }
 
 trap cleanup EXIT
+
+# pnpm
+export PNPM_HOME="/home/krishnan/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
