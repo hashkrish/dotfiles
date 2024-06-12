@@ -39,8 +39,8 @@ output * background /home/krishnan/Pictures/Wallpapers/current fill
 #
 # Example configuration:
 #
-# output HDMI-A-1 resolution 3840x2160 position 0 0
-# output eDP-1 resolution 1920x1080 position 960 2160
+output HDMI-A-1 resolution 3840x2160 position 0 0
+output eDP-1 resolution 1920x1080 position 960 2160
 
 # output eDP-1 scale 1 position 0 0 res 1920x1080
 
@@ -91,20 +91,12 @@ output * background /home/krishnan/Pictures/Wallpapers/current fill
     # bindsym Mod3+h exec echo xdotool key i | yad
 
     set $opacity 0.9
-    for_window [class=".*"] opacity $opacity
-    for_window [app_id=".*"] opacity $opacity
 
     # Toggle terminal transparency
     bindsym $mod+Shift+t exec --no-startup-id toggle-alacritty-transparency
 
 
 
-    for_window [instance="floating"] floating enabled
-    for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enabled
-    for_window [class="Yad"] floating enabled
-    for_window [class="Pavucontrol"] floating enabled
-    for_window [class="Org.gnome.Nautilus"] floating enabled
-    for_window [class="org.gnome.Nautilus"] floating enabled
 #
 # Moving around:
 #
@@ -341,24 +333,33 @@ bar {
     # status_command waybar --config ~/.config/waybar/config
     # status_command i3bar --transparency
     status_command i3blocks
+    # strip_workspace_numbers yes
+
+    tray {
+        tray_padding 4
+    }
 
     colors {
-        statusline #ffffff95
-        background #00000095
-        separator #33333385
-        focused_separator #33333385
+        statusline #ffffff75
+        background #000000
+        separator #000000
+        focused_statusline #ffffff85
+        focused_background #00000085
+        focused_separator #88888885
 
-        focused_workspace   #66666685   #66666685   #dddddd
-        active_workspace    #333333     #333333     #888888
-        inactive_workspace  #33333385   #33333385     #888888
+        #                   border      background  text
+        focused_workspace   #ffffff85   #66666685   #ffffff
+        active_workspace    #33333385   #66666655   #ffffff
+        inactive_workspace  #00000099   #00000099   #dddddd
     }
 }
 
 set $coloratt #ffffff50
 # class                         border          background      text            indicator       child_border
 client.focused                  #66666685       #66666685       #ffffff         $coloratt       #33333350
+client.focused_tab_title        #ff666685       #66666685       #ffffff         $coloratt       #33333350
 client.focused_inactive         #33333385       #33333399       #dddddd         $coloratt       #33333385
-client.unfocused                #33333385       #33333399       #888888         $coloratt       #33333385
+client.unfocused                #33333385       #33333399       #bbbbbb         $coloratt       #33333385
 client.urgent                   #2f343a         #900000         #ffffff         $coloratt       #900000
 client.placeholder              #000000         #000000         #ffffff         $coloratt       #0c0c0c
 
@@ -379,17 +380,26 @@ title_align center
 # hide_edge_borders smart
 
 
+focus_follows_mouse yes
+
+# for_window [class=".*"] opacity $opacity
+for_window [app_id="firefox"] opacity $opacity
+for_window [class="Vivaldi-stable"] opacity $opacity
 
 # for_window [all] title_window_icon yes
 for_window [class="mpv"] floating enable
 for_window [class="floating"] floating enable
+for_window [instance="floating"] floating enable
 for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
 for_window [class="Vivaldi-stable"] default_border none
-for_window [class="vivaldi-stable"] default_border none
 for_window [class="bruno"] default_border none
-for_window [all] default_border none
+# for_window [all] default_border none
 
-focus_follows_mouse yes
+for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enable
+for_window [class="Yad"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Org.gnome.Nautilus"] floating enable
+for_window [class="org.gnome.Nautilus"] floating enable
 
 exec picom &
 # exec waybar &
@@ -402,7 +412,7 @@ exec --no-startup-id dex --autostart --environment i3
 # exec "xautolock -detectsleep -time 3 -locker \"cmatrix -s\""
 exec copyq --start-server &
 
-exec google-chrome-work --new-window --app='https://mail.google.com/mail/u/0/#inbox'
+# exec google-chrome-work --new-window --app='https://mail.google.com/mail/u/0/#inbox'
 # exec ~/.local/bin/config-monitors
 # exec swaymsg focus output eDP-1
 # Restore GNOME's settings
