@@ -1,5 +1,9 @@
 # User configuration
 
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt SHARE_HISTORY
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -155,9 +159,13 @@ bindkey "^X^W" expand-word
 bindkey '^[e' nvim-fzf
 
 eval "$(starship init zsh)"
+eval $(uv generate-shell-completion zsh)
 
 source /home/krishnan/.zsh_aliases
 
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+source ~/.env.sh
 if [ $_TERM = "linux" ]; then
     setfont ter-h24n
     # echo "Do you want to start Hyprland?"
@@ -168,4 +176,9 @@ if [ $_TERM = "linux" ]; then
     sway
     unset _TERM
 fi
+eval "$(atuin init zsh)"
 
+if [ -n "$INSIDE_EMACS" ]; then
+  set -o emacs
+  export EDITOR=
+fi

@@ -23,10 +23,14 @@ input "type:touchpad" {
     natural_scroll enabled
 }
 
+# exec_always --no-startup-id xkbcomp -I$HOME $HOME/.config/custom/xkb_keymaps $DISPLAY
+
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_run -p Run: -fn 'iosevka-13' | xargs
+
+# set $menu dmenu_run -p Run: -fn 'iosevka-13' | xargs
+set $menu $(tofi-run)
 
 include /etc/sway/config-vars.d/*
 
@@ -41,6 +45,9 @@ output * background /home/krishnan/Pictures/Wallpapers/current fill
 #
 output HDMI-A-1 resolution 3840x2160 position 0 0
 output eDP-1 resolution 1920x1080 position 960 2160
+
+# output HDMI-A-1 resolution 3840x2160 position 0 0 transform 270
+# output eDP-1 resolution 1920x1080 position 0 3840
 
 # output eDP-1 scale 1 position 0 0 res 1920x1080
 
@@ -58,7 +65,9 @@ output eDP-1 resolution 1920x1080 position 960 2160
     bindsym $mod+p exec $menu
     bindsym $mod+Shift+p exec dmenu-websearch
     bindsym $mod+Control+p exec alacritty --class floating -e $(dmenu_alacritty -p Alacritty: -fn 'iosevka-13' )
-    bindsym $mod+o exec /home/krishnan/.config/rofi/launchers/type-1/launcher.sh
+    bindsym $mod+Mod1+p exec passmenu
+    # bindsym $mod+o exec /home/krishnan/.config/rofi/launchers/type-1/launcher.sh
+    bindsym $mod+o exec $(tofi-drun)
     bindsym $mod+Shift+a exec ":ghw"
     bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
     bindsym $mod+i exec alacritty --class floating -e 'ipython3'
@@ -77,7 +86,7 @@ output eDP-1 resolution 1920x1080 position 960 2160
     # Reload the configuration file
     bindsym $mod+q reload
     bindsym $mod+Control+q restart
-    bindsym Mod1+Control+q reload
+    bindsym Mod1+Control+delete reload
     bindsym Mod1+Control+Shift+q restart
 
     # Exit sway (logs you out of your Wayland session)
@@ -207,6 +216,7 @@ output eDP-1 resolution 1920x1080 position 960 2160
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
+    bindsym Mod3+i fullscreen
 
     # Toggle the current focus between tiling and floating mode
     bindsym $mod+t floating toggle
@@ -237,6 +247,46 @@ bindsym $mod+Ctrl+l resize grow width 50 px
 bindsym $mod+Ctrl+k resize grow height 50 px
 bindsym $mod+Ctrl+j resize shrink height 50 px
 
+bindsym $mod+semicolon mode "semicolon"
+mode "semicolon" {
+    bindsym $mod+a exec app-list; mode "default"
+    bindsym $mod+d exec dsadmin-query; mode "default"
+    bindsym $mod+e exec alacritty -e nvim; mode "default"
+    bindsym $mod+j exec jira-issue-list; mode "default"
+    bindsym $mod+g exec gh-pr-list; mode "default"
+    bindsym $mod+semicolon exec /home/krishnan/.local/bin/toggle-scratch.sh
+
+
+    # Return to default mode
+    bindsym Return mode "default"
+}
+
+bindsym $mod+d mode "mouse"
+mode "mouse" {
+
+    # mouse wheel to switch next workspace
+    bindsym --whole-window  {
+        button1 mode "default"
+        button2 mode "default"
+        button3 mode "default"
+        button4 workspace prev
+        button5 workspace next
+    }
+
+    bindsym escape mode "default"
+    bindsym $mod+d fullscreen; mode "default"
+}
+
+bindsym $mod+slash mode "search"
+mode "search" {
+    bindsym Shift+j exec ja-search; mode "default"
+    bindsym j exec ja-search text; mode "default"
+    bindsym $mod+j exec ja-search text; mode "default"
+
+    bindsym $mod+slash mode "default"
+
+}
+
 bindsym $mod+Shift+space mode "space"
 mode "space" {
 
@@ -260,6 +310,9 @@ mode "space" {
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
+
+    bindsym $mod+equal gaps inner plus 5
+    bindsym $mod+minus gaps inner minus 5
 }
 
 mode "resize" {
@@ -314,7 +367,7 @@ bindsym $mod+Shift+minus exec --no-startup-id brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
-bindsym $mod+F7 exec --no-startup-id config-monitors &
+bindsym $mod+F7 exec --no-startup-id config-monitors
 bindsym Print exec --no-startup-id grim -g "$(slurp)" - | wl-copy
 
 bindsym Mod3+l exec redis-clear
@@ -356,10 +409,10 @@ bar {
 
 set $coloratt #ffffff50
 # class                         border          background      text            indicator       child_border
-client.focused                  #66666685       #66666685       #ffffff         $coloratt       #33333350
+client.focused                  #33333385       #33333399       #ffffff         $coloratt       #33333350
 client.focused_tab_title        #ff666685       #66666685       #ffffff         $coloratt       #33333350
 client.focused_inactive         #33333385       #33333399       #dddddd         $coloratt       #33333385
-client.unfocused                #33333385       #33333399       #bbbbbb         $coloratt       #33333385
+client.unfocused                #00000085       #00000085       #bbbbbb         $coloratt       #33333385
 client.urgent                   #2f343a         #900000         #ffffff         $coloratt       #900000
 client.placeholder              #000000         #000000         #ffffff         $coloratt       #0c0c0c
 
@@ -377,29 +430,45 @@ title_align center
 # default_border none
 # default_floating_border none
 # hide_edge_borders both
-# hide_edge_borders smart
 
+smart_gaps on
+gaps inner 10
+gaps outer 0
+hide_edge_borders --i3 smart
+workspace_layout tabbed
 
 focus_follows_mouse yes
 
+# # OPACITY
 # for_window [class=".*"] opacity $opacity
 for_window [app_id="firefox"] opacity $opacity
-for_window [class="Vivaldi-stable"] opacity $opacity
+for_window [app_id="zen-beta"] opacity $opacity
+for_window [app_id="com.github.hluk.copyq"] opacity $opacity
 
+# # FLOATING
 # for_window [all] title_window_icon yes
 for_window [class="mpv"] floating enable
 for_window [class="floating"] floating enable
 for_window [instance="floating"] floating enable
-for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
-for_window [class="Vivaldi-stable"] default_border none
-for_window [class="bruno"] default_border none
-# for_window [all] default_border none
-
+for_window [title="Live Caption"] floating enable
 for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enable
 for_window [class="Yad"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Org.gnome.Nautilus"] floating enable
 for_window [class="org.gnome.Nautilus"] floating enable
+for_window [app_id="com.github.hluk.copyq"] floating enable
+
+
+# # MOVEMENT
+for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
+for_window [title="scratchpad-tmux"] move container to scratchpad
+
+# # BORDER
+for_window [class="Vivaldi-stable"] default_border none
+for_window [class="bruno"] default_border none
+# for_window [all] default_border none
+# for_window [app_id="zen-beta"] default_border none
+
 
 exec picom &
 # exec waybar &
