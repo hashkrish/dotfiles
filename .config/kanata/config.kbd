@@ -1,0 +1,16 @@
+;; Kanata configuration for hold Escape to Hyper key
+
+(defsrc
+  esc f i j k l)
+
+(defalias
+  eschyper (tap-hold 100 100 esc esc))
+
+;; Hold f activates arrows for keys: i j k l
+(defalias f (tap-hold 200 200 f
+  (layer-while-held arrows)))
+
+(deflayer default
+  @eschyper @f i j k l)
+
+(deflayer arrows _ _ up left down right)
