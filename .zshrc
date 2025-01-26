@@ -111,7 +111,7 @@ zplug "plugins/git",   from:oh-my-zsh
 zplug load
 
 # source /home/krishnan/sources/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-source /home/krishnan/.zsh_aliases
+source ~/.zsh_aliases
 
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
@@ -160,8 +160,6 @@ bindkey '^[e' nvim-fzf
 
 eval "$(starship init zsh)"
 eval $(uv generate-shell-completion zsh)
-
-source /home/krishnan/.zsh_aliases
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 
