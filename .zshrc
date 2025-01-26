@@ -16,8 +16,8 @@ export BAT_THEME="OneHalfDark"
 # export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANPAGER=less
 
-# NVM 
-source /usr/share/nvm/init-nvm.sh
+# NVM
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 
 # Perl
 export GEM_HOME="$HOME/gems"
@@ -76,7 +76,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-source ~/.config/envman/PATH.env
+[ -f ~/.config/envman/PATH.env ] && source ~/.config/envman/PATH.env
 
 fpath=(/home/krishnan/.zsh-completions $fpath)
 
@@ -165,7 +165,7 @@ source /home/krishnan/.zsh_aliases
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-source ~/.env.sh
+[ -f ~/.env.sh ] && source ~/.env.sh
 if [ $_TERM = "linux" ]; then
     setfont ter-h24n
     # echo "Do you want to start Hyprland?"
