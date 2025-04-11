@@ -54,9 +54,9 @@ output eDP-1 resolution 1920x1080 position 960 2160
 # focus output eDP-1
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
-    bindsym $mod+Return exec $term -e 'tmux'
+    bindsym $mod+Return exec $term --class alacritty-tile -e 'tmux'
     # bindsym $mod+Shift+Return exec --no-startup-id $term --class floating -e 'tmux attach-session -t scratchpad'
-    bindsym $mod+Shift+Return exec --no-startup-id $term --class floating -e 'tmux'
+    bindsym $mod+Shift+Return exec --no-startup-id $term -e 'tmux'
 
     # Kill focused window
     bindsym $mod+Shift+c kill
@@ -250,10 +250,13 @@ bindsym $mod+Ctrl+j resize shrink height 50 px
 bindsym $mod+semicolon mode "semicolon"
 mode "semicolon" {
     bindsym $mod+a exec app-list; mode "default"
+    bindsym $mod+b exec zen-browser; mode "default"
+    bindsym $mod+c exec copyq show; mode "default"
     bindsym $mod+d exec dsadmin-query; mode "default"
-    bindsym $mod+e exec alacritty -e nvim; mode "default"
-    bindsym $mod+j exec jira-issue-list; mode "default"
+    bindsym $mod+e exec emacsclient --alternate-editor= --create-frame; mode "default"
     bindsym $mod+g exec gh-pr-list; mode "default"
+    bindsym $mod+j exec jira-issue-list; mode "default"
+    bindsym $mod+r exec redis-clear; mode "default"
     bindsym $mod+semicolon exec /home/krishnan/.local/bin/toggle-scratch.sh
 
 
@@ -284,7 +287,7 @@ mode "search" {
     bindsym $mod+j exec ja-search text; mode "default"
 
     bindsym $mod+slash mode "default"
-
+    bindsym Return mode "default"
 }
 
 bindsym $mod+Shift+space mode "space"
@@ -442,8 +445,10 @@ focus_follows_mouse yes
 # # OPACITY
 # for_window [class=".*"] opacity $opacity
 for_window [app_id="firefox"] opacity $opacity
-for_window [app_id="zen-beta"] opacity $opacity
+for_window [app_id="zen"] opacity $opacity
 for_window [app_id="com.github.hluk.copyq"] opacity $opacity
+for_window [class="Code"] opacity $opacity
+for_window [instance="code"] opacity $opacity
 
 # # FLOATING
 # for_window [all] title_window_icon yes
@@ -453,10 +458,13 @@ for_window [instance="floating"] floating enable
 for_window [title="Live Caption"] floating enable
 for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enable
 for_window [class="Yad"] floating enable
+for_window [class="feh"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Org.gnome.Nautilus"] floating enable
 for_window [class="org.gnome.Nautilus"] floating enable
 for_window [app_id="com.github.hluk.copyq"] floating enable
+for_window [app_id="Alacritty"] floating enable, resize set 1600 900
+
 
 
 # # MOVEMENT

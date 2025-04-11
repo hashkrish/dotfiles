@@ -132,19 +132,156 @@
   :config
   (dashboard-setup-startup-hook))
 
+(use-package! copilot-chat
+  :after (request org markdown-mode)
+  :config
+  (setq copilot-chat-frontend 'org) ; You can choose 'markdown or 'shell-maker instead
+  :bind (:map global-map
+              ("C-c C-y" . copilot-chat-yank)
+              ("C-c M-y" . copilot-chat-yank-pop)
+              ("C-c C-M-y" . (lambda () (interactive) (copilot-chat-yank-pop -1)))))
+
 (setq org-babel-default-header-args (cons '(:mkdir . "yes") org-babel-default-header-args))
 (setq org-babel-default-header-args:bash (cons '(:mkdir . "yes") org-babel-default-header-args))
 (setq org-babel-default-header-args:sh (cons '(:mkdir . "yes") org-babel-default-header-args))
 
 ;; Disable format on save in web-mode
 ;; Append to the list if you want to disable in more modes
-(setq +format-on-save-disabled-modes '(web-mode))
+(setq +format-on-save-disabled-modes '(web-mode dockerfile-mode))
 
 ;; Ignore deps in projectile
 (after! projectile
-  (add-to-list 'projectile-globally-ignored-directories "^deps$"))
+  (add-to-list 'projectile-globally-ignored-directories "deps"))
+
+;; Org-Jira
+(after! org-jira
+  (setq jiralib-url "https://nptel-hq.atlassian.net")
+  (setq jiralib-token
+        (cons "Authorization"
+              (concat "Bearer "
+                      (auth-source-pick-first-password
+                       :host "nptel-hq.atlassian.net")))))
+
+(after! consult-gh
+  (setq consult-gh-default-orgs-list '("hashkrish"))
+  (setq consult-gh-default-orgs-list (append consult-gh-default-orgs-list
+                                             (remove "" (split-string
+                                                         (or (consult-gh--command-to-string "org" "list") "") "\n"))))
+  (setq consult-gh-default-clone-directory "~/sources/"))
 
 
 
 ;; Mode hook
 (add-to-list 'auto-mode-alist '("\.rest$" . restclient-mode))
+
+;; Disable
+;; (setq highlight-indent-guides-auto-enabled f)
+
+;; Use zsh as shell
+(setq shell-file-name "/usr/bin/zsh")
+(setq explicit-shell-file-name "/usr/bin/zsh")
+
+
+;; Environmental Variables
+(setenv "PATH" (concat (getenv "PATH") ":/home/krishnan/go/bin"))
+
+
+(defun datastore-run-query ()
+  "Send a REST request to the datastore and process the response."
+  (interactive)
+  (let* ((url "http://localhost:8080/v1/projects/test:runQuery")
+         (query '(:gqlQuery (:queryString "select * from StudentCredits where account=key(Account, 2571) and level='DEGREE'"
+                             :allowLiterals t)))
+         (json-data (json-encode query))
+         (response-buffer (url-retrieve-synchronously
+                           url
+                           nil
+                           (lambda (_url-request-data)
+                             (setq url-request-method "POST")
+                             (setq url-request-extra-headers
+                                   '(("Content-Type" . "application/json")))
+                             (setq url-request-data json-data)))))
+    (if response-buffer
+        (with-current-buffer response-buffer
+          (goto-char (point-min))
+          (re-search-forward "\n\n" nil t) ; Skip headers
+          (let* ((json-object-type 'alist)
+                 (json-array-type 'list)
+                 (json-key-type 'symbol)
+                 (result (json-read)))
+            (kill-buffer response-buffer)
+            (message "Response: %s" (pp-to-string result))
+            result))
+      (error "Failed to retrieve data from datastore"))))
+
+(defun datastore-run-query-debug ()
+  "Send a REST request to the datastore and debug the response."
+  (interactive)
+  (let* ((url "http://localhost:8080/v1/projects/test:runQuery")
+         (query '(:gqlQuery (:queryString "select * from StudentCredits where account=key(Account, 2571) and level='DEGREE'"
+                             :allowLiterals t)))
+         (json-data (json-encode query))
+         (response-buffer (url-retrieve-synchronously
+                           url
+                           nil
+                           (lambda (_ignored)
+                             (setq url-request-method "POST")
+                             (setq url-request-extra-headers
+                                   '(("Content-Type" . "application/json")
+                                     ))
+                             (setq url-request-data json-data)))))
+    (if response-buffer
+        (with-current-buffer response-buffer
+          ;; Show the entire buffer content for debugging
+          (message "\n\nRequest:\n%s" json-data)
+          (message "Raw Response:\n%s" (buffer-string))
+          (kill-buffer response-buffer))
+      (error "Failed to retrieve data from datastore"))))
+
+;; data store
+(add-load-path! "/home/krishnan/sources/dsq")
+
+(after! request
+  (require 'dsq))
+
+(map! :leader
+      (:prefix ("m" . "local")
+       :desc "Load current file" "l" #'my/load-current-file))
+
+
+(defun my/load-current-file ()
+  "Load the current buffer file."
+  (interactive)
+  (when (buffer-file-name)
+    (load-file (buffer-file-name))
+    (message "Loaded %s" (buffer-file-name))))
+
+(map! :leader
+      (:prefix ("o" . "open")
+       :desc "Show Copilot Chat Buffer" "c" 'copilot-chat-display))
+
+(map! :leader
+      (:prefix ("d" . "dsq")
+       :desc "Set Kind (Table)"         "k" #'dsq-select-kind
+       :desc "Set Namespace"            "n" #'dsq-select-namespace
+       :desc "Add Filter"               "f" #'dsq-add-filter
+       :desc "Set Limit"                "l" #'dsq-set-limit
+       :desc "Set Order"                "o" #'dsq-set-order
+       :desc "Preview Query JSON"        "p" #'dsq-preview-query
+       :desc "Run Query"                "r" #'dsq-run-query
+       :desc "Put Entity"               "s" #'dsq-put-entity
+       :desc "Reset Query"              "x" #'dsq-reset-query
+       :desc "Upsert Entity"            "P" #'dsq-upsert-entity))
+
+(map! :n "C-i" #'better-jumper-jump-forward)
+
+;; (use-package codeium
+;;   :ensure t
+;;   :init
+;;   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+;;   :config
+;;   (setq codeium/metadata `((client_language . "emacs"))))
+
+;; (after! apheleia
+;;   (setf (alist-get 'yaml-mode apheleia-mode-alist)
+;;         '("prettier" "--stdin-filepath" filepath "--tab-width" "2" "--use-tabs" "false")))

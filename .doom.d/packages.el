@@ -57,6 +57,7 @@
   :recipe (:host github :repo "purcell/mmm-mode"))
 
 (package! gh)
+(package! consult-gh :recipe (:host github :repo "armindarvish/consult-gh" :branch "main"))
 (package! request :recipe (:host github :repo "tkf/emacs-request"))
 (package! alert)
 (package! persist)
@@ -66,3 +67,6 @@
 (package! dashboard :recipe (:host github :repo "emacs-dashboard/emacs-dashboard"))
 (package! elixir-ts-mode :recipe (:host github :repo "wkirschbaum/elixir-ts-mode"))
 (package! org-jira :recipe (:host github :repo "ahungry/org-jira"))
+(package! forge :recipe (:host github :repo "magit/forge"))
+(package! copilot-chat :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
+;; (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
