@@ -104,6 +104,7 @@
 (use-package! persist)
 (use-package! aio)
 (use-package! elixir-ts-mode)
+(use-package! nushell-mode)
 (use-package window-stool
   :config
   (add-hook 'prog-mode-hook #'window-stool-mode))
@@ -259,6 +260,10 @@
 (map! :leader
       (:prefix ("o" . "open")
        :desc "Show Copilot Chat Buffer" "c" 'copilot-chat-display))
+
+(map! :leader
+      (:prefix ("o" . "open")
+       :desc "Docker Compose" "C" 'docker-compose))
 
 (map! :leader
       (:prefix ("d" . "dsq")
