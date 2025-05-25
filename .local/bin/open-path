@@ -1,0 +1,38 @@
+#!/bin/env bash
+set -euox pipefail
+
+file_line="$(
+  wl-paste |
+    grep -Po 'File "(.+)", line (\d+),' |
+    sed -E 's/File "(.+)", line ([0-9]+),/\1:\2/' |
+    # tofi
+    fzf -1
+)"
+file="${file_line%%:*}"
+line="${file_line##*:}"
+
+EDITOR="emacsclient -rn"
+
+if [[ -z "$file" ]]; then
+  echo "No file found in clipboard."
+  notify-send "No file found in clipboard."
+  exit 1
+fi
+
+if [[ ! -f "$file" ]]; then
+  echo "File not found: $file"
+  notify-send "File not found: $file"
+  exit 1
+fi
+
+if [[ "$EDITOR" == emacsclient* || "$EDITOR" == emacs* ]]; then
+  $EDITOR +"$line" "$file"
+elif [[ "$EDITOR" == code ]]; then
+  $EDITOR --goto "$file:$line"
+elif [[ "$EDITOR" == *vim ]]; then
+  $EDITOR +"$line" "$file"
+else
+  echo "Unsupported editor: $EDITOR"
+  notify-send "Unsupported editor: $EDITOR"
+  exit 1
+fi
