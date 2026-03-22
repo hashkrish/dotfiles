@@ -1,16 +1,33 @@
-;; Kanata configuration for hold Escape to Hyper key
+(defcfg
+	process-unmapped-keys yes
+)
 
 (defsrc
-    esc f h j k l)
+    	spc
 
-(defalias
-    eschyper (tap-hold 100 100 esc esc))
+	lctrl
+	lalt
+	lshift
+	lmeta
+)
+    
 
-;; Hold f activates arrows for keys: h j k l
-(defalias f (tap-hold 100 100 f
-             (layer-while-held arrows)))
+(defalias 
+	;; Hold space sends super, tap space sends space
+	space-super (tap-hold 200 100 spc lalt)
+
+	;; One shot modifiers
+	os-ctrl  (tap-hold 200 200 (one-shot 2000 lctl) lctl)
+	os-alt   (tap-hold 200 200 (one-shot 2000 lalt) lalt)
+	os-shift (tap-hold 200 200 (one-shot 2000 lshift) lshift)
+	os-super (tap-hold 200 200 (one-shot 2000 lmeta) lmeta)
+)
 
 (deflayer default
-    @eschyper @f h j k l)
+    	@space-super
 
-(deflayer arrows _ _ left down up right)
+	@os-ctrl
+	@os-alt
+	@os-shift
+	@os-super
+)
