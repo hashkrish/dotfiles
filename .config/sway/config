@@ -1,323 +1,397 @@
-### Variables
-#
+
+### VARIABLES
+### ============================================
+
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
+
 # Home row direction keys, like vim
 set $left h
 set $down j
 set $up k
 set $right l
+
 # Your preferred terminal emulator
-# set $term env WAYLAND_DISPLAY= alacritty
 set $term alacritty
+
+# Your preferred application launcher
+set $menu $(tofi-run)
+
+# Opacity settings
+set $opacity 0.9
+
+# Window centering dimensions
+set $center_height 1000px
+set $center_width 1700px
+
+# Color for indicators
+set $coloratt #ffffff50
+
+# i3status refresh
+set $refresh_i3status killall -SIGUSR1 i3status
+
+
+### ============================================
+### INPUT CONFIGURATION
+### ============================================
 
 input type:keyboard {
     xkb_layout us
-    xkb_variant ,nodeadkeys
-    xkb_options ctrl:nocaps
+    xkb_variant ,nodeadkeys 
+    xkb_options ctrl:nocaps,altwin:swap_lalt_lwin
 }
 
-input "type:touchpad" {
+input type:touchpad {
     dwt enabled
     tap enabled
     natural_scroll enabled
 }
 
-# exec_always --no-startup-id xkbcomp -I$HOME $HOME/.config/custom/xkb_keymaps $DISPLAY
+input type:pointer {
+    pointer_accel -0.6
+}
 
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
+# Drag floating windows by holding down $mod and left mouse button.
+# Resize them with right mouse button + $mod.
+floating_modifier $mod
 
-# set $menu dmenu_run -p Run: -fn 'iosevka-13' | xargs
-set $menu $(tofi-run)
 
-include /etc/sway/config-vars.d/*
+### ============================================
+### OUTPUT CONFIGURATION
+### ============================================
 
-### Output configuration
-#
-exec /home/krishnan/.local/bin/config-monitors &
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+# exec /home/krishnan/.local/bin/config-monitors &
+
+# Default wallpaper
 output * background /home/krishnan/Pictures/Wallpapers/current fill
 
-#
-# Example configuration:
-#
+# Monitor configuration
 output HDMI-A-1 resolution 3840x2160 position 0 0
-output eDP-1 resolution 1920x1080 position 960 2160
+output eDP-1 resolution 1920x1200 position 960 2160
 
+# Alternative configurations (commented)
 # output HDMI-A-1 resolution 3840x2160 position 0 0 transform 270
 # output eDP-1 resolution 1920x1080 position 0 3840
-
 # output eDP-1 scale 1 position 0 0 res 1920x1080
-
 # focus output eDP-1
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
-    bindsym $mod+Return exec $term --class alacritty-tile -e 'tmux'
-    # bindsym $mod+Shift+Return exec --no-startup-id $term --class floating -e 'tmux attach-session -t scratchpad'
-    bindsym $mod+Shift+Return exec --no-startup-id $term -e 'tmux'
 
-    # Kill focused window
-    bindsym $mod+Shift+c kill
-
-    # Start your launcher
-    bindsym $mod+p exec $menu
-    bindsym $mod+Shift+p exec dmenu-websearch
-    bindsym $mod+Control+p exec alacritty --class floating -e $(dmenu_alacritty -p Alacritty: -fn 'iosevka-13' )
-    bindsym $mod+Mod1+p exec passmenu
-    # bindsym $mod+o exec /home/krishnan/.config/rofi/launchers/type-1/launcher.sh
-    bindsym $mod+o exec $(tofi-drun)
-    bindsym $mod+Shift+a exec ":ghw"
-    bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
-    bindsym $mod+i exec alacritty --class floating -e 'ipython3'
-
-    # Toggle i3bar
-    bindsym $mod+Shift+N bar mode toggle
-
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    # floating_modifier $mod normal
-    floating_modifier $mod
-
-    # Reload the configuration file
-    bindsym $mod+q reload
-    bindsym $mod+Control+q restart
-    bindsym Mod1+Control+delete reload
-    bindsym Mod1+Control+Shift+q restart
-
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+q exec [ "$(echo 'n\ny' | dmenu -p 'Do you really want to exit i3?' -fn 'iosevka-13')" = y ] && swaymsg exit || notify-send $?
-    bindsym $mod+Control+Shift+q exec swaymsg exit
-    bindsym Mod3+b exec google-chrome
-    bindsym $mod+Shift+z exec "swaylock -c 000000"
-
-    bindsym $mod+Shift+semicolon exec /home/krishnan/.local/bin/:commands
-    # Hyper+hjkl as arrow keys
-    # bindsym Mod3+h exec echo xdotool key i | yad
-
-    set $opacity 0.9
-
-    # Toggle terminal transparency
-    bindsym $mod+Shift+t exec --no-startup-id toggle-alacritty-transparency
+include /etc/sway/config-vars.d/*
 
 
+### ============================================
+### APPEARANCE & THEMING
+### ============================================
 
-#
-# Moving around:
-#
-    # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
-    # Or use $mod+[up|down|left|right]
-    bindsym $mod+Left focus left
-    bindsym $mod+Down focus down
-    bindsym $mod+Up focus up
-    bindsym $mod+Right focus right
+# Font
+font pango:DroidSansMono Nerd Font, 12
 
-    bindsym $mod+Shift+Control+h fullscreen disable; focus left; fullscreen enable
-    bindsym $mod+Shift+Control+j fullscreen disable; focus down; fullscreen enable
-    bindsym $mod+Shift+Control+k fullscreen disable; focus up; fullscreen enable
-    bindsym $mod+Shift+Control+l fullscreen disable; focus right; fullscreen enable
-    bindsym $mod+Shift+Control+space fullscreen disable; focus mode_toggle; fullscreen enable
+# Title bar
+titlebar_padding 1
+title_align center
 
-    # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left  move left  50 px
-    bindsym $mod+Shift+$down  move down  50 px
-    bindsym $mod+Shift+$up    move up    50 px
-    bindsym $mod+Shift+$right move right 50 px
-    # Ditto, with arrow keys
-    bindsym $mod+Shift+Left move left
-    bindsym $mod+Shift+Down move down
-    bindsym $mod+Shift+Up move up
-    bindsym $mod+Shift+Right move right
+# Gaps
+smart_gaps on
+gaps inner 10
+gaps outer 0
 
-    bindsym $mod+comma workspace prev
-    bindsym $mod+period workspace next
-#
-# Move Floating window
-#
-    mode "move" {
-        bindsym $mod+Tab focus right
+# Borders
+hide_edge_borders --i3 smart
+# default_border none
+# default_floating_border none
+# hide_edge_borders both
 
-        bindsym Left  move left  100 px
-        bindsym Down  move down  100 px
-        bindsym Up    move up    100 px
-        bindsym Right move right 100 px
-		
-        bindsym h     move left  100 px
-        bindsym j     move down  100 px
-        bindsym k     move up    100 px
-        bindsym l     move right 100 px
+# Default settings
+default_orientation vertical
+workspace_layout tabbed
+focus_follows_mouse yes
 
-        bindsym $mod+Shift+h     move left  10 px
-        bindsym $mod+Shift+j     move down  10 px
-        bindsym $mod+Shift+k     move up    10 px
-        bindsym $mod+Shift+l     move right 10 px
+# Color scheme
+# class                         border          background      text            indicator       child_border
+client.focused                  #33333385       #44444499       #ffffff         $coloratt       #33333375
+client.focused_tab_title        #ff666685       #66666685       #ffffff         $coloratt       #33333350
+client.focused_inactive         #33333385       #33333375       #dddddd         $coloratt       #33333350
+client.unfocused                #00000085       #00000085       #aaaaaa         $coloratt       #33333350
+client.urgent                   #2f343a         #900000         #ffffff         $coloratt       #900000
+client.placeholder              #000000         #000000         #ffffff         $coloratt       #0c0c0c
 
-        bindsym $mod+c move absolute position center; mode "default"
-        bindsym $mod+n move position mouse; mode "default"
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-    }
+### ============================================
+### WINDOW RULES
+### ============================================
 
-#
-# Workspaces:
-#
-    # Switch to workspace
-    bindsym $mod+1 workspace number 1: main
-    bindsym $mod+2 workspace number 2: dev
-    bindsym $mod+3 workspace number 3: api
-    bindsym $mod+4 workspace number 4: www
-    bindsym $mod+5 workspace number 5: extra
-    bindsym $mod+6 workspace number 6: edit
-    bindsym $mod+7 workspace number 7: log
-    bindsym $mod+8 workspace number 8: meet
-    bindsym $mod+9 workspace number 9: comm
-    bindsym $mod+0 workspace number 10: ten
- 
-    # Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace 1: main
-    bindsym $mod+Shift+2 move container to workspace 2: dev
-    bindsym $mod+Shift+3 move container to workspace 3: api
-    bindsym $mod+Shift+4 move container to workspace 4: www
-    bindsym $mod+Shift+5 move container to workspace 5: extra
-    bindsym $mod+Shift+6 move container to workspace 6: edit
-    bindsym $mod+Shift+7 move container to workspace 7: log
-    bindsym $mod+Shift+8 move container to workspace 8: meet
-    bindsym $mod+Shift+9 move container to workspace 9: comm
-    bindsym $mod+Shift+0 move container to workspace 10: ten
+# OPACITY
+for_window [app_id="firefox"] opacity $opacity
+for_window [app_id="zen"] opacity $opacity
+for_window [app_id="com.github.hluk.copyq"] opacity $opacity
+for_window [class="Code"] opacity $opacity
+for_window [instance="code"] opacity $opacity
+for_window [class="Antigravity"] opacity 0.95
 
-    # Move workspaces to outputs
-    bindsym $mod+Mod1+h move workspace to output left
-    bindsym $mod+Mod1+j move workspace to output down
-    bindsym $mod+Mod1+k move workspace to output up
-    bindsym $mod+Mod1+l move workspace to output right
-#
-# Layout stuff:
-#
-    # You can "split" the current object of your focus with
-    # $mod+b or $mod+v, for horizontal and vertical splits
-    # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+# FLOATING
+for_window [class="mpv"] floating enable
+for_window [class="floating"] floating enable
+for_window [instance="floating"] floating enable
+for_window [title="Live Caption"] floating enable
+for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enable
+for_window [class="Yad"] floating enable
+for_window [class="feh"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="org.gnome.Nautilus"] floating enable
+for_window [app_id="com.github.hluk.copyq"] floating enable
+for_window [app_id="Alacritty"] floating enable, resize set 1600 900
 
-    # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+# MOVEMENT
+for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
+for_window [title="scratchpad-tmux"] move container to scratchpad
 
-    # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
-    bindsym Mod3+i fullscreen
+# BORDER
+for_window [class="Vivaldi-stable"] default_border none
+for_window [class="bruno"] default_border none
+for_window [class="Antigravity"] default_border none
+# for_window [all] default_border none
+# for_window [app_id="zen-beta"] default_border none
 
-    # Toggle the current focus between tiling and floating mode
-    bindsym $mod+t floating toggle
 
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+### ============================================
+### KEY BINDINGS - BASIC
+### ============================================
 
-    # Move focus to the parent container
-    bindsym $mod+a focus parent
-    bindsym $mod+x focus child
-#
-# Scratchpad:
-#
-    # Sway has a "scratchpad", which is a bag of holding for windows.
-    # You can send windows there and get them back later.
+# Terminal
+bindsym $mod+Return exec $term -e 'tmux'
+bindsym $mod+Shift+Return exec --no-startup-id $term -e 'tmux'
 
-    # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+backslash move scratchpad
+# Kill focused window
+bindsym $mod+Shift+c kill
 
-    # Show the next scratchpad window or hide the focused scratchpad window.
-    # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+backslash scratchpad show
-#
-# Resizing containers:
-#
+# Application launchers
+bindsym $mod+p exec $menu
+bindsym $mod+Shift+p exec dmenu-websearch
+bindsym $mod+Control+p exec alacritty --class floating -e $(dmenu_alacritty -p Alacritty: -fn 'iosevka-13' )
+bindsym $mod+Mod1+p exec passmenu
+bindsym $mod+o exec $(tofi-drun)
+bindsym $mod+Shift+a exec ":ghw"
+bindsym $mod+r exec --no-startup-id $term --class floating -e 'ranger'
+bindsym $mod+i exec alacritty --class floating -e 'ipython3'
+
+# Toggle i3bar
+bindsym $mod+Shift+N bar mode toggle
+
+# Reload/restart/exit
+bindsym $mod+q reload
+bindsym $mod+Control+q restart
+bindsym Mod1+Control+delete reload
+bindsym Mod1+Control+Shift+q restart
+#bindsym $mod+Shift+q exec [ "$(echo 'n\\ny' | dmenu -p 'Do you really want to exit i3?' -fn 'iosevka-13')\" = y ] && swaymsg exit || notify-send $?
+bindsym $mod+Control+Shift+q exec swaymsg exit
+
+# Applications
+bindsym Mod3+b exec google-chrome
+bindsym $mod+Shift+z exec "swaylock -f -c 000000 && sleep 1 && systemctl suspend"
+bindsym $mod+Shift+semicolon exec /home/krishnan/.local/bin/:commands
+bindsym Mod3+l exec redis-clear
+
+# Toggle terminal transparency
+bindsym $mod+Shift+t exec --no-startup-id toggle-alacritty-transparency
+
+
+### ============================================
+### KEY BINDINGS - WINDOW MOVEMENT
+### ============================================
+
+# Move your focus around (vim keys)
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+# Move focus (arrow keys)
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focus in fullscreen
+bindsym $mod+Shift+Control+h fullscreen disable; focus left; fullscreen enable
+bindsym $mod+Shift+Control+j fullscreen disable; focus down; fullscreen enable
+bindsym $mod+Shift+Control+k fullscreen disable; focus up; fullscreen enable
+bindsym $mod+Shift+Control+l fullscreen disable; focus right; fullscreen enable
+bindsym $mod+Shift+Control+space fullscreen disable; focus mode_toggle; fullscreen enable
+
+# Move the focused window (vim keys)
+bindsym $mod+Shift+$left  move left  50 px
+bindsym $mod+Shift+$down  move down  50 px
+bindsym $mod+Shift+$up    move up    50 px
+bindsym $mod+Shift+$right move right 50 px
+
+# Move window (arrow keys)
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Focus parent/child
+bindsym $mod+a focus parent
+bindsym $mod+x focus child
+
+
+### ============================================
+### KEY BINDINGS - WORKSPACES
+### ============================================
+
+# Switch to workspace
+bindsym $mod+1 workspace number 1: main
+bindsym $mod+2 workspace number 2: dev
+bindsym $mod+3 workspace number 3: api
+bindsym $mod+4 workspace number 4: www
+bindsym $mod+5 workspace number 5: extra
+bindsym $mod+6 workspace number 6: edit
+bindsym $mod+7 workspace number 7: log
+bindsym $mod+8 workspace number 8: meet
+bindsym $mod+9 workspace number 9: comm
+bindsym $mod+0 workspace number 10: ten
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1: main
+bindsym $mod+Shift+2 move container to workspace 2: dev
+bindsym $mod+Shift+3 move container to workspace 3: api
+bindsym $mod+Shift+4 move container to workspace 4: www
+bindsym $mod+Shift+5 move container to workspace 5: extra
+bindsym $mod+Shift+6 move container to workspace 6: edit
+bindsym $mod+Shift+7 move container to workspace 7: log
+bindsym $mod+Shift+8 move container to workspace 8: meet
+bindsym $mod+Shift+9 move container to workspace 9: comm
+bindsym $mod+Shift+0 move container to workspace 10: ten
+
+# Navigate workspaces
+bindsym $mod+comma workspace prev
+bindsym $mod+period workspace next
+
+# Move workspaces to outputs
+bindsym $mod+Mod1+h move workspace to output left
+bindsym $mod+Mod1+j move workspace to output down
+bindsym $mod+Mod1+k move workspace to output up
+bindsym $mod+Mod1+l move workspace to output right
+
+
+### ============================================
+### KEY BINDINGS - LAYOUT
+### ============================================
+
+# Split orientation
+bindsym $mod+b splith
+bindsym $mod+v splitv
+
+# Switch container layout
+bindsym $mod+Shift+s layout stacking
+bindsym $mod+Shift+w layout tabbed
+bindsym $mod+Shift+e layout toggle split
+
+# Fullscreen
+bindsym $mod+f fullscreen
+bindsym Mod3+i fullscreen
+
+# Toggle floating
+bindsym $mod+t floating toggle
+
+# Swap focus between tiling and floating
+bindsym $mod+space focus mode_toggle
+
+
+### ============================================
+### KEY BINDINGS - APPICATIONS
+### ============================================
+
+bindsym $mod+Ctrl+a exec sway-app-switcher "" Antigravity
+bindsym $mod+Ctrl+t exec sway-app-switcher Alacritty
+bindsym $mod+Ctrl+b exec sway-app-switcher zen
+bindsym $mod+Ctrl+e exec sway-app-switcher "" Emacs
+
+
+### ============================================
+### KEY BINDINGS - SCRATCHPAD
+### ============================================
+
+# Move window to scratchpad
+bindsym $mod+Shift+backslash move scratchpad
+
+# Show scratchpad window
+bindsym $mod+backslash scratchpad show
+
+
+### ============================================
+### KEY BINDINGS - RESIZING
+### ============================================
+
 bindsym $mod+Ctrl+h resize shrink width 50 px
 bindsym $mod+Ctrl+l resize grow width 50 px
 bindsym $mod+Ctrl+k resize grow height 50 px
 bindsym $mod+Ctrl+j resize shrink height 50 px
 
-bindsym $mod+semicolon mode "semicolon"
-mode "semicolon" {
-    bindsym $mod+a exec app-list; mode "default"
-    bindsym $mod+b exec zen-browser; mode "default"
-    bindsym $mod+c exec copyq show; mode "default"
-    bindsym $mod+d exec dsadmin-query; mode "default"
-    bindsym $mod+e exec emacsclient --alternate-editor= --create-frame; mode "default"
-    bindsym $mod+g exec gh-pr-list; mode "default"
-    bindsym $mod+j exec jira-issue-list; mode "default"
-    bindsym $mod+r exec redis-clear; mode "default"
-    bindsym $mod+semicolon exec /home/krishnan/.local/bin/toggle-scratch.sh
+
+### ============================================
+### KEY BINDINGS - MEDIA & SYSTEM
+### ============================================
+
+# Audio Control
+bindsym $mod+equal exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym $mod+minus exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Brightness
+bindsym $mod+Shift+equal exec --no-startup-id brightnessctl set 5%+
+bindsym $mod+Shift+minus exec --no-startup-id brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+
+# Monitor configuration
+bindsym $mod+F7 exec --no-startup-id config-monitors
+
+# Screenshot
+bindsym Print exec --no-startup-id grim -g "$(slurp)" - | wl-copy
+bindcode --input-device=6058:20564:ThinkPad_Extra_Buttons 634 exec --no-startup-id grim -g "$(slurp)" - | wl-copy
+
+bindsym Mod1+Shift+XF86TouchpadOff exec notify-send copilotkey copilotkey
+bindsym Mod1+Shift+XF86TouchpadOff+a exec notify-send copilotkey+a copilotkey+a
 
 
-    # Return to default mode
-    bindsym Return mode "default"
-}
+### ============================================
+### MODES
+### ============================================
 
-bindsym $mod+d mode "mouse"
-mode "mouse" {
+# Move floating window mode
+bindsym $mod+Shift+m mode "move"
+mode "move" {
+    bindsym $mod+Tab focus right
 
-    # mouse wheel to switch next workspace
-    bindsym --whole-window  {
-        button1 mode "default"
-        button2 mode "default"
-        button3 mode "default"
-        button4 workspace prev
-        button5 workspace next
-    }
+    bindsym Left  move left  100 px
+    bindsym Down  move down  100 px
+    bindsym Up    move up    100 px
+    bindsym Right move right 100 px
 
-    bindsym escape mode "default"
-    bindsym $mod+d fullscreen; mode "default"
-}
+    bindsym h     move left  100 px
+    bindsym j     move down  100 px
+    bindsym k     move up    100 px
+    bindsym l     move right 100 px
 
-bindsym $mod+slash mode "search"
-mode "search" {
-    bindsym Shift+j exec ja-search; mode "default"
-    bindsym j exec ja-search text; mode "default"
-    bindsym $mod+j exec ja-search text; mode "default"
+    bindsym $mod+Shift+h     move left  10 px
+    bindsym $mod+Shift+j     move down  10 px
+    bindsym $mod+Shift+k     move up    10 px
+    bindsym $mod+Shift+l     move right 10 px
 
-    bindsym $mod+slash mode "default"
-    bindsym Return mode "default"
-}
+    bindsym $mod+c move absolute position center; mode "default"
+    bindsym $mod+n move position mouse; mode "default"
 
-bindsym $mod+Shift+space mode "space"
-mode "space" {
-
-    bindsym $mod+r mode "resize"
-    bindsym $mod+m mode "move" focus floating
-
-    bindsym $mod+h workspace prev
-    bindsym $mod+l workspace next
-
-    set $center_height 1000px
-    set $center_width 1700px
-
-    # Center and resize window
-    bindsym c resize set width $center_width; \
-        resize set height $center_height; \
-        mode "move"; \
-        move absolute position center; \
-        mode "default"
-
-    bindsym n exec $term -e nvim /home/krishnan/notes
-    # Return to default mode
+    # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
-
-    bindsym $mod+equal gaps inner plus 5
-    bindsym $mod+minus gaps inner minus 5
 }
 
+# Resize mode
 mode "resize" {
     # left will shrink the containers width
     # right will grow the containers width
@@ -345,51 +419,103 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 
-# Audio Control
-#
-set $refresh_i3status killall -SIGUSR1 i3status
+# Semicolon mode (application launcher)
+bindsym $mod+semicolon mode "semicolon"
+mode "semicolon" {
+    bindsym $mod+a exec app-list; mode "default"
+    bindsym $mod+b exec zen-browser; mode "default"
+    bindsym $mod+c exec copyq show; mode "default"
+    bindsym $mod+d exec dsadmin-query; mode "default"
+    bindsym $mod+e exec emacsclient --alternate-editor= --create-frame; mode "default"
+    bindsym $mod+g exec gh-pr-list; mode "default"
+    bindsym $mod+j exec jira-issue-list; mode "default"
+    bindsym $mod+r exec redis-clear; mode "default"
+    bindsym $mod+semicolon exec /home/krishnan/.local/bin/toggle-scratch.sh
 
-bindsym $mod+equal exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym $mod+minus exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+    # Return to default mode
+    bindsym Return mode "default"
+}
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+# Activate fn mode
+bindsym XF86WakeUp mode "fn_mode"
 
-# bindsym XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +10%
-# bindsym XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -10%
+mode "fn_mode" {
+    bindsym t exec $term -e 'tmux'; mode "default"
+    bindsym r exec $term --class floating -e 'ranger'; mode "default"
+    bindsym m exec $menu; mode "default"
+    bindsym c exec copyq show; mode "default"
+    bindsym b exec brightnessctl set 5%+
+    bindsym Shift+b exec brightnessctl set 5%-
 
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym XF86WakeUp mode "default"
+}
 
-# Brightness
-#
 
-bindsym $mod+Shift+equal exec --no-startup-id brightnessctl set 5%+
-bindsym $mod+Shift+minus exec --no-startup-id brightnessctl set 5%-
 
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+# Mouse mode
+bindsym $mod+d mode "mouse"
+mode "mouse" {
+    # mouse wheel to switch next workspace
+    bindsym --whole-window  {
+        button1 mode "default"
+        button2 mode "default"
+        button3 mode "default"
+        button4 workspace prev
+        button5 workspace next
+    }
 
-bindsym $mod+F7 exec --no-startup-id config-monitors
-bindsym Print exec --no-startup-id grim -g "$(slurp)" - | wl-copy
+    bindsym escape mode "default"
+    bindsym $mod+d fullscreen; mode "default"
+}
 
-bindsym Mod3+l exec redis-clear
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
+# Search mode
+bindsym $mod+slash mode "search"
+mode "search" {
+    bindsym Shift+j exec ja-search; mode "default"
+    bindsym j exec ja-search text; mode "default"
+    bindsym $mod+j exec ja-search text; mode "default"
+
+    bindsym $mod+slash mode "default"
+    bindsym Return mode "default"
+}
+
+# Space mode (window management)
+bindsym $mod+Shift+space mode "space"
+mode "space" {
+    bindsym $mod+r mode "resize"
+    bindsym $mod+m mode "move" focus floating
+
+    bindsym $mod+h workspace prev
+    bindsym $mod+l workspace next
+
+    # Center and resize window
+    bindsym c resize set width $center_width; \
+        resize set height $center_height; \
+        mode "move"; \
+        move absolute position center; \
+        mode "default"
+
+    bindsym n exec $term -e nvim /home/krishnan/notes
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+
+    bindsym $mod+equal gaps inner plus 5
+    bindsym $mod+minus gaps inner minus 5
+}
+
+
+### ============================================
+### STATUS BAR
+### ============================================
+
 bar {
-    # position bottom
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    # status_command while true; do sh /home/krishnan/.config/sway/status_command.sh; sleep 1; done
-    # status_command i3status --config ~/.config/i3status/config
-    # status_command waybar --config ~/.config/waybar/config
-    # status_command i3bar --transparency
+    position bottom
     status_command i3blocks
-    # strip_workspace_numbers yes
 
     tray {
         tray_padding 4
@@ -410,94 +536,33 @@ bar {
     }
 }
 
-set $coloratt #ffffff50
-# class                         border          background      text            indicator       child_border
-client.focused                  #33333385       #33333399       #ffffff         $coloratt       #33333350
-client.focused_tab_title        #ff666685       #66666685       #ffffff         $coloratt       #33333350
-client.focused_inactive         #33333385       #33333399       #dddddd         $coloratt       #33333385
-client.unfocused                #00000085       #00000085       #bbbbbb         $coloratt       #33333385
-client.urgent                   #2f343a         #900000         #ffffff         $coloratt       #900000
-client.placeholder              #000000         #000000         #ffffff         $coloratt       #0c0c0c
 
-# Font
-# font pango:FiraCode Nerd Font, 14
-# font pango:Cousine Nerd Font, 10
-# font pango:DejaVuSansMono Nerd Font, 14
-font pango:DroidSansMono Nerd Font, 12
+### ============================================
+### STARTUP APPLICATIONS
+### ============================================
 
-titlebar_padding 1
-
-# Default orientation
-default_orientation vertical
-title_align center
-# default_border none
-# default_floating_border none
-# hide_edge_borders both
-
-smart_gaps on
-gaps inner 10
-gaps outer 0
-hide_edge_borders --i3 smart
-workspace_layout tabbed
-
-focus_follows_mouse yes
-
-# # OPACITY
-# for_window [class=".*"] opacity $opacity
-for_window [app_id="firefox"] opacity $opacity
-for_window [app_id="zen"] opacity $opacity
-for_window [app_id="com.github.hluk.copyq"] opacity $opacity
-for_window [class="Code"] opacity $opacity
-for_window [instance="code"] opacity $opacity
-
-# # FLOATING
-# for_window [all] title_window_icon yes
-for_window [class="mpv"] floating enable
-for_window [class="floating"] floating enable
-for_window [instance="floating"] floating enable
-for_window [title="Live Caption"] floating enable
-for_window [instance="crx_aeejceomnhmjmeacdckmmopfaigimnkl"] floating enable
-for_window [class="Yad"] floating enable
-for_window [class="feh"] floating enable
-for_window [class="Pavucontrol"] floating enable
-for_window [class="Org.gnome.Nautilus"] floating enable
-for_window [class="org.gnome.Nautilus"] floating enable
-for_window [app_id="com.github.hluk.copyq"] floating enable
-for_window [app_id="Alacritty"] floating enable, resize set 1600 900
-
-
-
-# # MOVEMENT
-for_window [instance="mail.google.com__mail_u_0"] move container to workspace 9: comm
-for_window [title="scratchpad-tmux"] move container to scratchpad
-
-# # BORDER
-for_window [class="Vivaldi-stable"] default_border none
-for_window [class="bruno"] default_border none
-# for_window [all] default_border none
-# for_window [app_id="zen-beta"] default_border none
-
-
-exec picom &
-# exec waybar &
-exec dunst &
-exec --no-startup-id nm-applet
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-exec --no-startup-id dex --autostart --environment i3
-# auto lock the screen
+# Auto lock (commented)
 # exec "xautolock -detectsleep -time 3 -locker \"i3lock -c 000000\""
 # exec "xautolock -detectsleep -time 3 -locker \"cmatrix -s\""
-exec copyq --start-server &
 
+# Other startup commands (commented)
+# exec dunst &
+# exec --no-startup-id nm-applet
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+# exec --no-startup-id dex --autostart --environment i3
+# exec copyq --start-server &
+
+# exec picom &
 # exec google-chrome-work --new-window --app='https://mail.google.com/mail/u/0/#inbox'
 # exec ~/.local/bin/config-monitors
 # exec swaymsg focus output eDP-1
-# Restore GNOME's settings
 # exec --no-startup-id /usr/libexec/gnome-settings-daemon-localeexec &
-
-# Fix a bug in gnome-settings-daemon: http://feeding.cloud.geek.nz/posts/creating-a-modern-tiling-desktop-environment-using-i3/
 # exec --no-startup-id dconf write /org/gnome/settings-daemon/plugins/cursor/active false &
+# exec --no-startup-id ~/.local/bin/i3-auto-tile
+
+
+### ============================================
+### ADDITIONAL INCLUDES
+### ============================================
 
 include /etc/sway/config.d/*
-
-# exec --no-startup-id ~/.local/bin/i3-auto-tile
