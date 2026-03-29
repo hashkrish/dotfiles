@@ -5,6 +5,10 @@
 
 (message "Loading config.el")
 
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'super)
+
+
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 ;;; Code:
@@ -37,10 +41,24 @@
 (setq doom-theme 'doom-tomorrow-night)
 ;; (load-theme 'doom-tomorrow-night)
 
+
+(if (featurep :system 'macos)
+    (add-to-list 'default-frame-alist '(alpha . (90 . 90)))) ; set transparency
+(if (featurep :system 'linux)
+    (add-to-list 'default-frame-alist '(alpha-background . 90))) ; set transparency
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(add-to-list 'default-frame-alist '(alpha-background . 90)) ; set transparency
 (setq display-line-numbers-type t)
+
+;; Fix search highlighting visibility in terminal mode
+;; (custom-set-faces!
+;;   '(evil-ex-search :background "#ffff00" :foreground "#000000")
+;;   '(lazy-highlight :background "#444444" :foreground "#ffffff")
+;;   '(lsp-face-highlight-read :background "#ffff00" :foreground "#000000")
+;;   '(lsp-face-highlight-write :background "#ffff00" :foreground "#000000")
+;;   '(isearch :background "#ffff00" :foreground "#000000"))
+
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -148,7 +166,7 @@
 
 ;; Disable format on save in web-mode
 ;; Append to the list if you want to disable in more modes
-(setq +format-on-save-disabled-modes '(web-mode dockerfile-mode))
+(setq +format-on-save-disabled-modes '(web-mode dockerfile-mode css-mode))
 
 ;; Ignore deps in projectile
 (after! projectile
@@ -170,17 +188,21 @@
                                                          (or (consult-gh--command-to-string "org" "list") "") "\n"))))
   (setq consult-gh-default-clone-directory "~/sources/"))
 
-
+;; Make C-c C-a run embark-collect on minibuffer
+(define-key minibuffer-local-map (kbd "C-c C-a") #'embark-collect)
 
 ;; Mode hook
 (add-to-list 'auto-mode-alist '("\.rest$" . restclient-mode))
+(after! restclient
+  (map! :map restclient-mode-map
+        :n "q" #'quit-window))
 
 ;; Disable
 ;; (setq highlight-indent-guides-auto-enabled f)
 
 ;; Use zsh as shell
-(setq shell-file-name "/usr/bin/zsh")
-(setq explicit-shell-file-name "/usr/bin/zsh")
+(setq shell-file-name "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
 
 
 ;; Environmental Variables
@@ -280,6 +302,14 @@
 
 (map! :n "C-i" #'better-jumper-jump-forward)
 
+(defun my/kill-buffer-close-window ()
+  "Close the window after the current buffer is killed."
+  (interactive)
+  (let ((buffer (current-buffer)))
+    (when buffer
+      (kill-buffer buffer)
+      (evil-window-delete)
+      (message "Closed and killed buffer: %s" (buffer-name buffer)))))
 ;; (use-package codeium
 ;;   :ensure t
 ;;   :init
@@ -290,3 +320,80 @@
 ;; (after! apheleia
 ;;   (setf (alist-get 'yaml-mode apheleia-mode-alist)
 ;;         '("prettier" "--stdin-filepath" filepath "--tab-width" "2" "--use-tabs" "false")))
+;; (after! flycheck
+;;   (flycheck-define-checker python-ruff
+;;     "A Python syntax and style checker using Ruff."
+;;     :command ("ruff" "check" source-inplace)
+;;     :error-patterns
+;;     ((error line-start (file-name) ":" line ":" column ": "
+;;             (or "E" "F" "W") (id (one-or-more (not (any ":")))) ": "
+;;             (message) line-end))
+;;     :modes python-mode)
+;;   (add-to-list 'flycheck-checkers 'python-ruff))
+(use-package! gptel
+  :config
+  (setq gptel-api-key "not-needed") ;; LM Studio doesn't need a real key
+
+
+
+  ;; Create and store the backend object
+  (setq lmstudio-backend
+        (gptel-make-openai
+            "lmstudio"
+          :stream t
+          :protocol "http"
+          :host "localhost:1234"
+          :endpoint "/v1/chat/completions"
+          :models '(
+                    qwen/qwen3.5-9b
+                    nvidia/nemotron-3-nano-4b
+                    qwen3.5-0.8b
+                    google/gemma-3-12b
+                    qwen3.5-4b)))
+  (setq gptel-backend lmstudio-backend)
+  (setq gptel-model 'qwen3.5-0.8b))
+(after! tree-sitter-hl
+  (dolist (face '(tree-sitter-hl-face:attribute
+                  tree-sitter-hl-face:comment
+                  tree-sitter-hl-face:constant
+                  tree-sitter-hl-face:function
+                  tree-sitter-hl-face:function.call
+                  tree-sitter-hl-face:keyword
+                  tree-sitter-hl-face:label
+                  tree-sitter-hl-face:method
+                  tree-sitter-hl-face:method.call
+                  tree-sitter-hl-face:number
+                  tree-sitter-hl-face:operator
+                  tree-sitter-hl-face:property
+                  tree-sitter-hl-face:string
+                  tree-sitter-hl-face:type
+                  tree-sitter-hl-face:variable
+                  tree-sitter-hl-face:function.macro
+                  tree-sitter-hl-face:function.special))
+    (set-face-attribute face nil :weight 'normal :slant 'normal)))
+
+;; Faster Markdown in Doom
+
+;; 1. Disable expensive font-lock rules
+(after! markdown-mode
+  (setq markdown-enable-math nil
+        markdown-enable-wiki-links nil
+        markdown-enable-multimarkdown nil
+        markdown-fontify-code-blocks-natively nil))
+
+;; 2. Disable line wrapping (long lines slow redisplay)
+(remove-hook 'markdown-mode-hook #'visual-line-mode)
+
+;; 3. Turn off prettification (symbols like →, …)
+(remove-hook 'markdown-mode-hook #'prettify-symbols-mode)
+
+;; 4. Prevent automatic inline image preview
+(setq markdown-display-inline-images nil)
+
+;; 5. Make syntax highlighting less aggressive
+(setq markdown-font-lock-generate-missing-anchors nil)
+
+;; 6. Disable treesitter in markdown (huge perf win)
+;; (setq doom-text-tree-sitter-modes
+;;       (delete 'markdown-mode doom-text-tree-sitter-modes))
+

@@ -71,3 +71,4 @@
 (package! copilot-chat :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
 (package! nushell-mode :recipe (:host github :repo "mrkkrp/nushell-mode"))
 ;; (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
+(package! gptel :recipe (:host github :repo "karthink/gptel"))
