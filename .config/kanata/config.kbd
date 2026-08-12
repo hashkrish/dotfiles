@@ -14,7 +14,7 @@
 
 (defalias 
 	;; Hold space sends super, tap space sends space
-	space-super (tap-hold 200 100 spc lalt)
+	space-super (tap-hold 200 100 spc lmeta)
 
 	;; One shot modifiers
 	os-ctrl  (tap-hold 200 200 (one-shot 2000 lctl) lctl)

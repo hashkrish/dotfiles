@@ -1,0 +1,308 @@
+#!/bin/bash
+
+# System-wide light/dark mode toggle script
+# Toggles theme across Alacritty, Waybar, Dunst, and GTK
+
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/theme-mode"
+CONFIG_DIR="$HOME/.config"
+
+# Read current mode (default to dark)
+if [ -f "$STATE_FILE" ]; then
+    CURRENT_MODE=$(cat "$STATE_FILE")
+else
+    CURRENT_MODE="dark"
+fi
+
+# Toggle mode
+if [ "$CURRENT_MODE" = "dark" ]; then
+    NEW_MODE="light"
+else
+    NEW_MODE="dark"
+fi
+
+echo "Switching to $NEW_MODE mode..."
+
+# Save new mode
+echo "$NEW_MODE" > "$STATE_FILE"
+
+# ============================================
+# ALACRITTY
+# ============================================
+if [ -f "$CONFIG_DIR/alacritty/alacritty.toml" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        # Switch to One Light theme
+        sed -i 's|themes/dark.toml|themes/one-light.toml|' "$CONFIG_DIR/alacritty/alacritty.toml"
+    else
+        # Switch to dark theme
+        sed -i 's|themes/one-light.toml|themes/dark.toml|' "$CONFIG_DIR/alacritty/alacritty.toml"
+    fi
+
+    # Reload Alacritty (touch config to trigger live reload)
+    touch "$CONFIG_DIR/alacritty/alacritty.toml"
+fi
+
+# ============================================
+# TMUX
+# ============================================
+if [ -f "$HOME/.tmux.conf" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        sed -i 's/status-style bg=default,fg=white/status-style bg=default,fg=#383a42/' "$HOME/.tmux.conf"
+    else
+        sed -i 's/status-style bg=default,fg=#383a42/status-style bg=default,fg=white/' "$HOME/.tmux.conf"
+    fi
+
+    # Apply to running tmux sessions
+    if command -v tmux &> /dev/null && tmux info &> /dev/null; then
+        if [ "$NEW_MODE" = "light" ]; then
+            tmux set-option -g status-style "bg=default,fg=#383a42"
+        else
+            tmux set-option -g status-style "bg=default,fg=white"
+        fi
+    fi
+fi
+
+# ============================================
+# WAYBAR
+# ============================================
+if [ -f "$CONFIG_DIR/waybar/style.css" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        # Light theme for Waybar
+        sed -i 's/background: rgba(30, 30, 46, 0.7)/background: rgba(250, 250, 250, 0.9)/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/color: #cdd6f4/color: #383a42/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/color: #bac2de/color: #4f525e/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/background: #313244/background: #e5e5e5/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/background: #45475a/background: #d0d0d0/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/background: #1e1e2e/background: #ffffff/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/border: 1px solid #45475a/border: 1px solid #d0d0d0/' "$CONFIG_DIR/waybar/style.css"
+    else
+        # Dark theme for Waybar
+        sed -i 's/background: rgba(250, 250, 250, 0.9)/background: rgba(30, 30, 46, 0.7)/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/color: #383a42/color: #cdd6f4/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/color: #4f525e/color: #bac2de/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/background: #e5e5e5/background: #313244/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/background: #d0d0d0/background: #45475a/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/background: #ffffff/background: #1e1e2e/' "$CONFIG_DIR/waybar/style.css"
+        sed -i 's/border: 1px solid #d0d0d0/border: 1px solid #45475a/' "$CONFIG_DIR/waybar/style.css"
+    fi
+
+    # Reload Waybar
+    pkill -SIGUSR2 waybar
+fi
+
+# ============================================
+# DUNST
+# ============================================
+if [ -f "$CONFIG_DIR/dunst/dunstrc" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        # Light theme for Dunst
+        sed -i 's/background = "#1e1e2ea0"/background = "#fafafaa0"/' "$CONFIG_DIR/dunst/dunstrc"
+        sed -i 's/foreground = "#ffffff"/foreground = "#383a42"/' "$CONFIG_DIR/dunst/dunstrc"
+        sed -i 's/frame_color = "#3a3a4aa0"/frame_color = "#d0d0d0a0"/' "$CONFIG_DIR/dunst/dunstrc"
+        sed -i 's/separator_color = "#3a3a4a"/separator_color = "#d0d0d0"/' "$CONFIG_DIR/dunst/dunstrc"
+    else
+        # Dark theme for Dunst
+        sed -i 's/background = "#fafafaa0"/background = "#1e1e2ea0"/' "$CONFIG_DIR/dunst/dunstrc"
+        sed -i 's/foreground = "#383a42"/foreground = "#ffffff"/' "$CONFIG_DIR/dunst/dunstrc"
+        sed -i 's/frame_color = "#d0d0d0a0"/frame_color = "#3a3a4aa0"/' "$CONFIG_DIR/dunst/dunstrc"
+        sed -i 's/separator_color = "#d0d0d0"/separator_color = "#3a3a4a"/' "$CONFIG_DIR/dunst/dunstrc"
+    fi
+
+    # Reload Dunst
+    pkill -SIGUSR2 dunst || killall dunst && dunst &
+fi
+
+# ============================================
+# GTK THEME & SYSTEM SETTINGS
+# ============================================
+if command -v gsettings &> /dev/null; then
+    if [ "$NEW_MODE" = "light" ]; then
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+        gsettings set org.gnome.desktop.interface icon-theme "Adwaita"
+        # For older GTK apps
+        export GTK_THEME=Adwaita:light
+    else
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+        gsettings set org.gnome.desktop.interface icon-theme "Adwaita"
+        # For older GTK apps
+        export GTK_THEME=Adwaita:dark
+    fi
+fi
+
+# Create/update GTK settings files for apps that read them directly
+mkdir -p "$HOME/.config/gtk-3.0"
+mkdir -p "$HOME/.config/gtk-4.0"
+
+if [ "$NEW_MODE" = "light" ]; then
+    # GTK 3
+    cat > "$HOME/.config/gtk-3.0/settings.ini" << EOF
+[Settings]
+gtk-application-prefer-dark-theme=0
+gtk-theme-name=Adwaita
+gtk-icon-theme-name=Adwaita
+EOF
+    # GTK 4
+    cat > "$HOME/.config/gtk-4.0/settings.ini" << EOF
+[Settings]
+gtk-application-prefer-dark-theme=0
+EOF
+else
+    # GTK 3
+    cat > "$HOME/.config/gtk-3.0/settings.ini" << EOF
+[Settings]
+gtk-application-prefer-dark-theme=1
+gtk-theme-name=Adwaita-dark
+gtk-icon-theme-name=Adwaita
+EOF
+    # GTK 4
+    cat > "$HOME/.config/gtk-4.0/settings.ini" << EOF
+[Settings]
+gtk-application-prefer-dark-theme=1
+EOF
+fi
+
+# Set Qt theme (for Qt-based browsers like Chromium)
+if [ -f "$HOME/.config/qt5ct/qt5ct.conf" ] || [ -f "$HOME/.config/qt6ct/qt6ct.conf" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        export QT_STYLE_OVERRIDE=Adwaita
+    else
+        export QT_STYLE_OVERRIDE=Adwaita-Dark
+    fi
+fi
+
+# ============================================
+# HYPRLAND COLORS (optional)
+# ============================================
+if command -v hyprctl &> /dev/null; then
+    if [ "$NEW_MODE" = "light" ]; then
+        # Light borders
+        hyprctl keyword general:col.active_border "rgba(268bd2aa) rgba(333333aa) 45deg"
+        hyprctl keyword general:col.inactive_border "rgba(ccccccaa)"
+    else
+        # Dark borders
+        hyprctl keyword general:col.active_border "rgba(ffffff88) rgba(268bd2aa) 45deg"
+        hyprctl keyword general:col.inactive_border "rgba(595959aa)"
+    fi
+fi
+
+# ============================================
+# NOTIFY D-BUS SERVICES & BROWSERS
+# ============================================
+# Trigger settings change notification that browsers monitor
+if command -v dbus-send &> /dev/null; then
+    # Try to send portal signal
+    dbus-send --session --type=signal /org/freedesktop/portal/desktop \
+        org.freedesktop.portal.Settings.SettingChanged \
+        string:'org.freedesktop.appearance' \
+        string:'color-scheme' \
+        variant:uint32:$([ "$NEW_MODE" = "light" ] && echo "1" || echo "2") 2>/dev/null || true
+
+    # Also notify via settings daemon
+    dbus-send --session --type=signal \
+        /org/gnome/desktop/interface \
+        org.freedesktop.DBus.Properties.PropertiesChanged \
+        string:'org.gnome.desktop.interface' 2>/dev/null || true
+fi
+
+# Force Firefox-based browsers to reload theme by toggling a pref
+# This creates a temporary profile setting that triggers theme detection
+for profile in ~/.zen/*/prefs.js ~/.mozilla/firefox/*/prefs.js; do
+    if [ -f "$profile" ]; then
+        # Touch the file to update mtime, which can trigger Firefox to recheck settings
+        touch "$profile"
+    fi
+done
+
+# ============================================
+# DOOM EMACS
+# ============================================
+if [ -f "$HOME/.doom.d/config.el" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        # Switch to light theme
+        sed -i "s/doom-theme 'doom-tomorrow-night)/doom-theme 'doom-one-light)/" "$HOME/.doom.d/config.el"
+        sed -i "s/doom-theme 'doom-[a-z-]*)/doom-theme 'doom-one-light)/" "$HOME/.doom.d/config.el"
+    else
+        # Switch to dark theme
+        sed -i "s/doom-theme 'doom-one-light)/doom-theme 'doom-tomorrow-night)/" "$HOME/.doom.d/config.el"
+        sed -i "s/doom-theme 'doom-[a-z-]*)/doom-theme 'doom-tomorrow-night)/" "$HOME/.doom.d/config.el"
+    fi
+
+    # Reload theme in running Emacs instances
+    if command -v emacsclient &> /dev/null; then
+        if [ "$NEW_MODE" = "light" ]; then
+            emacsclient -e "(load-theme 'doom-one-light t)" 2>/dev/null || true
+        else
+            emacsclient -e "(load-theme 'doom-tomorrow-night t)" 2>/dev/null || true
+        fi
+    fi
+fi
+
+# ============================================
+# VSCODE / ANTIGRAVITY
+# ============================================
+# Update Antigravity (VSCode fork)
+if [ -f "$HOME/.config/Antigravity/User/settings.json" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        sed -i 's/"workbench.colorTheme": "GitHub Dark[^"]*"/"workbench.colorTheme": "GitHub Light Default"/' "$HOME/.config/Antigravity/User/settings.json"
+        sed -i 's/"workbench.colorTheme": "Default Dark[^"]*"/"workbench.colorTheme": "Default Light+"/' "$HOME/.config/Antigravity/User/settings.json"
+    else
+        sed -i 's/"workbench.colorTheme": "GitHub Light[^"]*"/"workbench.colorTheme": "GitHub Dark Default"/' "$HOME/.config/Antigravity/User/settings.json"
+        sed -i 's/"workbench.colorTheme": "Default Light[^"]*"/"workbench.colorTheme": "Default Dark+"/' "$HOME/.config/Antigravity/User/settings.json"
+    fi
+fi
+
+# Update VSCode
+if [ -f "$HOME/.config/Code/User/settings.json" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        sed -i 's/"workbench.colorTheme": "[^"]*Dark[^"]*"/"workbench.colorTheme": "Default Light+"/' "$HOME/.config/Code/User/settings.json"
+    else
+        sed -i 's/"workbench.colorTheme": "[^"]*Light[^"]*"/"workbench.colorTheme": "Default Dark+"/' "$HOME/.config/Code/User/settings.json"
+    fi
+fi
+
+# ============================================
+# NEOVIM
+# ============================================
+# Update Neovim config if it exists
+if [ -f "$HOME/.config/nvim/init.lua" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        sed -i "s/vim.o.background = ['\"]dark['\"]/vim.o.background = 'light'/" "$HOME/.config/nvim/init.lua"
+        sed -i "s/colorscheme = ['\"][^'\"]*dark[^'\"]*['\"]/colorscheme = 'default'/" "$HOME/.config/nvim/init.lua"
+    else
+        sed -i "s/vim.o.background = ['\"]light['\"]/vim.o.background = 'dark'/" "$HOME/.config/nvim/init.lua"
+        sed -i "s/colorscheme = ['\"]default['\"]/colorscheme = 'habamax'/" "$HOME/.config/nvim/init.lua"
+    fi
+fi
+
+if [ -f "$HOME/.config/nvim/init.vim" ]; then
+    if [ "$NEW_MODE" = "light" ]; then
+        sed -i "s/set background=dark/set background=light/" "$HOME/.config/nvim/init.vim"
+    else
+        sed -i "s/set background=light/set background=dark/" "$HOME/.config/nvim/init.vim"
+    fi
+fi
+
+# Send command to running Neovim instances via RPC
+if command -v nvim &> /dev/null && command -v pgrep &> /dev/null; then
+    for server in /tmp/nvim*/0; do
+        if [ -S "$server" ]; then
+            if [ "$NEW_MODE" = "light" ]; then
+                nvim --server "$server" --remote-send "<Esc>:set background=light<CR>" 2>/dev/null || true
+            else
+                nvim --server "$server" --remote-send "<Esc>:set background=dark<CR>" 2>/dev/null || true
+            fi
+        fi
+    done
+fi
+
+# Send notification
+if command -v notify-send &> /dev/null; then
+    if [ "$NEW_MODE" = "light" ]; then
+        notify-send -u low "Theme" "Switched to light mode ☀️"
+    else
+        notify-send -u low "Theme" "Switched to dark mode 🌙"
+    fi
+fi
+
+echo "Theme switched to $NEW_MODE mode"

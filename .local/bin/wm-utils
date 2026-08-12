@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+
+# wm-utils - Utility operations for Window Managers (Sway, Hyprland)
+
+WM="unknown"
+
+# Detect Window Manager
+if [ "$XDG_CURRENT_DESKTOP" = "Hyprland" ] || pgrep -x hyprland >/dev/null 2>&1 || [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+    WM="hyprland"
+elif [ "$XDG_CURRENT_DESKTOP" = "sway" ] || pgrep -x sway >/dev/null 2>&1 || [ -n "$SWAYSOCK" ]; then
+    WM="sway"
+fi
+
+hyprland_utils=(
+    "toggle-blur"
+    "toggle-transparency"
+)
+
+sway_utils=(
+    "toggle-transparency"
+)
+
+common_utils=(
+    "clipboard-open-url"
+    "clipboard-base64-encode"
+    "clipboard-open-filepath"
+    "toggle-bar"
+)
+
+print_options() {
+    if [ "$WM" = "hyprland" ]; then
+        printf "%s\n" "${hyprland_utils[@]}" "${common_utils[@]}"
+    elif [ "$WM" = "sway" ]; then
+        printf "%s\n" "${sway_utils[@]}" "${common_utils[@]}"
+    else
+        printf "%s\n" "${common_utils[@]}"
+    fi
+}
+
+toggle_blur_hyprland() {
+    local state=$(hyprctl getoption decoration:blur:enabled -j | jq '.int')
+    if [ "$state" = "1" ]; then
+        hyprctl keyword decoration:blur:enabled 0
+        notify-send "Hyprland" "Blur disabled"
+    else
+        hyprctl keyword decoration:blur:enabled 1
+        notify-send "Hyprland" "Blur enabled"
+    fi
+}
+
+toggle_transparency_hyprland() {
+    local active=$(hyprctl getoption decoration:active_opacity -j | jq '.float')
+    # If opacity is close to 1.0, lower it, else restore it
+    if awk -v s="$active" 'BEGIN {exit !(s > 0.95)}'; then
+        hyprctl keyword decoration:active_opacity 0.8
+        hyprctl keyword decoration:inactive_opacity 0.7
+        notify-send "Hyprland" "Transparency enabled"
+    else
+        hyprctl keyword decoration:active_opacity 1.0
+        hyprctl keyword decoration:inactive_opacity 1.0
+        notify-send "Hyprland" "Transparency disabled"
+    fi
+}
+
+toggle_transparency_sway() {
+    local opacity=$(swaymsg -t get_tree | jq -r '.. | select(.focused? == true) | .opacity // 1.0')
+    if awk -v s="$opacity" 'BEGIN {exit !(s > 0.95)}'; then
+        swaymsg opacity 0.8
+        notify-send "Sway" "Window transparency enabled"
+    else
+        swaymsg opacity 1.0
+        notify-send "Sway" "Window transparency disabled"
+    fi
+}
+
+open_clipboard_url() {
+    local url=$(wl-paste -n)
+    if [[ "$url" =~ ^https?:// ]]; then
+        xdg-open "$url"
+    else
+        notify-send "wm-utils" "Clipboard does not contain a valid URL"
+    fi
+}
+
+base64_encode_clipboard() {
+    wl-paste -n | base64 -w 0 | wl-copy -n
+    notify-send "wm-utils" "Clipboard encoded to base64"
+}
+
+open_clipboard_filepath() {
+    local filepath=$(wl-paste -n)
+    if [ -e "$filepath" ]; then
+        xdg-open "$filepath"
+    else
+        notify-send "wm-utils" "Clipboard does not contain a valid file path"
+    fi
+}
+
+toggle_bar() {
+    if pgrep -x waybar >/dev/null; then
+        killall -SIGUSR1 waybar
+        notify-send "wm-utils" "Toggled Waybar"
+    elif pgrep -x polybar >/dev/null; then
+        polybar-msg cmd toggle
+        notify-send "wm-utils" "Toggled Polybar"
+    elif pgrep -x eww >/dev/null; then
+        # Eww toggling varies by config, but close/open windows is common, hard to guess.
+        notify-send "wm-utils" "Toggle not fully implemented for eww"
+    else
+        notify-send "wm-utils" "No supported bar found to toggle"
+    fi
+}
+
+handle_hyprland() {
+    case "$1" in
+        "toggle-blur") toggle_blur_hyprland ;;
+        "toggle-transparency") toggle_transparency_hyprland ;;
+        *) handle_common "$1" ;;
+    esac
+}
+
+handle_sway() {
+    case "$1" in
+        "toggle-transparency") toggle_transparency_sway ;;
+        *) handle_common "$1" ;;
+    esac
+}
+
+handle_common() {
+    case "$1" in
+        "clipboard-open-url") open_clipboard_url ;;
+        "clipboard-base64-encode") base64_encode_clipboard ;;
+        "clipboard-open-filepath") open_clipboard_filepath ;;
+        "toggle-bar") toggle_bar ;;
+        *) print_options ;;
+    esac
+}
+
+if [ -z "$1" ]; then
+    print_options
+    exit 0
+fi
+
+if [ "$WM" = "hyprland" ]; then
+    handle_hyprland "$1"
+elif [ "$WM" = "sway" ]; then
+    handle_sway "$1"
+else
+    handle_common "$1"
+fi

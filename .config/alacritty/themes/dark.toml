@@ -1,0 +1,17 @@
+# Current dark theme
+[colors.primary]
+background = "#000000"
+foreground = "#c5c8c6"
+
+[colors.normal]
+black = "#1d1f21"
+red = "#F07178"
+green = "#98C379"
+yellow = "#E5C17C"
+blue = "#61AFEF"
+magenta = "#C679DD"
+cyan = "#56B6C2"
+white = "#c5c8c6"
+
+[window]
+opacity = 0.85

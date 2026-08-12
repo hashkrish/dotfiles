@@ -1,0 +1,39 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+# GitHub Light palette — darker, AA-contrast colors tuned for a pure white
+# terminal background (the One Light "vivid" colors are too light here).
+palette = 'light'
+
+[palettes.light]
+black = '#24292f'
+red = '#cf222e'
+green = '#116329'
+yellow = '#4d2d00'
+blue = '#0969da'
+magenta = '#8250df'
+cyan = '#0550ae'
+grey = '#57606a'
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[❯](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+error_symbol = '[❯](bold red)'
+
+# Disable the package module, hiding it from the prompt completely
+[gcloud]
+symbol = '☁️'
+format = 'on [$symbol($project)](bold blue) '
+disabled = false
+
+[directory]
+style = 'bold blue'
+
+[git_branch]
+style = 'bold magenta'
+
+[git_status]
+style = 'bold red'

@@ -72,3 +72,7 @@
 (package! nushell-mode :recipe (:host github :repo "mrkkrp/nushell-mode"))
 ;; (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
 (package! gptel :recipe (:host github :repo "karthink/gptel"))
+(package! ai-code :recipe (:host github :repo "tninja/ai-code-interface.el"))
+
+(package! mu4e)
+(package! justl :recipe (:host github :repo "psibi/justl.el"))

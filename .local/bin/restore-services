@@ -1,0 +1,59 @@
+#!/bin/bash
+# Restore Services Script
+# Quickly restore stopped services without rebooting
+
+set -e
+
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${GREEN}=== Restoring Services ===${NC}"
+echo ""
+
+# Restore Docker/Kubernetes
+echo -e "${YELLOW}[1/2]${NC} Starting Docker and Kubernetes..."
+
+# Unmask services first (in case they were masked)
+echo "  → Unmasking services..."
+sudo systemctl unmask containerd 2>/dev/null || true
+sudo systemctl unmask docker 2>/dev/null || true
+sudo systemctl unmask kubelet 2>/dev/null || true
+
+# Start services in order
+echo "  → Starting containerd..."
+sudo systemctl start containerd 2>/dev/null || true
+sleep 2
+
+echo "  → Starting docker..."
+sudo systemctl start docker 2>/dev/null || true
+sleep 2
+
+echo "  → Starting kubelet..."
+sudo systemctl start kubelet 2>/dev/null || true
+
+echo "  ✓ Docker/K8s started"
+
+# Check if kind clusters exist
+if command -v kind &> /dev/null; then
+    KIND_CLUSTERS=$(kind get clusters 2>/dev/null)
+    if [ -n "$KIND_CLUSTERS" ]; then
+        echo ""
+        echo "  → Found kind cluster(s): $KIND_CLUSTERS"
+        echo "  → Clusters will automatically restart with Docker"
+    fi
+fi
+
+# Check Bluetooth
+echo -e "${YELLOW}[2/2]${NC} Checking Bluetooth status..."
+if rfkill list bluetooth | grep -q "Soft blocked: yes"; then
+    rfkill unblock bluetooth
+    sudo systemctl start bluetooth 2>/dev/null || true
+    echo "  ✓ Bluetooth enabled"
+else
+    echo "  ⊘ Bluetooth already enabled"
+fi
+
+echo ""
+echo -e "${GREEN}Services restored!${NC}"
+echo "Note: Other power optimizations (USB, CPU, PCI) remain until reboot"

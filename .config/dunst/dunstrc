@@ -8,17 +8,19 @@
     # Follow monitor with mouse
     follow = mouse
 
-    width = 300
+    width = (300, 400)
     # height = 260
     origin = top-right
-    offset = 24x24
+    offset = (10, 10)
 
+    # Gap between notifications
+    gap_size = 8
 
     progress_bar = true
-    progress_bar_height = 14
-    progress_bar_frame_width = 1
+    progress_bar_height = 10
+    progress_bar_frame_width = 0
     progress_bar_min_width = 150
-    progress_bar_max_width = 300
+    progress_bar_max_width = 400
 
 
     # Show how many messages are hidden
@@ -27,20 +29,20 @@
     # Shrink window if it's smaller than the width.
     shrink = no
 
-    # The transparency of the window.
-    transparency = 1
+    # The transparency of the window (0-100, higher = more transparent)
+    transparency = 20
 
     # Draw a line between multiple notifications
-    separator_height = 6
+    separator_height = 2
 
-    separator_color = "#272f57"
+    separator_color = "#3a3a4a"
 
     # Set notification padding
-    padding = 16
-    horizontal_padding = 16
+    padding = 15
+    horizontal_padding = 15
 
-    # Disable frame (border)
-    frame_width = 0
+    # Subtle frame (border) like macOS
+    frame_width = 1
 
     # Sort messages by urgency.
     sort = no
@@ -51,9 +53,9 @@
    
     # --- Text --- #
 
-    # Set the font
-    # font = "Noto Sans 11"
-    font = "Hack Nerd Font 11"
+    # Set the font (macOS uses SF Pro Text, fallback to clean sans-serif)
+    # font = "SF Pro Text 10"
+    font = "Inter 10"
 
     # Set line height to font height
     line_height = 0
@@ -74,7 +76,7 @@
     #  %% Literal %
 
     markup = full
-    format = "<b>%a</b>\n%s"
+    format = "<b>%s</b>\n%b"
 
     # Left align the text
     alignment = left
@@ -143,8 +145,8 @@
     # Define the class of the windows spawned by dunst
     class = Dunst
 
-    # Define the corner radius of the notification window
-    corner_radius = 0
+    # Define the corner radius of the notification window (macOS style)
+    corner_radius = 12
 
     # Don't gnore the dbus closeNotification message.
     ignore_dbusclose = false
@@ -166,38 +168,38 @@
     per_monitor_dpi = false
 
 [urgency_low]
-    background = "#141929fe"
-    highlight = "#6fa6e7"
-    frame_color = "#272f57"
-    foreground = "#dae1f2"
+    background = "#1e1e2ea0"
+    highlight = "#5ac8fa"
+    frame_color = "#3a3a4aa0"
+    foreground = "#ffffff"
     timeout = 8
 
 [urgency_normal]
-    background = "#141929fe"
-    highlight = "#5ca1ff"
-
-    frame_color = "#272f57"
-    foreground = "#dae1f2"
+    background = "#1e1e2ea0"
+    highlight = "#5ac8fa"
+    frame_color = "#3a3a4aa0"
+    foreground = "#ffffff"
     timeout = 8
 
 [urgency_critical]
-    background = "#fe6c5aff"
-    highlight = "#fe6c5a"
-    foreground = "#000000"
-    frame_color = "#52426e"
+    background = "#ff3b30a0"
+    highlight = "#ffffff"
+    foreground = "#ffffff"
+    frame_color = "#ff3b30a0"
     timeout = 0
     icon = battery-ac-adapter
 
 [backlight]
     appname = "Backlight"
-    highlight = "#fc7b80"
+    highlight = "#FF9500"
 
 [music]
     appname = "Music"
+    highlight = "#FF2D55"
 
 [volume]
     summary = "Volume*"
-    highlight = "#cb8cf4"
+    highlight = "#5856D6"
 
 [battery]
     appname = "Power Warning"

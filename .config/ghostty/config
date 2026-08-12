@@ -45,7 +45,8 @@
 background = 000000
 background-opacity = 0.85
 alpha-blending = native
-font-size = 18
+font-size = 14
+
 
 macos-option-as-alt = true
 
