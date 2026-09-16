@@ -36,6 +36,8 @@
       "ctrl-p": ["terminal::SendKeystroke", "ctrl-p"],
       "ctrl-n": ["terminal::SendKeystroke", "ctrl-n"],
       "alt-f": "workspace::ToggleZoom",
+      // "ctrl-t": ["terminal::SendKeystroke", "ctrl-t"],
+      // "ctrl-t": null,
     },
   },
   {
@@ -47,4 +49,34 @@
       ],
     },
   },
+  {
+    "context": "Pane",
+    "unbind": {
+      "ctrl-alt-shift-w": "workspace::CloseInactiveTabsAndPanes"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-g ctrl-w": "git::Worktree"
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-alt-shift-w": "git::Worktree"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-g ctrl-b": "git::Branch"
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-alt-shift-b": "git::Branch"
+    }
+  }
 ]

@@ -115,6 +115,6 @@ if [ -n "$window_id" ]; then
     if [ "$COMPOSITOR" = "sway" ]; then
         swaymsg "[con_id=$window_id]" focus
     else
-        hyprctl dispatch focuswindow "address:$window_id"
+        hyprctl dispatch "hl.dsp.focus({window=\"address:$window_id\"})"
     fi
 fi

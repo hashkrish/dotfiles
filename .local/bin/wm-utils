@@ -22,6 +22,7 @@ sway_utils=(
 
 common_utils=(
     "clipboard-open-url"
+    "clipboard-open-url-app"
     "clipboard-base64-encode"
     "clipboard-open-filepath"
     "toggle-bar"
@@ -73,6 +74,15 @@ toggle_transparency_sway() {
     fi
 }
 
+open_clipboard_url_app() {
+    local url=$(wl-paste -n)
+    if [[ "$url" =~ ^https?:// ]]; then
+        helium-browser --app="$url"
+    else
+        notify-send "wm-utils" "Clipboard does not contain a valid URL"
+    fi
+}
+
 open_clipboard_url() {
     local url=$(wl-paste -n)
     if [[ "$url" =~ ^https?:// ]]; then
@@ -113,26 +123,27 @@ toggle_bar() {
 
 handle_hyprland() {
     case "$1" in
-        "toggle-blur") toggle_blur_hyprland ;;
-        "toggle-transparency") toggle_transparency_hyprland ;;
-        *) handle_common "$1" ;;
+    "toggle-blur") toggle_blur_hyprland ;;
+    "toggle-transparency") toggle_transparency_hyprland ;;
+    *) handle_common "$1" ;;
     esac
 }
 
 handle_sway() {
     case "$1" in
-        "toggle-transparency") toggle_transparency_sway ;;
-        *) handle_common "$1" ;;
+    "toggle-transparency") toggle_transparency_sway ;;
+    *) handle_common "$1" ;;
     esac
 }
 
 handle_common() {
     case "$1" in
-        "clipboard-open-url") open_clipboard_url ;;
-        "clipboard-base64-encode") base64_encode_clipboard ;;
-        "clipboard-open-filepath") open_clipboard_filepath ;;
-        "toggle-bar") toggle_bar ;;
-        *) print_options ;;
+    "clipboard-open-url") open_clipboard_url ;;
+    "clipboard-open-url-app") open_clipboard_url_app ;;
+    "clipboard-base64-encode") base64_encode_clipboard ;;
+    "clipboard-open-filepath") open_clipboard_filepath ;;
+    "toggle-bar") toggle_bar ;;
+    *) print_options ;;
     esac
 }
 

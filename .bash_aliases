@@ -14,9 +14,6 @@ alias csvlens='csvlens -d auto'
 
 alias batcat=bat
 
-alias se='synchro eval'
-alias ss='synchro show'
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
