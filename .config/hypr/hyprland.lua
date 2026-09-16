@@ -259,16 +259,30 @@ hl.bind(mainMod .. " + " .. "TAB", hl.dsp.focus({ urgent_or_last = true }))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "TAB", hl.dsp.window.cycle_next())
 
 -- Move windows (vim keys)
+-- Each direction is bound twice: window.move does the real work for
+-- hcolumns (1D, via core's generic flat-vector reorder) and is a no-op for
+-- hcolumns2d; grid.move does the real work for hcolumns2d (via layout_msg,
+-- since hcolumns2d needs its own left/right vs up/down axes -- see
+-- hcolumns2d.lua's docs) and no-ops for hcolumns. So the same keys work
+-- correctly whichever of the two is the active layout.
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "H", hl.dsp.window.move({ direction = "left" }), { repeating = true })
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "H", grid.move("left"), { repeating = true })
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "J", hl.dsp.window.move({ direction = "down" }), { repeating = true })
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "J", grid.move("down"), { repeating = true })
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "K", hl.dsp.window.move({ direction = "up" }), { repeating = true })
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "K", grid.move("up"), { repeating = true })
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "L", hl.dsp.window.move({ direction = "right" }), { repeating = true })
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "L", grid.move("right"), { repeating = true })
 
 -- Move window (arrow keys)
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "left", hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "left", grid.move("left"))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "down", hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "down", grid.move("down"))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "up", hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "up", grid.move("up"))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "right", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "right", grid.move("right"))
 hl.bind(mainMod .. " + " .. "CONTROL" .. " + " .. "C", hl.dsp.window.center())
 
 -- Resize windows
@@ -283,14 +297,9 @@ hl.bind(
 	{ repeating = true }
 )
 
--- hcolumns2d: start a new column, and move the focused window within/across
--- columns (its built-in movewindow dispatcher can't express both axes, so
--- these go through layout_msg -- see hcolumns2d.lua's docs)
+-- hcolumns2d: start a new column (move is now bound alongside window.move
+-- on the regular SUPER+SHIFT+H/J/K/L / arrow keys above)
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "N", grid.new_column())
-hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "CONTROL" .. " + " .. "H", grid.move("left"))
-hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "CONTROL" .. " + " .. "L", grid.move("right"))
-hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "CONTROL" .. " + " .. "J", grid.move("down"))
-hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "CONTROL" .. " + " .. "K", grid.move("up"))
 
 hl.bind(mainMod .. " + " .. 1, hl.dsp.focus({ workspace = 1 }))
 hl.bind(mainMod .. " + " .. 2, hl.dsp.focus({ workspace = 2 }))
