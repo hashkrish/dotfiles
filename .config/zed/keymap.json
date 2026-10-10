@@ -7,10 +7,20 @@
 // from the command palette.
 [
   {
+    "bindings": {
+      "super-p": "file_finder::Toggle",
+      "ctrl-t": "task::Spawn",
+      "super-b": "workspace::ToggleLeftDock",
+      "super-r": "workspace::ToggleRightDock",
+      "super-w": "pane::CloseActiveItem",
+    },
+  },
+  {
     "context": "Workspace",
     "bindings": {
       // "shift shift": "file_finder::Toggle",
       "super-z": "workspace::ToggleZoom",
+      "super-p": "file_finder::Toggle"
     },
   },
   {
@@ -43,10 +53,14 @@
   {
     "bindings": {
       "ctrl-g G": "git_graph::Open",
+      "ctrl-g u": "git::ViewUnstagedChanges",
+      "ctrl-g s": "editor::ToggleSplitDiff",
       "ctrl-g D": [
         "task::Spawn",
         { "task_name": "gh Dash", "reveal_target": "center" },
       ],
+      "ctrl-g ctrl-o": "editor::OpenPermalinkToLine",
+      "ctrl-g o": "editor::CopyPermalinkToLine",
     },
   },
   {

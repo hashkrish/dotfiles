@@ -73,6 +73,14 @@
     "reveal_target": "center",
   },
   {
+    "label": "Review PR",
+    "command": "PR=$(gh pr list --search 'review-requested:@me' --limit 100 | fzf --layout=reverse --header 'Select PR to review' | cut -f1); [ -n \"$PR\" ] || exit 1; gh-review \"$PR\"",
+    "hide": "always",
+    "allow_concurrent_runs": true,
+    "use_new_terminal": true,
+    "reveal_target": "center",
+  },
+  {
     "label": "Television File Finder",
     "command": "zed \"$(tv files)\"",
     "hide": "always",
@@ -80,4 +88,13 @@
     "use_new_terminal": true,
     "reveal_target": "center",
   },
+  {
+    "label": "Ranger",
+    "command": "ranger",
+    "hide": "always",
+    "allow_concurrent_runs": true,
+    "use_new_terminal": true,
+    "reveal_target": "center",
+  },
+
 ]
