@@ -159,7 +159,6 @@ hl.window_rule({ match = { class = "^(zen-beta)$" }, opacity = "0.90 override 0.
 hl.window_rule({ match = { class = "^(zen)$" }, opacity = "0.90 override 0.90 override" })
 hl.window_rule({ match = { class = "^(helium)$" }, opacity = "0.90 override 0.90 override" })
 hl.window_rule({ match = { class = "^(chrome-.*)$" }, opacity = "0.95" })
-hl.window_rule({ match = { class = "^(com.github.hluk.copyq)$" }, opacity = "0.90 override 0.90 override" })
 hl.window_rule({ match = { class = "^(Code)$" }, opacity = "0.90 override 0.90 override" })
 hl.window_rule({ match = { class = "^(code-url-handler)$" }, opacity = "0.90 override 0.90 override" })
 hl.window_rule({ match = { class = "^(antigravity)$" }, opacity = "0.90 override 0.90 override" })
@@ -181,7 +180,6 @@ hl.window_rule({ match = { class = "^(python3)$" }, float = true })
 hl.window_rule({ match = { class = "^(org.pulseaudio.pavucontrol)$" }, float = true })
 hl.window_rule({ match = { title = "^(ranger)$" }, float = true })
 hl.window_rule({ match = { title = "^(Task Manager - Vivaldi)$" }, float = true })
-hl.window_rule({ match = { class = "^(com.github.hluk.copyq)$" }, float = true })
 hl.window_rule({ match = { title = "^(Live Caption)$" }, float = true })
 hl.window_rule({ match = { class = "^(Yad)$" }, float = true })
 hl.window_rule({ match = { class = "^(feh)$" }, float = true })
@@ -194,7 +192,7 @@ hl.window_rule({ match = { class = "^(yad)$" }, float = true })
 -- SIZE RULES
 hl.window_rule({ match = { class = "^(float)$" }, size = { "49.65%", "48%" }, center = true })
 hl.window_rule({ match = { class = "^(Alacritty)$" }, size = { 1600, 900 } })
-hl.window_rule({ match = { class = "^(com.github.hluk.copyq)$" }, size = { 1600, 900 }, center = true })
+hl.window_rule({ match = { class = "^(clippick)$" }, float = true, size = { 1400, 800 }, center = true })
 
 -- BORDER RULES
 --windowrule = match:class (Vivaldi-stable), no_border on
@@ -217,6 +215,30 @@ local mainMod = "SUPER"
 -- Terminal
 hl.bind(mainMod .. " + " .. "return", hl.dsp.exec_cmd("alacritty -e tmux"))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "return", hl.dsp.exec_cmd("ghostty -e tmux new-session -A -s ghostty"))
+-- Universal paste: terminals paste with Ctrl+Shift+V, everything else with Ctrl+V
+local terminal_classes = { ["Alacritty"] = true, ["com.mitchellh.ghostty"] = true, ["kitty"] = true, ["foot"] = true }
+local function paste_mods(win)
+	return terminal_classes[win.class] and "CTRL SHIFT" or "CTRL"
+end
+
+hl.bind(mainMod .. " + " .. "V", function()
+	local win = hl.get_active_window()
+	if not win then
+		return
+	end
+	hl.dispatch(hl.dsp.send_shortcut({ mods = paste_mods(win), key = "V", window = "address:" .. win.address }))
+end)
+
+-- Clipboard history picker: pastes the chosen entry into the window that was focused
+-- (just copies it when no window is focused)
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "V", function()
+	local cmd = "alacritty --class clippick -e /home/krishnan/.local/bin/clippick"
+	local win = hl.get_active_window()
+	if win then
+		cmd = cmd .. " --paste-to address:" .. win.address .. " '" .. paste_mods(win) .. "'"
+	end
+	hl.exec_cmd(cmd)
+end)
 -- Kill focused window
 hl.bind(mainMod .. " + " .. "Q", hl.dsp.window.close())
 
@@ -435,9 +457,13 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { rep
 hl.bind(mainMod .. " + " .. "F7", hl.dsp.exec_cmd("hyprctl keyword monitor eDP-1,1920x1080,960x2160,1"))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "F7", hl.dsp.exec_cmd("hyprctl keyword monitor eDP-1,disable"))
 
+-- ball (desktop companion): quiet mode, and hide/show
+hl.bind(mainMod .. " + " .. "F8", hl.dsp.exec_cmd("/home/krishnan/.local/bin/ball ctl dnd toggle"))
+hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "F8", hl.dsp.exec_cmd("/home/krishnan/.local/bin/ball ctl hide toggle"))
+
 -- Screenshot
 hl.bind("PRINT", hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty --filename=-'))
-hl.bind(mainMod .. " + " .. "PRINT", hl.dsp.exec_cmd("hyprshot -m window"))
+hl.bind(mainMod .. " + " .. "PRINT", hl.dsp.exec_cmd([[grim -g "$(hyprctl -j activewindow | jq -r --argjson m 20 '"\(.at[0]-$m),\(.at[1]-$m) \(.size[0]+2*$m)x\(.size[1]+2*$m)"')" - | satty --filename=-]]))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "PRINT", hl.dsp.exec_cmd("hyprshot -m output"))
 
 -- Utility
@@ -547,11 +573,14 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("awww-daemon &")
 	hl.exec_cmd("sleep 1 && awww img /home/krishnan/Pictures/Wallpapers/current")
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-	hl.exec_cmd("copyq --start-server &")
+	hl.exec_cmd("wl-paste --type text --watch /home/krishnan/.local/bin/cliphist-store-ts &")
+	hl.exec_cmd("wl-paste --type image --watch /home/krishnan/.local/bin/cliphist-store-ts &")
 	hl.exec_cmd("hyprpm reload -n")
 	hl.exec_cmd("systemctl --user start hyprpolkitagent")
 	hl.exec_cmd("tmux start-server")
 	hl.exec_cmd("caelestia shell -d")
+	hl.exec_cmd("/home/krishnan/.local/bin/ball") -- desktop companion
+	hl.exec_cmd("/usr/lib/evolution-data-server/evolution-alarm-notify") -- calendar reminders
 
 	-- hl.exec_cmd("fcitx5 &")
 	-- hl.exec_cmd("LANG=C waybar &")
