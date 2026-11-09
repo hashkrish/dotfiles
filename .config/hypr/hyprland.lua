@@ -259,7 +259,8 @@ hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "Z", hl.dsp.exec_cmd("caelestia 
 hl.bind("ALT + B", hl.dsp.exec_cmd("google-chrome"))
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "semicolon", hl.dsp.exec_cmd("/home/krishnan/.local/bin/:commands"))
 hl.bind("ALT + L", hl.dsp.exec_cmd("redis-clear"))
--- Toggle terminal transparency
+-- Toggle transparency on the focused window
+hl.bind(mainMod .. " + " .. "ALT" .. " + " .. "T", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/toggle-opacity.sh"))
 -- Toggle light/dark mode system-wide
 
 -- WINDOW MOVEMENT
